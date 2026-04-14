@@ -2,8 +2,10 @@ package br.com.ifpb.adotaifpb.Entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
+@Entity
 @Data
 @Table(name = "tb_usuario")
 public class Usuario {
@@ -27,7 +29,8 @@ public class Usuario {
     @Column(name = "perfil_admin", nullable = false)
     Boolean perfilAdmin;
 
-    //@OneToMany(mappedBy = "adocao")
+    @OneToMany(mappedBy = "usuario")
+    private List<Adocao> adocoes;
 
 
 }
