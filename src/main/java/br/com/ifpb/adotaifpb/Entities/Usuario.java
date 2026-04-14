@@ -1,0 +1,33 @@
+package br.com.ifpb.adotaifpb.Entities;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.data.annotation.Id;
+
+@Data
+@Table(name = "tb_usuario")
+public class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
+
+    @Column(nullable = false)
+    String nome;
+
+    @Column(nullable = false, unique = true)
+    String email;
+
+    @Column(name = "tb_vinculoifpb" ,nullable = false)
+    String vinculoIFPB;
+
+    @Column(nullable = true, length = 20)
+    String telefone;
+
+    @Column(name = "perfil_admin", nullable = false)
+    Boolean perfilAdmin;
+
+    //@OneToMany(mappedBy = "adocao")
+
+
+}
