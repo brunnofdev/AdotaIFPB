@@ -23,10 +23,10 @@ public class Animal {
     String raca;
 
     @Column(name = "idade_estimada")
-    int idadeEstimada;
+    Integer idadeEstimada;
 
     @Column
-    char sexo;
+    Character sexo;
 
     @Column(nullable = false)
     String descricao;
