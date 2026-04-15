@@ -25,7 +25,7 @@ public class AdotaIfpbApplication {
             AdocaoRepository adocaoRepo) {
 
         return args -> {
-            // 1. Criar e salvar um Usuário
+
             Usuario usuario = new Usuario();
             usuario.setNome("Brunno");
             usuario.setEmail("brunno@ifpb.edu.br");
@@ -34,7 +34,6 @@ public class AdotaIfpbApplication {
             usuario.setPerfilAdmin(true);
             usuarioRepo.save(usuario);
 
-            // 2. Criar e salvar um Animal
             Animal animal = new Animal();
             animal.setNome("Caramelo");
             animal.setEspecie("Cachorro");
@@ -42,24 +41,22 @@ public class AdotaIfpbApplication {
             animal.setIdadeEstimada(3);
             animal.setSexo('M');
             animal.setDescricao("Muito dócil e brincalhão");
-            // Como o atributo StatusEnum está tipado como String na sua entidade, passamos o nome do Enum:
             animal.setStatus(StatusEnum.Disponivel);
             animalRepo.save(animal);
 
-            // 3. Criar e salvar a Adoção
             Adocao adocao = new Adocao();
             adocao.setUsuario(usuario);
             adocao.setAnimal(animal);
 
-            // Atualizar o status do animal para Adotado
+
             animal.setStatus(StatusEnum.Adotado);
-            animalRepo.save(animal); // Atualiza o animal no banco
+            animalRepo.save(animal);
 
-            adocaoRepo.save(adocao); // Salva o registro da adoção
+            adocaoRepo.save(adocao);
 
-            System.out.println("=====================================================");
-            System.out.println("TESTE CONCLUÍDO: Usuário, Animal e Adoção inseridos!");
-            System.out.println("=====================================================");
+
+            System.out.println("TESTE CONCLUÍDO");
+
         };
     }
 }
