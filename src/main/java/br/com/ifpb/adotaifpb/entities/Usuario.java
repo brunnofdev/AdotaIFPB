@@ -1,4 +1,4 @@
-package br.com.ifpb.adotaifpb.Entities;
+package br.com.ifpb.adotaifpb.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -11,7 +11,7 @@ import java.util.List;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(nullable = false)
@@ -20,7 +20,7 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     String email;
 
-    @Column(name = "tb_vinculoifpb" ,nullable = false)
+    @Column(name = "vinculoifpb" ,nullable = false)
     String vinculoIFPB;
 
     @Column(nullable = true, length = 20)

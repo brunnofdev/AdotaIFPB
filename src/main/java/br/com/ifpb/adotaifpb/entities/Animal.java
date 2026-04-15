@@ -1,9 +1,7 @@
-package br.com.ifpb.adotaifpb.Entities;
-
+package br.com.ifpb.adotaifpb.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.context.annotation.Primary;
 
 @Entity
 @Data
@@ -11,7 +9,7 @@ import org.springframework.context.annotation.Primary;
 public class Animal {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(nullable = false)
@@ -20,27 +18,26 @@ public class Animal {
     @Column(nullable = false)
     String especie;
 
-    @Column(nullable = false)
+    @Column
     String raca;
 
-    @Column(name = "idade_estimada", nullable = false)
-    int idadeEstimata;
+    @Column(name = "idade_estimada")
+    int idadeEstimada;
 
-    @Column(nullable = false)
+    @Column
     char sexo;
 
     @Column(nullable = false)
     String descricao;
 
-    @Column(name = "url_foto", nullable = false)
+    @Column(name = "url_foto")
     String urlFoto;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    String status;
+    String StatusEnum;
 
     @OneToOne(mappedBy = "animal")
     private Adocao adocao;
-
-
 
 }
