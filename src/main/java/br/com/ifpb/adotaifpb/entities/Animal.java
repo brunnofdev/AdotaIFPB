@@ -1,5 +1,6 @@
 package br.com.ifpb.adotaifpb.entities;
 
+import br.com.ifpb.adotaifpb.utils.StatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,10 +23,10 @@ public class Animal {
     String raca;
 
     @Column(name = "idade_estimada")
-    int idadeEstimada;
+    Integer idadeEstimada;
 
     @Column
-    char sexo;
+    Character sexo;
 
     @Column(nullable = false)
     String descricao;
@@ -35,7 +36,7 @@ public class Animal {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    String StatusEnum;
+    private StatusEnum status;
 
     @OneToOne(mappedBy = "animal")
     private Adocao adocao;
