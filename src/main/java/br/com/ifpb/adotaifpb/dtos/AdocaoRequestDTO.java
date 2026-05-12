@@ -1,12 +1,12 @@
 package br.com.ifpb.adotaifpb.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record AdocaoRequestDTO(
 
-        @NotBlank(message = "O ID do usuário é obrigatório")
+        @NotNull(message = "O ID do usuário é obrigatório")
         Long usuarioId,
 
-        @NotBlank(message = "O ID do animal é obrigatório")
+        @NotNull(message = "O ID do animal é obrigatório")
         Long animalId
 ) { }
