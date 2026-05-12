@@ -20,7 +20,7 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuarioDTO) {
-        Optional<Usuario> existente = usuarioRepository.buscarPorEmail(usuarioDTO.email());
+        Optional<Usuario> existente = usuarioRepository.findByEmail(usuarioDTO.email());
         if (existente.isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário cadastrado com este e-mail.");
         }
