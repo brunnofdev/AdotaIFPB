@@ -1,5 +1,6 @@
 package br.com.ifpb.adotaifpb.entities;
 
+import br.com.ifpb.adotaifpb.utils.VinculoEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -20,8 +21,9 @@ public class Usuario {
     @Column(nullable = false, unique = true)
     String email;
 
-    @Column(name = "vinculoifpb" ,nullable = false)
-    String vinculoIFPB;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vinculo_ifpb" ,nullable = false)
+    private VinculoEnum vinculoIFPB;
 
     @Column(nullable = true, length = 20)
     String telefone;

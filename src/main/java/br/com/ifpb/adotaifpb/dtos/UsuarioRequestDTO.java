@@ -1,8 +1,10 @@
 package br.com.ifpb.adotaifpb.dtos;
 
 
+import br.com.ifpb.adotaifpb.utils.VinculoEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UsuarioRequestDTO(
@@ -14,8 +16,8 @@ public record UsuarioRequestDTO(
         @Email(message = "O formato do e-mail é inválido")
         String email,
 
-        @NotBlank(message = "O vinculo com o IFPB é obrigatório")
-        String vinculoIFPB,
+        @NotNull(message = "O vinculo com o IFPB é obrigatório")
+        VinculoEnum vinculoIFPB,
 
         @Size(min = 10, max = 15, message = "O telefone deve ter entre 10 e 15 digitos")
         String telefone
