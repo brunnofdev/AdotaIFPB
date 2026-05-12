@@ -1,7 +1,9 @@
 package br.com.ifpb.adotaifpb.controllers;
 
+import br.com.ifpb.adotaifpb.dtos.UsuarioCreateRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.UsuarioRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.UsuarioResponseDTO;
+import br.com.ifpb.adotaifpb.entities.Usuario;
 import br.com.ifpb.adotaifpb.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody UsuarioRequestDTO usuariodto) {
+    public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody UsuarioCreateRequestDTO usuariodto) {
         try {
             UsuarioResponseDTO novoUsuario = usuarioService.cadastrarUsuario(usuariodto);
             return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
@@ -51,4 +53,5 @@ public class UsuarioController {
             return ResponseEntity.notFound().build();
         }
     }
+
 }

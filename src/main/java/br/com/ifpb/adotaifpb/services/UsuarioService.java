@@ -1,5 +1,6 @@
 package br.com.ifpb.adotaifpb.services;
 
+import br.com.ifpb.adotaifpb.dtos.UsuarioCreateRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.UsuarioRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.UsuarioResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Usuario;
@@ -19,7 +20,7 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Transactional
-    public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuarioDTO) {
+    public UsuarioResponseDTO cadastrarUsuario(UsuarioCreateRequestDTO usuarioDTO) {
         Optional<Usuario> existente = usuarioRepository.findByEmail(usuarioDTO.email());
         if (existente.isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário cadastrado com este e-mail.");

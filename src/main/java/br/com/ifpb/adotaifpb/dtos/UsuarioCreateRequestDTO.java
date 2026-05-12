@@ -7,11 +7,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record UsuarioRequestDTO(
+public record UsuarioCreateRequestDTO (
 
         @NotBlank(message = "Nome nao pode ser vazio ou nulo")
         String nome,
-        
+
+        @NotBlank(message = "Email é obrigatório")
+        @Email(message = "O formato do e-mail é inválido")
+        String email,
+
         @NotNull(message = "O vinculo com o IFPB é obrigatório")
         VinculoEnum vinculoIFPB,
 
