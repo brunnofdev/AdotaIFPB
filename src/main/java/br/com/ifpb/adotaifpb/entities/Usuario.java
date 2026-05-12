@@ -27,7 +27,7 @@ public class Usuario {
     String telefone;
 
     @Column(name = "perfil_admin", nullable = false)
-    Boolean perfilAdmin;
+    Boolean perfilAdmin = false;
 
     @OneToMany(mappedBy = "usuario")
     private List<Adocao> adocoes;
