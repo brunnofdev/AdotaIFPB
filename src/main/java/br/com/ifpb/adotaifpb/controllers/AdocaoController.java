@@ -21,12 +21,8 @@ public class AdocaoController {
 
     @PostMapping
     public ResponseEntity<?> registrarAdocao(@Valid @RequestBody AdocaoRequestDTO dto) {
-        try {
             AdocaoResponseDTO novaAdocao = adocaoService.registrarAdocao(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaAdocao);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
     }
 
     @GetMapping
@@ -36,12 +32,8 @@ public class AdocaoController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AdocaoResponseDTO> buscarPorId(@PathVariable Long id) {
-        try {
             AdocaoResponseDTO adocao = adocaoService.buscarPorId(id);
             return ResponseEntity.ok(adocao);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.notFound().build();
-        }
     }
 
 }
