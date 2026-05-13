@@ -1,9 +1,12 @@
 package br.com.ifpb.adotaifpb.services;
 
+import br.com.ifpb.adotaifpb.dtos.AnimalRequestDTO;
+import br.com.ifpb.adotaifpb.dtos.AnimalResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Animal;
 import br.com.ifpb.adotaifpb.repository.AnimalRepository;
 import br.com.ifpb.adotaifpb.utils.StatusEnum;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,42 +19,49 @@ public class AnimalService {
     private AnimalRepository animalRepository;
 
     @Transactional
-    public Animal cadastrarAnimal(Animal animal){
-        if (animal.getNome() == null || animal.getNome().isBlank()) {
-            throw new IllegalArgumentException("Nome do animal não pode ser vazio.");
-        }
+    public AnimalResponseDTO cadastrarAnimal(AnimalRequestDTO dto){
+        Animal animal = new Animal();
+        BeanUtils.copyProperties(dto, animal);
         animal.setStatus(StatusEnum.Disponivel);
-        return animalRepository.save(animal);
+
+        Animal animalSalvo = animalRepository.save(animal);
+        return new AnimalResponseDTO(animalSalvo);
     }
 
-    public List<Animal> listarAnimaisDisponiveis(){
+    public List<AnimalResponseDTO> listarAnimaisDisponiveis(){
         return animalRepository.findAll().stream()
-                .filter(a -> a.getStatus() == StatusEnum.Disponivel).toList();
+                .filter(a -> a.getStatus() == StatusEnum.Disponivel)
+                .map(AnimalResponseDTO::new)
+                .toList();
     }
 
-    public Optional<Animal> buscarPorId(Long id){
-        return animalRepository.findById(id);
+    public AnimalResponseDTO buscarPorId(Long id) {
+        return new AnimalResponseDTO(animalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Animal não encontrado com o ID: " + id)));
     }
 
     @Transactional
-    public Animal atualizarAnimal(Long id, Animal animalAtualizado) {
-        return animalRepository.findById(id).map(animal -> {
-            animal.setNome(animalAtualizado.getNome());
-            animal.setEspecie(animalAtualizado.getEspecie());
-            animal.setRaca(animalAtualizado.getRaca());
-            animal.setIdadeEstimada(animalAtualizado.getIdadeEstimada());
-            animal.setSexo(animalAtualizado.getSexo());
-            animal.setDescricao(animalAtualizado.getDescricao());
-            animal.setUrlFoto(animalAtualizado.getUrlFoto());
-            return animalRepository.save(animal);
-        }).orElseThrow(() -> new RuntimeException("Animal não encontrado com o ID: " + id));
+    public AnimalResponseDTO atualizarAnimal(Long id, AnimalRequestDTO dto) {
+        Animal animal = animalRepository
+                .findById(id).orElseThrow(() -> new IllegalArgumentException("Animal não encontrado com o ID: " + id));
+
+        animal.setNome(dto.nome());
+        animal.setEspecie(dto.especie());
+        animal.setRaca(dto.raca());
+        animal.setIdadeEstimada(dto.idadeEstimada());
+        animal.setSexo(dto.sexo());
+        animal.setDescricao(dto.descricao());
+        animal.setUrlFoto(dto.urlFoto());
+
+        Animal animalAtualizado = animalRepository.save(animal);
+        return new AnimalResponseDTO(animalAtualizado);
     }
 
     public void removerAnimal(Long id){
         Animal animal = animalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Animal não encontrado"));
         if (animal.getAdocao() != null) {
-            throw new RuntimeException("Não é permitido remover um animal com histórico de adoção."); // RN02
+            throw new RuntimeException("Não é permitido remover um animal com histórico de adoção.");
         }
         animalRepository.delete(animal);
     }
