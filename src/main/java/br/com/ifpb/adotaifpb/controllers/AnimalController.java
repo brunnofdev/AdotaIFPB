@@ -1,7 +1,10 @@
 package br.com.ifpb.adotaifpb.controllers;
 
+import br.com.ifpb.adotaifpb.dtos.AnimalRequestDTO;
+import br.com.ifpb.adotaifpb.dtos.AnimalResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Animal;
 import br.com.ifpb.adotaifpb.services.AnimalService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,27 +21,25 @@ public class AnimalController {
     private AnimalService animalService;
 
     @PostMapping
-    public ResponseEntity<Animal> cadastrar(@RequestBody Animal animal) {
-        Animal novoAnimal = animalService.cadastrarAnimal(animal);
+    public ResponseEntity<?> cadastrar(@RequestBody AnimalRequestDTO dto) {
+        AnimalResponseDTO novoAnimal = animalService.cadastrarAnimal(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoAnimal);
     }
 
     @GetMapping
-    public ResponseEntity<List<Animal>> listarDisponiveis() {
-        List<Animal> disponiveis = animalService.listarAnimaisDisponiveis();
+    public ResponseEntity<List<AnimalResponseDTO>> listarDisponiveis() {
+        List<AnimalResponseDTO> disponiveis = animalService.listarAnimaisDisponiveis();
         return ResponseEntity.ok(disponiveis);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Animal> buscarPorId(@PathVariable Long id) {
-        return animalService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(animalService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Animal> atualizar(@PathVariable Long id, @RequestBody Animal animal) {
-        return ResponseEntity.ok(animalService.atualizarAnimal(id, animal));
+    public ResponseEntity<?> atualizar(@PathVariable Long id,@Valid @RequestBody AnimalRequestDTO dto) {
+        return ResponseEntity.ok(animalService.atualizarAnimal(id, dto));
     }
 
     @DeleteMapping("/{id}")
