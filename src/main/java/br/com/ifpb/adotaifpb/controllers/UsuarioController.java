@@ -20,7 +20,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<?> cadastrarUsuario(@Valid @RequestBody UsuarioCreateRequestDTO usuariodto) {
+    public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateRequestDTO usuariodto) {
             UsuarioResponseDTO novoUsuario = usuarioService.cadastrarUsuario(usuariodto);
             return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
@@ -36,7 +36,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto) {
             UsuarioResponseDTO usuarioAtualizado = usuarioService.atualizarUsuario(id, dto);
             return ResponseEntity.ok(usuarioAtualizado);
     }
