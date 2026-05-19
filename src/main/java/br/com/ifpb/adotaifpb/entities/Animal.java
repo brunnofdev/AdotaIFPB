@@ -4,6 +4,8 @@ import br.com.ifpb.adotaifpb.utils.StatusEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "tb_animal")
@@ -16,29 +18,35 @@ public class Animal {
     @Column(nullable = false)
     String nome;
 
-    @Column(nullable = false)
-    String especie;
+    @ManyToOne
+    @JoinColumn(name = "especie_id", nullable = false)
+    private Especie especie;
 
-    @Column
-    String raca;
+    @ManyToOne
+    @JoinColumn(name = "abrigo_id", nullable = false)
+    private Abrigo abrigo;
 
-    @Column(name = "idade_estimada")
-    Integer idadeEstimada;
+    @Column(nullable = true)
+    private String raca;
 
-    @Column
-    Character sexo;
+    @Column(name = "idade_estimada", nullable = true)
+    private Integer idadeEstimada;
 
-    @Column(nullable = false)
-    String descricao;
+    @Column(nullable = true)
+    private Character sexo;
 
-    @Column(name = "url_foto")
-    String urlFoto;
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String descricao;
+
+    @Column(name = "url_foto", nullable = true)
+    private String urlFoto;
+
+    // CascadeType.ALL - se o animal for removido, as suas vacinas também ficam inativas.
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vacinacao> historicoVacinacoes;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusEnum status;
-
-    @OneToOne(mappedBy = "animal")
-    private Adocao adocao;
 
 }
