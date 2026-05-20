@@ -4,7 +4,6 @@ import br.com.ifpb.adotaifpb.dtos.AdocaoRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.AdocaoResponseDTO;
 import br.com.ifpb.adotaifpb.services.AdocaoService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +15,11 @@ import java.util.List;
 @RequestMapping("/adocoes")
 public class AdocaoController {
 
-    @Autowired
-    private AdocaoService adocaoService;
+    private final AdocaoService adocaoService;
+
+    public AdocaoController(AdocaoService adocaoService) {
+        this.adocaoService = adocaoService;
+    }
 
     @PostMapping
     public ResponseEntity<?> registrarAdocao(@Valid @RequestBody AdocaoRequestDTO dto) {

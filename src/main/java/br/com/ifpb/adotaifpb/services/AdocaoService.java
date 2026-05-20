@@ -10,7 +10,6 @@ import br.com.ifpb.adotaifpb.repository.AnimalRepository;
 import br.com.ifpb.adotaifpb.repository.UsuarioRepository;
 import br.com.ifpb.adotaifpb.utils.StatusEnum;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,14 +17,15 @@ import java.util.List;
 @Service
 public class AdocaoService {
 
-    @Autowired
-    private AnimalRepository animalRepository;
+    private final AnimalRepository animalRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final AdocaoRepository adocaoRepository;
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private AdocaoRepository adocaoRepository;
+    public AdocaoService(AnimalRepository animalRepository, UsuarioRepository usuarioRepository, AdocaoRepository adocaoRepository) {
+        this.animalRepository = animalRepository;
+        this.usuarioRepository = usuarioRepository;
+        this.adocaoRepository = adocaoRepository;
+    }
 
     @Transactional
     public AdocaoResponseDTO registrarAdocao(AdocaoRequestDTO dto) {
@@ -35,18 +35,20 @@ public class AdocaoService {
         Animal animal = animalRepository.findById(dto.animalId())
                 .orElseThrow(() -> new IllegalArgumentException("Animal não encontrado com o ID fornecido."));
 
-        if (animal.getStatus() != StatusEnum.Disponivel) {
+        if (animal.getStatus() != StatusEnum.DISPONIVEL) {
             throw new IllegalArgumentException("O animal selecionado não está disponível para adoção.");
         }
 
-        animal.setStatus(StatusEnum.Adotado);
-        animalRepository.save(animal);
+        animal.setStatus(StatusEnum.ADOTADO);
 
         Adocao adocao = new Adocao();
         adocao.setUsuario(usuario);
         adocao.setAnimal(animal);
-        Adocao adocaoSalva = adocaoRepository.save(adocao);
-        return new AdocaoResponseDTO(adocaoSalva);
+
+        adocao = adocaoRepository.save(adocao);
+        animalRepository.save(animal);
+
+        return new AdocaoResponseDTO(adocao);
     }
 
     public List<AdocaoResponseDTO> listarAdocoes() {
