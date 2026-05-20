@@ -6,7 +6,8 @@ import br.com.ifpb.adotaifpb.utils.StatusEnum;
 public record AnimalResponseDTO(
         Long id,
         String nome,
-        String especie,
+        EspecieResponseDTO especie,
+        AbrigoResponseDTO abrigo,
         String raca,
         Integer idadeEstimada,
         Character sexo,
@@ -18,7 +19,8 @@ public record AnimalResponseDTO(
         this(
                 animal.getId(),
                 animal.getNome(),
-                animal.getEspecie(),
+                new EspecieResponseDTO(animal.getEspecie()),
+                new AbrigoResponseDTO(animal.getAbrigo()),
                 animal.getRaca(),
                 animal.getIdadeEstimada(),
                 animal.getSexo(),
