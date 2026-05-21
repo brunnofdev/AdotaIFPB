@@ -36,8 +36,8 @@ public class UsuarioService {
         BeanUtils.copyProperties(usuarioDTO, novoUsuario);
         novoUsuario.setSenha("{noop}" + usuarioDTO.senha());
 
-        Cargo cargoPadrao = cargoRepository.findByNome("ROLE_USUARIO")
-                .orElseThrow(() -> new IllegalArgumentException("Cargo ROLE_USUARIO não encontrado no banco de dados."));
+        Cargo cargoPadrao = cargoRepository.findByNome("CARGO_USUARIO")
+                .orElseThrow(() -> new IllegalArgumentException("Cargo CARGO_USUARIO não encontrado no banco de dados."));
         novoUsuario.setCargo(cargoPadrao);
         usuarioRepository.save(novoUsuario);
 
