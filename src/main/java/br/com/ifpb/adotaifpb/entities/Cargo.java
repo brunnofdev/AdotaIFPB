@@ -6,7 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Data
-@Table(name = "tb_role")
+@Table(name = "tb_cargo")
 public class Cargo implements GrantedAuthority {
 
     @Id
