@@ -16,6 +16,10 @@ public record UsuarioCreateRequestDTO (
         @Email(message = "O formato do e-mail é inválido")
         String email,
 
+        @NotBlank(message = "A senha é obrigatória")
+        @Size(min = 6, message = "A senha deve ter no mínimo 6 caracteres")
+        String senha,
+
         @NotNull(message = "O vinculo com o IFPB é obrigatório")
         VinculoEnum vinculoIFPB,
 

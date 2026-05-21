@@ -8,9 +8,12 @@ public record UsuarioResponseDTO(
         String nome,
         String email,
         VinculoEnum vinculoIFPB,
-        String telefone
+        String telefone,
+        CargoResponseDTO cargo
 ) {
     public UsuarioResponseDTO(Usuario usuario) {
-        this(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getVinculoIFPB(), usuario.getTelefone());
+        this(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getVinculoIFPB(),
+                usuario.getTelefone(), new CargoResponseDTO(usuario.getCargo())
+        );
     }
 }
