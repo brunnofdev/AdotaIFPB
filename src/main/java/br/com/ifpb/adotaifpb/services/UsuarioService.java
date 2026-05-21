@@ -3,7 +3,9 @@ package br.com.ifpb.adotaifpb.services;
 import br.com.ifpb.adotaifpb.dtos.UsuarioCreateRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.UsuarioRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.UsuarioResponseDTO;
+import br.com.ifpb.adotaifpb.entities.Cargo;
 import br.com.ifpb.adotaifpb.entities.Usuario;
+import br.com.ifpb.adotaifpb.repository.CargoRepository;
 import br.com.ifpb.adotaifpb.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
@@ -16,9 +18,11 @@ import java.util.Optional;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final CargoRepository cargoRepository;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, CargoRepository cargoRepository) {
         this.usuarioRepository = usuarioRepository;
+        this.cargoRepository = cargoRepository;
     }
 
     @Transactional
@@ -30,6 +34,11 @@ public class UsuarioService {
 
         Usuario novoUsuario = new Usuario();
         BeanUtils.copyProperties(usuarioDTO, novoUsuario);
+        novoUsuario.setSenha("{noop}" + usuarioDTO.senha());
+
+        Cargo cargoPadrao = cargoRepository.findByNome("ROLE_USUARIO")
+                .orElseThrow(() -> new IllegalArgumentException("Cargo ROLE_USUARIO não encontrado no banco de dados."));
+        novoUsuario.setCargo(cargoPadrao);
         usuarioRepository.save(novoUsuario);
 
         return new UsuarioResponseDTO(novoUsuario);
