@@ -40,10 +40,10 @@ public class AnimalController {
         return ResponseEntity.ok(animalService.atualizarAnimal(id, dto));
     }
 
-    /* @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         animalService.removerAnimal(id);
-        return ResponseEntity.noContent().build();
-    } */
 
+        return ResponseEntity.noContent().build();
+    }
 }

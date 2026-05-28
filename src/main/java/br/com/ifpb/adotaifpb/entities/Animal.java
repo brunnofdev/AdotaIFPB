@@ -49,4 +49,7 @@ public class Animal {
     @Column(nullable = false)
     private StatusEnum status;
 
+    @Column(nullable = false)
+    private boolean ativo = true;
+
 }

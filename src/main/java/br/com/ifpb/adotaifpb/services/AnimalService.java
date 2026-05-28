@@ -53,9 +53,8 @@ public class AnimalService {
         return new AnimalResponseDTO(animal);
     }
 
-    public List<AnimalResponseDTO> listarAnimaisDisponiveis(){
-        return animalRepository.findAll().stream()
-                .filter(a -> a.getStatus() == StatusEnum.DISPONIVEL)
+    public List<AnimalResponseDTO> listarAnimaisDisponiveis() {
+        return animalRepository.findByAtivoTrueAndStatus(StatusEnum.DISPONIVEL).stream()
                 .map(AnimalResponseDTO::new)
                 .toList();
     }
@@ -89,9 +88,12 @@ public class AnimalService {
         return new AnimalResponseDTO(animal);
     }
 
-    /* public void removerAnimal(Long id){
-        Animal animal = animalRepository.findById(id)
+    @Transactional
+    public void removerAnimal(Long id) {
+        Animal animal = animalRepository.findByIdAndAtivoTrue(id)
                 .orElseThrow(() -> new IllegalArgumentException("Animal não encontrado."));
-        animalRepository.delete(animal);
-    } */
+
+        animal.setAtivo(false);
+        animalRepository.save(animal);
+    }
 }
