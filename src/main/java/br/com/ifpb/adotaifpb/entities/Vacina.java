@@ -15,6 +15,9 @@ public class Vacina {
     @Column(nullable = false, unique = true)
     private String nome;
 
-    @Column(nullable = true)
+    @Column()
     private String fabricante;
+
+    @Column(nullable = false)
+    private boolean ativo = true;
 }

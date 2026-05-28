@@ -4,6 +4,7 @@ import br.com.ifpb.adotaifpb.dtos.AbrigoRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.AbrigoResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Abrigo;
 import br.com.ifpb.adotaifpb.repository.AbrigoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -47,5 +48,14 @@ public class AbrigoService {
 
         abrigo = abrigoRepository.save(abrigo);
         return new AbrigoResponseDTO(abrigo);
+    }
+
+    @Transactional
+    public void inativar(Long id) {
+        Abrigo abrigo = abrigoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Espécie não encontrada."));
+
+        abrigo.setAtivo(false);
+        abrigoRepository.save(abrigo);
     }
 }

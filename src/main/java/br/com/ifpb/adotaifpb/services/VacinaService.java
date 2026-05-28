@@ -4,6 +4,7 @@ import br.com.ifpb.adotaifpb.dtos.VacinaRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.VacinaResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Vacina;
 import br.com.ifpb.adotaifpb.repository.VacinaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -47,5 +48,14 @@ public class VacinaService {
 
         vacina = vacinaRepository.save(vacina);
         return new VacinaResponseDTO(vacina);
+    }
+
+    @Transactional
+    public void inativar(Long id) {
+        Vacina vacina = vacinaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Espécie não encontrada."));
+
+        vacina.setAtivo(false);
+        vacinaRepository.save(vacina);
     }
 }

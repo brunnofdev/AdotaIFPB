@@ -39,4 +39,10 @@ public class EspecieController {
     public ResponseEntity<EspecieResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody EspecieRequestDTO dto) {
         return ResponseEntity.ok(especieService.atualizar(id, dto));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> inativar(@PathVariable Long id) {
+        especieService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

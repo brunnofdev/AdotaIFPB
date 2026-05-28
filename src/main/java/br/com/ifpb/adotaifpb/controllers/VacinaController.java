@@ -38,4 +38,10 @@ public class VacinaController {
     public ResponseEntity<VacinaResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody VacinaRequestDTO dto) {
         return ResponseEntity.ok(vacinaService.atualizar(id, dto));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> inativar(@PathVariable Long id) {
+        vacinaService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

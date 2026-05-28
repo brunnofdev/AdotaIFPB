@@ -4,6 +4,7 @@ import br.com.ifpb.adotaifpb.dtos.EspecieRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.EspecieResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Especie;
 import br.com.ifpb.adotaifpb.repository.EspecieRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -46,4 +47,13 @@ public class EspecieService {
             especie = especieRepository.save(especie);
             return new EspecieResponseDTO(especie);
         }
+
+    @Transactional
+    public void inativar(Long id) {
+        Especie especie = especieRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Espécie não encontrada."));
+
+        especie.setAtivo(false);
+        especieRepository.save(especie);
+    }
 }

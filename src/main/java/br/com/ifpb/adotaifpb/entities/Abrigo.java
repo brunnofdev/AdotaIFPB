@@ -17,4 +17,7 @@ public class Abrigo {
 
     @Column(nullable = false)
     private String localizacao;
+
+    @Column(nullable = false)
+    private boolean ativo = true;
 }

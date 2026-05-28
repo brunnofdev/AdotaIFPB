@@ -39,4 +39,10 @@ public class AbrigoController {
     public ResponseEntity<AbrigoResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody AbrigoRequestDTO dto) {
         return ResponseEntity.ok(abrigoService.atualizar(id, dto));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> inativar(@PathVariable Long id) {
+        abrigoService.inativar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
