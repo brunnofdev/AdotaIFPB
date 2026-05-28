@@ -21,13 +21,10 @@ public class Adocao {
     @Column(nullable = false, updatable = false)
     LocalDateTime dataAdocao;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
-
     @OneToOne
-    @JoinColumn(name = "animal_id", nullable = false, unique = true)
-    private Animal animal;
+    @JoinColumn(name = "solicitacao_id", nullable = false, unique = true)
+    private Solicitacao solicitacao;
+
 }
 
 

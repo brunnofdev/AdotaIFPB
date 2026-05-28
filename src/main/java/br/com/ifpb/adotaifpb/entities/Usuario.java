@@ -42,7 +42,7 @@ public class Usuario implements UserDetails {
     private Cargo cargo;
 
     @OneToMany(mappedBy = "usuario")
-    private List<Adocao> adocoes;
+    private List<Solicitacao> solicitacoes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
