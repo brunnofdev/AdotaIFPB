@@ -45,7 +45,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioResponseDTO> buscarTodos() {
-        return usuarioRepository.findAll()
+        return usuarioRepository.findAllByAtivoTrue()
                 .stream()
                 .map(UsuarioResponseDTO::new)
                 .toList(); }
@@ -67,5 +67,14 @@ public class UsuarioService {
 
        Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
        return new UsuarioResponseDTO(usuarioAtualizado);
+    }
+
+    @Transactional
+    public void removerUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
+
+        usuario.setAtivo(false);
+        usuarioRepository.save(usuario);
     }
 }
