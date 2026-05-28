@@ -15,8 +15,8 @@ public record AdocaoResponseDTO (
     public AdocaoResponseDTO(Adocao adocao) {
         this(
                 adocao.getId(),
-                adocao.getUsuario().getNome(),
-                adocao.getAnimal().getNome(),
+                adocao.getSolicitacao().getUsuario().getNome(),
+                adocao.getSolicitacao().getAnimal().getNome(),
                 adocao.getDataAdocao()
         );
     }
