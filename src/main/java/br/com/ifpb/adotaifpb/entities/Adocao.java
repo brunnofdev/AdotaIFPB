@@ -25,6 +25,9 @@ public class Adocao {
     @JoinColumn(name = "solicitacao_id", nullable = false, unique = true)
     private Solicitacao solicitacao;
 
+    @Column(nullable = false)
+    private boolean ativo = true;
+
 }
 
 

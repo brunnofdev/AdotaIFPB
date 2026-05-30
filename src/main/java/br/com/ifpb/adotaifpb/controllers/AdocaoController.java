@@ -21,12 +21,6 @@ public class AdocaoController {
         this.adocaoService = adocaoService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> registrarAdocao(@Valid @RequestBody AdocaoRequestDTO dto) {
-            AdocaoResponseDTO novaAdocao = adocaoService.registrarAdocao(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novaAdocao);
-    }
-
     @GetMapping
     public ResponseEntity<List<AdocaoResponseDTO>> listarAdocoes() {
         return ResponseEntity.ok(adocaoService.listarAdocoes());
@@ -38,4 +32,9 @@ public class AdocaoController {
             return ResponseEntity.ok(adocao);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> cancelarAdocao(@PathVariable Long id) {
+        adocaoService.cancelarAdocao(id);
+        return ResponseEntity.noContent().build();
+    }
 }
