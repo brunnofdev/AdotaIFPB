@@ -1,10 +1,24 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import './index.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        {/* Rota inicial padrão do sistema redireciona para o login */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        
+        {/* Declaração das telas do sistema */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        
+        {/* Fallback para URLs inexistentes ou inválidas */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>
+);
