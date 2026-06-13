@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import './index.css';
+import Animais from './pages/Animais';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -15,6 +15,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         {/* Declaração das telas do sistema */}
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/animais" element={<Animais />} />
         
         {/* Fallback para URLs inexistentes ou inválidas */}
         <Route path="*" element={<Navigate to="/login" replace />} />
