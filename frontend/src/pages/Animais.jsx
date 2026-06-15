@@ -7,25 +7,7 @@ function Animais() {
   const navigate = useNavigate();
 
   const handleGerarAnimal = async () => {
-    // Dados fictícios estruturados exatamente como o seu AnimalRequestDTO espera
-    const novoAnimalFake = {
-      nome: "Rex Integrado",
-      especieId: 1,  // Certifique-se de que o ID 1 existe no seu banco (ex: Cão)
-      abrigoId: 1,   // Certifique-se de que o ID 1 existe no seu banco
-      raca: "Vira-lata",
-      idadeEstimada: 2,
-      sexo: "M",
-      descricao: "Animal gerado automaticamente através do clique no botão do React.",
-      urlFoto: ""
-    };
-
-  try {
-      // Dispara o evento do Axios para salvar no PostgreSQL
-      const resultado = await cadastrarAnimal(novoAnimalFake);
-      alert(`Sucesso! Animal "${resultado.nome}" foi cadastrado no banco com o ID: ${resultado.id}`);
-    } catch (error) {
-      alert("Falha ao salvar o animal. Verifique se o Back-end está rodando e se os IDs de espécie/abrigo existem.");
-    }
+  navigate('/cadastro-animais'); // Redireciona para a página de cadastro de animais
   };
 
   return (

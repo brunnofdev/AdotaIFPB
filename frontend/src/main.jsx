@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Animais from './pages/Animais';
+import CadastroAnimais from './pages/CadastroAnimais'; // Importa a página de teste, mesmo que não esteja sendo usada diretamente aqui
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/animais" element={<Animais />} />
+        <Route path="/cadastro-animais" element={<CadastroAnimais />} />
         
         {/* Fallback para URLs inexistentes ou inválidas */}
         <Route path="*" element={<Navigate to="/login" replace />} />
