@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-//import { cadastrarAnimal } from '../services/animalService';
+import { cadastrarAnimal } from '../services/animalService';
 import '../styles/Home.css'; // Reaproveita os estilos da Navbar
 
 function Animais() {
@@ -52,7 +52,7 @@ function Animais() {
         
         <button 
           onClick={handleGerarAnimal} 
-          style={{ padding: '15px 30px', backgroundColor: '#004c00', color: '#white', border: 'none', borderRadius: '6px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', marginTop: '20px', color: '#fff' }}
+          style={{ padding: '15px 30px', backgroundColor: '#004c00', color: '#white', border: 'none', borderRadius: '6px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', marginTop: '20px' }}
         >
           GERAR ANIMAL
         </button>
