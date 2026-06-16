@@ -11,21 +11,21 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-
-public class SecurityConfig {
+public class SecurityConfig { // adaptqado para testes. MUDAR!!!!!
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                // Mantém o CORS ativado para o React não ser bloqueado pelo navegador
                 .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/animais").permitAll()
-                        .anyRequest().authenticated()
-                )
 
-                .httpBasic(Customizer.withDefaults())
+                // Desativa a proteção CSRF (necessário para testes de POST/PUT/DELETE)
+                .csrf(csrf -> csrf.disable())
+
+                // Permite TODAS as requisições em qualquer endpoint
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()
+                )
                 .build();
     }
 }
