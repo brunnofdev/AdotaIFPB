@@ -33,6 +33,10 @@ function Animais() {
     navigate('/cadastro-animais');
   };
 
+  const handleNovoAbrigo = () => {
+    navigate('/cadastro-abrigo');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('usuario_autenticado');
     navigate('/login');
@@ -60,12 +64,20 @@ function Animais() {
           Acompanhe aqui os animais cadastrados no sistema do IFPB.
         </p>
         
-        <button 
-          onClick={handleNovoAnimal}
-          className="btn-novo-animal"
-        >
-          NOVO ANIMAL
-        </button>
+        <div className="botoes-container">
+          <button 
+            onClick={handleNovoAnimal}
+            className="btn-novo-animal"
+          >
+            NOVO ANIMAL
+          </button>
+          <button 
+            onClick={handleNovoAbrigo}
+            className="btn-novo-animal"
+          >
+            NOVO ABRIGO
+          </button>
+        </div>
 
         {/* Seção de Listagem (Tabela) */}
         <div className="animais-listagem-section">

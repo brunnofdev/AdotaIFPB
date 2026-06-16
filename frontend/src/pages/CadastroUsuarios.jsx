@@ -16,6 +16,10 @@ const CadastroUsuarios = () => {
     telefone: ''
   });
 
+  const handleVoltar = () => {
+    navigate('/animais');
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -113,6 +117,13 @@ const CadastroUsuarios = () => {
 
         {/* Botão SEND final para submeter o form */}
         <button type="submit" className="btn-send">SEND</button>
+                           <button
+              type="button"
+              className="btn-voltar"
+              onClick={handleVoltar}
+            >
+              VOLTAR
+            </button>
       </form>
     </div>
   );

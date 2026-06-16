@@ -1,0 +1,98 @@
+div.cadastro-abrigo-page {
+  background-color: #004c00;
+}
+
+.cadastro-abrigo-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Título do formulário */
+.cadastro-abrigo-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+form {
+  width: 100%;
+}
+
+input {
+  width: 380px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+p{
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: bold;
+    padding-right: 5px;
+}
+
+div.cadastro-abrigo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    max-width: 400px;
+    margin-top: auto;
+}
+
+div.cadastro-abrigo-botoes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button.btn-cadastrar {
+    padding: 10px 20px;
+    background-color: #004c00;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+button.btn-cadastrar:hover {
+    background-color: #003300;
+}
+
+button.btn-voltar {
+    padding: 10px 20px;
+    background-color: #999;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-voltar:hover {
+    background-color: #666;
+}

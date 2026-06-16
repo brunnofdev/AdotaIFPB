@@ -6,6 +6,10 @@ import '../styles/CadastroAnimais.css'; // Estilos específicos para o cadastro 
 
 const CadastroAnimais = () => {
   const navigate = useNavigate();
+
+  const handleVoltar = () => {
+    navigate('/animais');
+  };
   
   // O estado inicial deve refletir o corpo da requisição esperado pelo backend
   const [formData, setFormData] = useState({
@@ -89,6 +93,13 @@ const CadastroAnimais = () => {
 
         {/* Botão SEND final para submeter o form */}
         <button type="submit" className="btn-send">SEND</button>
+                    <button
+              type="button"
+              className="btn-voltar"
+              onClick={handleVoltar}
+            >
+              VOLTAR
+            </button>
       </form>
     </div>
   );
