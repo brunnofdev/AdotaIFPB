@@ -10,3 +10,13 @@ export const cadastrarAnimal = async (dadosAnimal) => {
     throw error;
   }
 };
+
+export const listarAnimais = async () => {
+  try {
+    const response = await api.get('/animais');
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar animais:", error);
+    throw error;
+  }
+};
