@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Animais from './pages/Animais';
 import CadastroAnimais from './pages/CadastroAnimais'; // Importa a página de teste, mesmo que não esteja sendo usada diretamente aqui
+import Usuarios from './pages/Usuarios';
+import CadastroUsuarios from './pages/CadastroUsuarios';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -18,6 +20,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/home" element={<Home />} />
         <Route path="/animais" element={<Animais />} />
         <Route path="/cadastro-animais" element={<CadastroAnimais />} />
+        <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/cadastro-usuarios" element={<CadastroUsuarios />} />
         
         {/* Fallback para URLs inexistentes ou inválidas */}
         <Route path="*" element={<Navigate to="/login" replace />} />

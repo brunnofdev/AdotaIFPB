@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarAnimal } from '../services/animalService';
 import '../styles/Home.css'; // ou o CSS de sua preferência para a tela
+import '../styles/CadastroAnimais.css'; // Estilos específicos para o cadastro de animais
 
 const CadastroAnimais = () => {
   const navigate = useNavigate();
@@ -35,6 +36,15 @@ const CadastroAnimais = () => {
 
   return (
     <div className="cadastro-container">
+      <nav className="navbar">
+        <h3 className="navbar-brand">AdotaIFPB</h3>
+        <div className="navbar-links">
+          <button onClick={() => { localStorage.removeItem('usuario_autenticado'); navigate('/login'); }} className="btn-logout">
+            Sair
+          </button>
+        </div>
+       
+      </nav>
       <h2>Cadastrar Novo Animal</h2>
       
       <form onSubmit={handleSubmit} className="animal-form">
