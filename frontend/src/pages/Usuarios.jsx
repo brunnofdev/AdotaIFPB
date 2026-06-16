@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { listarUsuarios } from '../services/userService';
 import '../styles/Home.css';
-//  fazer um Usuarios.css separado dps?
+import '../styles/Usuarios.css';
 
 function Usuarios() {
   const navigate = useNavigate();
@@ -52,51 +52,49 @@ function Usuarios() {
       </nav>
 
       {/* Conteúdo Principal */}
-      <div className="content-wrapper" style={{ textAlign: 'center' }}>
+      <div className="content-wrapper usuarios-content">
         <h1>Gerenciamento de Usuários</h1>
         <p className="main-description">
           Gerenciar usuários cadastrados no sistema.
         </p>
         
         <button 
-          onClick={handleGerarUsuario} 
-          // CORREÇÃO AQUI: color: 'white' em vez de '#white'
-          style={{ padding: '15px 30px', backgroundColor: '#004c00', color: 'white', border: 'none', borderRadius: '6px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', marginTop: '20px' }}
+          onClick={handleGerarUsuario}
+          className="btn-novo-usuario"
         >
           NOVO USUÁRIO
         </button>
 
         {/* Seção de Listagem */}
-        <div style={{ marginTop: '40px', textAlign: 'left' }}>
+        <div className="usuarios-listagem-section">
           <h2>Lista de Usuários</h2>
           
           {carregando && <p>Carregando usuários...</p>}
-          {erro && <p style={{ color: 'red' }}>{erro}</p>}
+          {erro && <p className="usuarios-erro">{erro}</p>}
           {!carregando && !erro && usuarios.length === 0 && <p>Nenhum usuário cadastrado.</p>}
 
           {!carregando && !erro && usuarios.length > 0 && (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+            <div className="usuarios-table-wrapper">
+              <table className="usuarios-table">
                 <thead>
-                  <tr style={{ backgroundColor: '#f0f0f0', borderBottom: '2px solid #004c00' }}>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>ID</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Nome</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Email</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Telefone</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Vínculo</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Cargo</th>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Vínculo</th>
+                    <th>Cargo</th>
                   </tr>
                 </thead>
                 <tbody>
                   {usuarios.map((usuario) => (
-                    <tr key={usuario.id} style={{ borderBottom: '1px solid #ddd' }}>
-                      <td style={{ padding: '10px' }}>{usuario.id}</td>
-                      <td style={{ padding: '10px' }}>{usuario.nome}</td>
-                      <td style={{ padding: '10px' }}>{usuario.email}</td>
-                      <td style={{ padding: '10px' }}>{usuario.telefone || '-'}</td>
-                      <td style={{ padding: '10px' }}>{usuario.vinculoIFPB}</td>
-                      {/* BOAS PRÁTICAS: Uso do Optional Chaining (?.) */}
-                      <td style={{ padding: '10px' }}>{usuario.cargo?.nome || '-'}</td>
+                    <tr key={usuario.id}>
+                      <td>{usuario.id}</td>
+                      <td>{usuario.nome}</td>
+                      <td>{usuario.email}</td>
+                      <td>{usuario.telefone || '-'}</td>
+                      <td>{usuario.vinculoIFPB}</td>
+                      <td>{usuario.cargo?.nome || '-'}</td>
                     </tr>
                   ))}
                 </tbody>

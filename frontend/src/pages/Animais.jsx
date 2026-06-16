@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { listarAnimais } from '../services/animalService';
 import '../styles/Home.css'; 
+import '../styles/Animais.css';
 
 function Animais() {
   const navigate = useNavigate();
@@ -53,62 +54,52 @@ function Animais() {
       </nav>
 
       {/* Conteúdo Principal */}
-      <div className="content-wrapper" style={{ textAlign: 'center' }}>
+      <div className="content-wrapper animais-content">
         <h1>Vitrine de Animais</h1>
         <p className="main-description">
           Acompanhe aqui os animais cadastrados no sistema do IFPB.
         </p>
         
         <button 
-          onClick={handleNovoAnimal} 
-          style={{ padding: '15px 30px', backgroundColor: '#004c00', color: 'white', border: 'none', borderRadius: '6px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer', marginTop: '20px' }}
+          onClick={handleNovoAnimal}
+          className="btn-novo-animal"
         >
           NOVO ANIMAL
         </button>
 
         {/* Seção de Listagem (Tabela) */}
-        <div style={{ marginTop: '40px', textAlign: 'left' }}>
+        <div className="animais-listagem-section">
           <h2>Lista de Animais</h2>
           
-          {/* Tratamento de Estados da Tela */}
           {carregando && <p>Procurando animais nos abrigos...</p>}
-          {erro && <p style={{ color: 'red' }}>{erro}</p>}
+          {erro && <p className="animais-erro">{erro}</p>}
           {!carregando && !erro && animais.length === 0 && <p>Nenhum animal cadastrado no momento.</p>}
 
           {!carregando && !erro && animais.length > 0 && (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+            <div className="animais-table-wrapper">
+              <table className="animais-table">
                 <thead>
-                  <tr style={{ backgroundColor: '#f0f0f0', borderBottom: '2px solid #004c00' }}>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Nome</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Espécie</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Raça</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Idade</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Sexo</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Abrigo</th>
-                    <th style={{ padding: '10px', textAlign: 'left' }}>Status</th>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Espécie</th>
+                    <th>Raça</th>
+                    <th>Idade</th>
+                    <th>Sexo</th>
+                    <th>Abrigo</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {animais.map((animal) => (
-                    <tr key={animal.id} style={{ borderBottom: '1px solid #ddd' }}>
-                      <td style={{ padding: '10px', fontWeight: 'bold' }}>{animal.nome}</td>
-                      {/* Usando Optional Chaining caso a Espécie ou Abrigo venham nulos */}
-                      <td style={{ padding: '10px' }}>{animal.especie?.nome || '-'}</td>
-                      <td style={{ padding: '10px' }}>{animal.raca || 'Sem raça definida'}</td>
-                      <td style={{ padding: '10px' }}>{animal.idadeEstimada ? `${animal.idadeEstimada} anos` : '-'}</td>
-                      <td style={{ padding: '10px' }}>{animal.sexo === 'M' ? 'Macho' : 'Fêmea'}</td>
-                      <td style={{ padding: '10px' }}>{animal.abrigo?.nome || '-'}</td>
-                      <td style={{ padding: '10px' }}>
-                        {/* Dá uma cor diferente se o status for DISPONIVEL ou ADOTADO */}
-                        <span style={{
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          backgroundColor: animal.status === 'DISPONIVEL' ? '#e6ffe6' : '#ffe6e6',
-                          color: animal.status === 'DISPONIVEL' ? '#004c00' : '#cc0000',
-                          fontWeight: 'bold',
-                          fontSize: '12px'
-                        }}>
+                    <tr key={animal.id}>
+                      <td className="animais-nome">{animal.nome}</td>
+                      <td>{animal.especie?.nome || '-'}</td>
+                      <td>{animal.raca || 'Sem raça definida'}</td>
+                      <td>{animal.idadeEstimada ? `${animal.idadeEstimada} anos` : '-'}</td>
+                      <td>{animal.sexo === 'M' ? 'Macho' : 'Fêmea'}</td>
+                      <td>{animal.abrigo?.nome || '-'}</td>
+                      <td>
+                        <span className={`status-badge ${animal.status === 'DISPONIVEL' ? 'disponivel' : 'adotado'}`}>
                           {animal.status}
                         </span>
                       </td>

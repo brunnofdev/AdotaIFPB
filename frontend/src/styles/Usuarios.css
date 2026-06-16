@@ -1,0 +1,74 @@
+/* Botão para novo usuário */
+.btn-novo-usuario {
+  padding: 15px 30px;
+  background-color: #004c00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-novo-usuario:hover {
+  background-color: #003300;
+}
+
+/* Container principal de conteúdo */
+.usuarios-content {
+  text-align: center;
+}
+
+/* Seção de listagem */
+.usuarios-listagem-section {
+  margin-top: 40px;
+  text-align: left;
+}
+
+/* Mensagem de erro */
+.usuarios-erro {
+  color: red;
+}
+
+/* Wrapper para a tabela com scroll horizontal */
+.usuarios-table-wrapper {
+  overflow-x: auto;
+}
+
+/* Estilização da tabela */
+.usuarios-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* Cabeçalho da tabela */
+.usuarios-table thead tr {
+  background-color: #f0f0f0;
+  border-bottom: 2px solid #004c00;
+}
+
+/* Células do cabeçalho */
+.usuarios-table th {
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+/* Células do corpo da tabela */
+.usuarios-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Linhas da tabela */
+.usuarios-table tbody tr {
+  border-bottom: 1px solid #ddd;
+}
+
+/* Hover nas linhas da tabela */
+.usuarios-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
