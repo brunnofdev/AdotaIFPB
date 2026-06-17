@@ -61,7 +61,7 @@ function CadastroAbrigo() {
   };
 
   return (
-    <div className="home-container cadastro-abrigo-page">
+    <div className="home-container form-container">
       <div className="cadastro-abrigo-container">
         <h1>Cadastro de Abrigo</h1>
         <p className="cadastro-abrigo-descricao">

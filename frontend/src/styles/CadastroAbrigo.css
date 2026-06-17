@@ -1,14 +1,24 @@
-div.cadastro-abrigo-page {
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+* {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+div.form-container {
   background-color: #004c00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .cadastro-abrigo-container {
-  max-width: 600px;
-  margin: 40px auto;
+  width: 400px;
   padding: 30px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: auto;
 }
 
 /* Título do formulário */
@@ -58,7 +68,6 @@ div.cadastro-abrigo-container {
     justify-content: center;
     gap: 15px;
     max-width: 400px;
-    margin-top: auto;
 }
 
 div.cadastro-abrigo-botoes {

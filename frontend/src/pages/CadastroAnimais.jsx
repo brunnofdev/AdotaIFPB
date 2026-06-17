@@ -39,42 +39,34 @@ const CadastroAnimais = () => {
   };
 
   return (
-    <div className="cadastro-container">
-      <nav className="navbar">
-        <h3 className="navbar-brand">AdotaIFPB</h3>
-        <div className="navbar-links">
-          <button onClick={() => { localStorage.removeItem('usuario_autenticado'); navigate('/login'); }} className="btn-logout">
-            Sair
-          </button>
-        </div>
-       
-      </nav>
+    <div className="form-container">
+      <div className="cadastro-container">
       <h2>Cadastrar Novo Animal</h2>
       
       <form onSubmit={handleSubmit} className="animal-form">
         <div className="form-group">
-          <label htmlFor="nome">Nome:</label>
-          <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleChange} required />
+          <label htmlFor="nome">Nome *</label>
+          <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleChange} placeholder="Ex: Bolinha" required />
         </div>
 
         <div className="form-group">
-          <label htmlFor="especieId">Espécie ID:</label>
-          <input type="number" id="especieId" name="especieId" value={formData.especieId} onChange={handleChange} required />
+          <label htmlFor="especieId">Espécie ID *</label>
+          <input type="number" id="especieId" name="especieId" value={formData.especieId} onChange={handleChange} placeholder="Ex: 1" required />
         </div>
 
         <div className="form-group">
-          <label htmlFor="abrigoId">Abrigo ID:</label>
-          <input type="number" id="abrigoId" name="abrigoId" value={formData.abrigoId} onChange={handleChange} required />
+          <label htmlFor="abrigoId">Abrigo ID *</label>
+          <input type="number" id="abrigoId" name="abrigoId" value={formData.abrigoId} onChange={handleChange} placeholder="Ex: 1" required />
         </div>
 
         <div className="form-group">
-          <label htmlFor="raca">Raça:</label>
-          <input type="text" id="raca" name="raca" value={formData.raca} onChange={handleChange} required />
+          <label htmlFor="raca">Raça *</label>
+          <input type="text" id="raca" name="raca" value={formData.raca} onChange={handleChange} placeholder="Ex: Labrador" required />
         </div>
 
         <div className="form-group">
-          <label htmlFor="idade">Idade:</label>
-          <input type="number" id="idade" name="idade" value={formData.idade} onChange={handleChange} required />
+          <label htmlFor="idade">Idade *</label>
+          <input type="number" id="idade" name="idade" value={formData.idade} onChange={handleChange} placeholder="Ex: 3" required />
         </div>
 
         <div className="form-group">
@@ -87,12 +79,13 @@ const CadastroAnimais = () => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="descricao">Descrição:</label>
-          <textarea id="descricao" name="descricao" value={formData.descricao} onChange={handleChange} required />
+          <label htmlFor="descricao">Descrição *</label>
+          <textarea id="descricao" name="descricao" value={formData.descricao} onChange={handleChange} placeholder="Ex: Animal dócil e amigável, vacinado e vermifugado" required />
         </div>
 
         {/* Botão SEND final para submeter o form */}
-        <button type="submit" className="btn-send">SEND</button>
+        <div className="button-section">
+        <button type="submit" className="btn-send">CADASTRAR</button>
                     <button
               type="button"
               className="btn-voltar"
@@ -100,7 +93,9 @@ const CadastroAnimais = () => {
             >
               VOLTAR
             </button>
+        </div>
       </form>
+      </div>
     </div>
   );
 };
