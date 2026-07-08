@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/abrigos")
+@RequestMapping("/api/abrigos")
 public class AbrigoController {
 
     private final AbrigoService abrigoService;
