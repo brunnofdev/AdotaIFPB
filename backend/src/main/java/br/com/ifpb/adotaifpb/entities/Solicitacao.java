@@ -29,4 +29,7 @@ public class Solicitacao {
 
     @CreationTimestamp
     private LocalDateTime dataSolicitacao;
+
+    @Column(length = 1000)
+    private String observacaoUsuario;
 }

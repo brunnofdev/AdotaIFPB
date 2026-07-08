@@ -5,7 +5,7 @@ import br.com.ifpb.adotaifpb.repository.CargoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class DataLoader implements CommandLineRunner {
 
     private final CargoRepository cargoRepository;

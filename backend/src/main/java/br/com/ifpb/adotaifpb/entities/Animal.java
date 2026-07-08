@@ -1,55 +1,95 @@
 package br.com.ifpb.adotaifpb.entities;
 
-import br.com.ifpb.adotaifpb.utils.StatusEnum;
+import br.com.ifpb.adotaifpb.utils.EspecieEnum;
+import br.com.ifpb.adotaifpb.utils.SexoAnimalEnum;
+import br.com.ifpb.adotaifpb.utils.StatusAnimalEnum;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
 @Table(name = "tb_animal")
+@SQLDelete(sql = "UPDATE tb_animal SET ativo = false WHERE id = ?")
 public class Animal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "especie_id", nullable = false)
-    private Especie especie;
+    @Column(name = "especie", nullable = false)
+    private EspecieEnum especie;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "abrigo_id", nullable = false)
     private Abrigo abrigo;
 
-    @Column(nullable = true)
+    @Column(length = 100)
     private String raca;
 
-    @Column(name = "idade_estimada", nullable = true)
-    private Integer idadeEstimada;
+    @Column(name = "nascimento_estimado")
+    private YearMonth nascimentoEstimado;
 
-    @Column(nullable = true)
-    private Character sexo;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SexoAnimalEnum sexoAnimal;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
-    @Column(name = "url_foto", nullable = true)
+    @Column
+    private Double peso;
+
+    private boolean castrado;
+
+    @Column(name = "url_foto") // foto principal
     private String urlFoto;
 
-    // CascadeType.ALL - se o animal for removido, as suas vacinas também ficam inativas.
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Vacinacao> historicoVacinacoes;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<FotoAnimal> fotos = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
+    @OneToMany(mappedBy = "animal")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Vacinacao> historicoVacinacoes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "animal")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Solicitacao> solicitacoes = new ArrayList<>();
+
     @Column(nullable = false)
-    private StatusEnum status;
+    @Enumerated(EnumType.STRING)
+    private StatusAnimalEnum status;
+
+    @CreationTimestamp
+    private LocalDateTime criadoEm;
 
     @Column(nullable = false)
     private boolean ativo = true;
+
+    public void adicionarFoto(FotoAnimal foto) {
+        this.fotos.add(foto);
+        foto.setAnimal(this);
+    }
+
+    public void removerFoto(FotoAnimal foto) {
+        this.fotos.remove(foto);
+        foto.setAnimal(null);
+    }
 
 }

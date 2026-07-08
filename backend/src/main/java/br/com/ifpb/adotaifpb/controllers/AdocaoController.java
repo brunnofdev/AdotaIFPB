@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/adocoes")
+@RequestMapping("/api/adocoes")
 public class AdocaoController {
 
     private final AdocaoService adocaoService;

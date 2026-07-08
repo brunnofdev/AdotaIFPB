@@ -1,14 +1,12 @@
 package br.com.ifpb.adotaifpb.services;
 
-import br.com.ifpb.adotaifpb.dtos.AdocaoRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.AdocaoResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Adocao;
 import br.com.ifpb.adotaifpb.entities.Animal;
-import br.com.ifpb.adotaifpb.entities.Usuario;
 import br.com.ifpb.adotaifpb.repository.AdocaoRepository;
 import br.com.ifpb.adotaifpb.repository.AnimalRepository;
 import br.com.ifpb.adotaifpb.repository.UsuarioRepository;
-import br.com.ifpb.adotaifpb.utils.StatusEnum;
+import br.com.ifpb.adotaifpb.utils.StatusAnimalEnum;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +52,7 @@ public class AdocaoService {
         adocaoRepository.save(adocao);
 
         Animal animal = adocao.getSolicitacao().getAnimal();
-        animal.setStatus(StatusEnum.DISPONIVEL);
+        animal.setStatus(StatusAnimalEnum.DISPONIVEL);
         animalRepository.save(animal);
     }
 }

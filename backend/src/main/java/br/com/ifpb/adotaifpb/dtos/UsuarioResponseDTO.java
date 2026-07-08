@@ -9,11 +9,12 @@ public record UsuarioResponseDTO(
         String email,
         VinculoEnum vinculoIFPB,
         String telefone,
-        CargoResponseDTO cargo
+        CargoResponseDTO cargo,
+        Boolean ativo
 ) {
     public UsuarioResponseDTO(Usuario usuario) {
         this(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getVinculoIFPB(),
-                usuario.getTelefone(), new CargoResponseDTO(usuario.getCargo())
+                usuario.getTelefone(), new CargoResponseDTO(usuario.getCargo()), usuario.isAtivo()
         );
     }
 }

@@ -5,9 +5,10 @@ import br.com.ifpb.adotaifpb.entities.Abrigo;
 public record AbrigoResponseDTO(
         Long id,
         String nome,
-        String localizacao
+        String localizacao,
+        Boolean ativo
 ) {
     public AbrigoResponseDTO(Abrigo abrigo) {
-        this(abrigo.getId(), abrigo.getNome(), abrigo.getLocalizacao());
+        this(abrigo.getId(), abrigo.getNome(), abrigo.getLocalizacao(), abrigo.isAtivo());
     }
 }

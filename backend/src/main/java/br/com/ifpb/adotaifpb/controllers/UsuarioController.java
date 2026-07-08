@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -23,8 +23,8 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(@Valid @RequestBody UsuarioCreateRequestDTO usuariodto) {
-            UsuarioResponseDTO novoUsuario = usuarioService.cadastrarUsuario(usuariodto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
+        UsuarioResponseDTO novoUsuario = usuarioService.cadastrarUsuario(usuariodto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novoUsuario);
     }
 
     @GetMapping
@@ -34,13 +34,13 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable Long id) {
-            return ResponseEntity.ok(usuarioService.buscarPorId(id));
+        return ResponseEntity.ok(usuarioService.buscarPorId(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO dto) {
-            UsuarioResponseDTO usuarioAtualizado = usuarioService.atualizarUsuario(id, dto);
-            return ResponseEntity.ok(usuarioAtualizado);
+        UsuarioResponseDTO usuarioAtualizado = usuarioService.atualizarUsuario(id, dto);
+        return ResponseEntity.ok(usuarioAtualizado);
     }
 
     @DeleteMapping("/{id}")

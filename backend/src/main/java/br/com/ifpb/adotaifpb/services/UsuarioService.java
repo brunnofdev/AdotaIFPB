@@ -8,7 +8,7 @@ import br.com.ifpb.adotaifpb.entities.Usuario;
 import br.com.ifpb.adotaifpb.repository.CargoRepository;
 import br.com.ifpb.adotaifpb.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,10 +19,12 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final CargoRepository cargoRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository, CargoRepository cargoRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, CargoRepository cargoRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.cargoRepository = cargoRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -33,12 +35,18 @@ public class UsuarioService {
         }
 
         Usuario novoUsuario = new Usuario();
-        BeanUtils.copyProperties(usuarioDTO, novoUsuario);
-        novoUsuario.setSenha("{noop}" + usuarioDTO.senha());
+        novoUsuario.setNome(usuarioDTO.nome());
+        novoUsuario.setEmail(usuarioDTO.email());
 
-        Cargo cargoPadrao = cargoRepository.findByNome("CARGO_USUARIO")
-                .orElseThrow(() -> new IllegalArgumentException("Cargo CARGO_USUARIO não encontrado no banco de dados."));
+        novoUsuario.setSenha(passwordEncoder.encode(usuarioDTO.senha()));
+
+        novoUsuario.setTelefone(usuarioDTO.telefone());
+        novoUsuario.setVinculoIFPB(usuarioDTO.vinculoIFPB());
+
+        Cargo cargoPadrao = cargoRepository.findById(1L)
+                .orElseThrow(() -> new IllegalArgumentException("Cargo padrão não encontrado no banco de dados."));
         novoUsuario.setCargo(cargoPadrao);
+
         usuarioRepository.save(novoUsuario);
 
         return new UsuarioResponseDTO(novoUsuario);
@@ -48,7 +56,8 @@ public class UsuarioService {
         return usuarioRepository.findAllByAtivoTrue()
                 .stream()
                 .map(UsuarioResponseDTO::new)
-                .toList(); }
+                .toList();
+    }
 
     public UsuarioResponseDTO buscarPorId(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -58,15 +67,15 @@ public class UsuarioService {
 
     @Transactional
     public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioRequestDTO dto) {
-       Usuario usuarioExistente = usuarioRepository.findById(id)
-               .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-       usuarioExistente.setNome(dto.nome());
-       usuarioExistente.setTelefone(dto.telefone());
-       usuarioExistente.setVinculoIFPB(dto.vinculoIFPB());
+        usuarioExistente.setNome(dto.nome());
+        usuarioExistente.setTelefone(dto.telefone());
+        usuarioExistente.setVinculoIFPB(dto.vinculoIFPB());
 
-       Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
-       return new UsuarioResponseDTO(usuarioAtualizado);
+        Usuario usuarioAtualizado = usuarioRepository.save(usuarioExistente);
+        return new UsuarioResponseDTO(usuarioAtualizado);
     }
 
     @Transactional
@@ -74,7 +83,6 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
 
-        usuario.setAtivo(false);
-        usuarioRepository.save(usuario);
+        usuarioRepository.delete(usuario);
     }
 }

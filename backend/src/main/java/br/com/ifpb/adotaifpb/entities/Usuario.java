@@ -3,6 +3,8 @@ package br.com.ifpb.adotaifpb.entities;
 import br.com.ifpb.adotaifpb.utils.VinculoEnum;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "tb_usuario")
+@SQLDelete(sql = "UPDATE tb_usuario SET ativo = false WHERE id = ?")
 public class Usuario implements UserDetails {
 
     @Id
@@ -27,7 +30,7 @@ public class Usuario implements UserDetails {
     @Column(nullable = false)
     private String senha;
 
-    @Column(nullable = true, length = 20)
+    @Column(length = 20)
     String telefone;
 
     @Column(nullable = false)

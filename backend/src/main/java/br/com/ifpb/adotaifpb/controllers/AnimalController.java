@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/animais")
+@RequestMapping("/api/animais")
 public class AnimalController {
 
     private final AnimalService animalService;
@@ -43,7 +43,6 @@ public class AnimalController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         animalService.removerAnimal(id);
-
         return ResponseEntity.noContent().build();
     }
 }

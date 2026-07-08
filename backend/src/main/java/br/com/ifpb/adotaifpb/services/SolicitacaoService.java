@@ -10,7 +10,7 @@ import br.com.ifpb.adotaifpb.repository.AdocaoRepository;
 import br.com.ifpb.adotaifpb.repository.AnimalRepository;
 import br.com.ifpb.adotaifpb.repository.SolicitacaoRepository;
 import br.com.ifpb.adotaifpb.repository.UsuarioRepository;
-import br.com.ifpb.adotaifpb.utils.StatusEnum;
+import br.com.ifpb.adotaifpb.utils.StatusAnimalEnum;
 import br.com.ifpb.adotaifpb.utils.StatusSolicitacaoEnum;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ public class SolicitacaoService {
         Animal animal = animalRepository.findById(dto.animalId())
                 .orElseThrow(() -> new IllegalArgumentException("Animal não encontrado."));
 
-        if (animal.getStatus() != StatusEnum.DISPONIVEL) {
+        if (animal.getStatus() != StatusAnimalEnum.DISPONIVEL) {
             throw new IllegalArgumentException("Este animal já não está disponível para adoção.");
         }
 
@@ -63,14 +63,14 @@ public class SolicitacaoService {
         }
 
         Animal animal = solicitacaoAprovada.getAnimal();
-        if (animal.getStatus() != StatusEnum.DISPONIVEL) {
+        if (animal.getStatus() != StatusAnimalEnum.DISPONIVEL) {
             throw new IllegalArgumentException("O animal já foi adotado por outra pessoa.");
         }
 
         solicitacaoAprovada.setStatus(StatusSolicitacaoEnum.APROVADA);
         solicitacaoRepository.save(solicitacaoAprovada);
 
-        animal.setStatus(StatusEnum.ADOTADO);
+        animal.setStatus(StatusAnimalEnum.ADOTADO);
         animalRepository.save(animal);
 
         List<Solicitacao> outrasSolicitacoes = solicitacaoRepository
