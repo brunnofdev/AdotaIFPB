@@ -10,13 +10,32 @@ export const listarSolicitacoes = async () => {
   }
 };
 
-// POST para o clientside
+export const buscarSolicitacaoPorId = async (id) => {
+  try {
+    const response = await api.get(`/solicitacoes/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar solicitação:", error);
+    throw error;
+  }
+};
+
 export const cadastrarSolicitacao = async (dadosSolicitacao) => {
   try {
     const response = await api.post('/solicitacoes', dadosSolicitacao);
     return response.data;
   } catch (error) {
     console.error("Erro ao cadastrar solicitação:", error);
+    throw error;
+  }
+};
+
+export const atualizarStatusSolicitacao = async (id, status) => {
+  try {
+    const response = await api.post(`/solicitacoes/${id}/aprovar`, { status });
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar status da solicitação:", error);
     throw error;
   }
 };
