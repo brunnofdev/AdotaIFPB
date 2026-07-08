@@ -4,7 +4,7 @@ import api from './api';
 export const cadastrarUsuario = async (dadosUsuario) => {
   try {
     const response = await api.post('/usuarios', dadosUsuario);
-    return response.data; // Retorna o UsuarioResponseDTO enviado pelo servidor
+    return response.data; // Retorna o UsuarioResponseDTO
   } catch (error) {
     console.error("Erro ao integrar com a API de usuários:", error);
     throw error;
