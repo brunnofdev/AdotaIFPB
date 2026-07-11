@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarAbrigo } from '../services/abrigoService';
 import '../styles/Home.css';
