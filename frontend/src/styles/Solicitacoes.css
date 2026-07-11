@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+.solicitacoes-page {
+  background-color: #004c00;
+  display: flex;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.solicitacoes-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.solicitacoes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 15px;
+}
+
+.solicitacoes-header h2 {
+  color: #004c00;
+  margin: 0;
+  font-weight: 800;
+}
+
+.btn-voltar-outline {
+  padding: 8px 16px;
+  background-color: transparent;
+  color: #004c00;
+  border: 2px solid #004c00;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-voltar-outline:hover {
+  background-color: #e6f0e6;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.solicitacao-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.solicitacao-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-info h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.card-info h3 span {
+  color: #004c00;
+  font-weight: 800;
+}
+
+.card-info p {
+  margin: 8px 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.status-badge.pendente { background-color: #fff3cd; color: #856404; }
+.status-badge.aprovada { background-color: #d4edda; color: #155724; }
+.status-badge.rejeitada { background-color: #f8d7da; color: #721c24; }
+
+.observacao-box {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-left: 3px solid #ccc;
+  font-size: 0.85rem;
+  color: #444;
+  border-radius: 4px;
+}
+
+.card-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px; /* Modificado para separar os botões lado a lado */
+}
+
+.btn-aprovar {
+  flex: 1; /* Faz os botões dividirem o espaço igualmente */
+  padding: 10px;
+  background-color: #004c00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-aprovar:hover {
+  background-color: #003300;
+}
+
+/* Novo botão secundário */
+.btn-gerar-adocao {
+  flex: 1; /* Faz os botões dividirem o espaço igualmente */
+  padding: 10px;
+  background-color: transparent;
+  color: #004c00;
+  border: 2px solid #004c00;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-gerar-adocao:hover {
+  background-color: #e6f0e6;
+}
+
+.loading-text, .error-text, .empty-text {
+  text-align: center;
+  font-weight: 500;
+  padding: 20px;
+}
+.error-text { color: #d9534f; }

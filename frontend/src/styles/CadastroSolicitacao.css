@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+* {
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+div.cadastro-solicitacao-page {
+  background-color: #004c00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.cadastro-solicitacao-container {
+  width: 100%;
+  max-width: 500px; /* Um pouco mais largo para acomodar os IDs lado a lado */
+  padding: 40px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  margin: auto;
+  box-sizing: border-box;
+}
+
+.cadastro-solicitacao-container h1 {
+  text-align: center;
+  color: #004c00;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.cadastro-solicitacao-descricao {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.half-width {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+label {
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box; 
+  background-color: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input:focus, textarea:focus {
+  border-color: #004c00;
+  outline: none;
+}
+
+div.cadastro-solicitacao-botoes {
+  display: flex;
+  flex-direction: column; 
+  gap: 12px;
+  margin-top: 25px;
+}
+
+button.btn-cadastrar {
+  width: 100%;
+  padding: 12px;
+  background-color: #004c00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-cadastrar:hover:not(:disabled) {
+  background-color: #003300;
+}
+
+button.btn-cadastrar:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+button.btn-voltar {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #004c00;
+  border: 2px solid #004c00;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button.btn-voltar:hover:not(:disabled) {
+  background-color: #e6f0e6;
+}
+
+button.btn-voltar:disabled {
+  border-color: #ccc;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.cadastro-solicitacao-erro {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid #f5c6cb;
+  font-weight: bold;
+}
