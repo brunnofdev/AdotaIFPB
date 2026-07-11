@@ -33,10 +33,6 @@ function CadastroAbrigo() {
       const dados = {
         nome: formData.nome,
         localizacao: formData.localizacao,
-        telefone: formData.telefone,
-        email: formData.email,
-        capacidadeMaxima: parseInt(formData.capacidadeMaxima, 10) || 0,
-        descricao: formData.descricao
       };
 
       await cadastrarAbrigo(dados);

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Login.css'; // Importação do arquivo de estilo separado
+import '../styles/Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -10,6 +10,7 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
+    // Lógica temporária
     if (email.trim() !== '' && senha.length >= 6) {
       localStorage.setItem('usuario_autenticado', 'true');
       navigate('/home');
@@ -20,10 +21,8 @@ function Login() {
 
   return (
     <div className="login-container">
-      {/* Nome do sistema posicionado FORA e ACIMA do quadrado branco */}
       <h1 className="login-system-title">Adota IFPB</h1>
 
-      {/* Quadrado branco com os campos de login */}
       <div className="login-card-square">        
         <form onSubmit={handleLogin}>
           <div className="form-group">
@@ -50,9 +49,18 @@ function Login() {
             />
           </div>
           
-          <button type="submit" className="btn-submit">
-            Entrar
-          </button>
+          <div className="button-group">
+            <button type="submit" className="btn-submit">
+              ENTRAR
+            </button>
+            <button 
+              type="button" 
+              className="btn-secondary" 
+              onClick={() => navigate('/cadastro-usuarios')}
+            >
+              CRIAR CONTA
+            </button>
+          </div>
         </form>
       </div>
     </div>

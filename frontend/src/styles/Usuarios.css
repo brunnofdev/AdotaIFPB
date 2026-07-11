@@ -4,77 +4,132 @@
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* Botão para novo usuário */
-.btn-novo-usuario {
-  padding: 15px 30px;
+.usuarios-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.usuarios-header-actions .main-title {
+  margin: 0;
+  color: #004c00;
+  font-weight: 800;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+/* 2. Botão Primário (Novo Usuário) */
+.btn-primary {
+  padding: 10px 20px;
   background-color: #004c00;
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 20px;
   transition: background-color 0.3s ease;
 }
 
-.btn-novo-usuario:hover {
+.btn-primary:hover {
   background-color: #003300;
 }
 
-/* Container principal de conteúdo */
+/* 3. Botão de Remover (Tabela) */
+.btn-danger-sm {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-danger-sm:hover {
+  background-color: #c82333;
+}
+
+/* 4. Container principal de conteúdo */
 .usuarios-content {
   text-align: center;
 }
 
-/* Seção de listagem */
-.usuarios-listagem-section {
-  margin-top: 40px;
-  text-align: left;
-}
-
-/* Mensagem de erro */
-.usuarios-erro {
-  color: red;
-}
-
-/* Wrapper para a tabela com scroll horizontal */
+/* 5. Wrapper da Tabela (Fundo branco e sombra) */
 .usuarios-table-wrapper {
   overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra elegante */
+  padding: 20px;
 }
 
-/* Estilização da tabela */
+/* Estilização da Tabela */
 .usuarios-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
 /* Cabeçalho da tabela */
 .usuarios-table thead tr {
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
   border-bottom: 2px solid #004c00;
 }
 
-/* Células do cabeçalho */
 .usuarios-table th {
-  padding: 10px;
+  padding: 15px 10px;
   text-align: left;
-  font-weight: bold;
+  font-weight: 800;
+  color: #333;
 }
 
 /* Células do corpo da tabela */
 .usuarios-table td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
+  padding: 12px 10px;
+  color: #555;
 }
 
 /* Linhas da tabela */
 .usuarios-table tbody tr {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
 }
 
 /* Hover nas linhas da tabela */
 .usuarios-table tbody tr:hover {
-  background-color: #f9f9f9;
+  background-color: #f5fcf5;
+}
+
+/* Nome do usuário em destaque */
+.usuarios-nome {
+  font-weight: 700;
+  color: #004c00;
+}
+
+/* Badge estilizado para o Cargo (Opcional) */
+.cargo-badge {
+  background-color: #e2e3e5;
+  color: #383d41;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* Estados (Textos de carregamento e erro) */
+.loading-text, .error-text, .empty-text {
+  font-weight: 500;
+  padding: 20px;
+}
+
+.error-text {
+  color: #d9534f;
 }

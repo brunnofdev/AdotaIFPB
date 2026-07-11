@@ -4,101 +4,133 @@
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-/* Botão para novo animal */
-.btn-novo-animal {
-  padding: 15px 30px;
+.animais-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.animais-header-actions .main-title {
+  margin: 0;
+  color: #004c00;
+  font-weight: 800;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
   background-color: #004c00;
   color: white;
   border: none;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 20px;
   transition: background-color 0.3s ease;
-  margin-left: 20px;
 }
 
-.btn-novo-animal:hover {
+.btn-primary:hover {
   background-color: #003300;
 }
 
-/* Container principal de conteúdo */
+.btn-secondary {
+  padding: 10px 20px;
+  background-color: transparent;
+  color: #004c00;
+  border: 2px solid #004c00;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #e6f0e6;
+}
+
+/* Botão de Remover */
+.btn-danger-sm {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-danger-sm:hover {
+  background-color: #c82333;
+}
+
 .animais-content {
   text-align: center;
 }
 
-/* Seção de listagem */
-.animais-listagem-section {
-  margin-top: 40px;
-  text-align: left;
-}
-
-/* Mensagem de erro */
-.animais-erro {
-  color: red;
-}
-
-/* Wrapper para a tabela com scroll horizontal */
 .animais-table-wrapper {
   overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 20px;
 }
 
-/* Estilização da tabela */
 .animais-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
 }
 
-/* Cabeçalho da tabela */
 .animais-table thead tr {
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
   border-bottom: 2px solid #004c00;
 }
 
-/* Células do cabeçalho */
 .animais-table th {
-  padding: 10px;
+  padding: 15px 10px;
   text-align: left;
-  font-weight: bold;
+  font-weight: 800;
+  color: #333;
 }
 
 /* Células do corpo da tabela */
 .animais-table td {
-  padding: 10px;
+  padding: 12px 10px;
+  color: #555;
 }
 
 /* Linhas da tabela */
 .animais-table tbody tr {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
 }
 
 /* Hover nas linhas da tabela */
 .animais-table tbody tr:hover {
-  background-color: #f9f9f9;
+  background-color: #f5fcf5;
 }
 
 /* Nome do animal em destaque */
 .animais-nome {
-  font-weight: bold;
-}
-
-/* Badge de status */
-.status-badge {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 12px;
-  display: inline-block;
-}
-
-.status-badge.disponivel {
-  background-color: #e6ffe6;
+  font-weight: 700;
   color: #004c00;
 }
 
-.status-badge.adotado {
-  background-color: #ffe6e6;
-  color: #cc0000;
+/* Estados (Textos de carregamento e erro) */
+.loading-text, .error-text, .empty-text {
+  font-weight: 500;
+  padding: 20px;
+}
+
+.error-text {
+  color: #d9534f;
 }

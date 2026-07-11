@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarUsuario } from '../services/userService';
-import '../styles/Home.css';
 import '../styles/CadastroUsuarios.css';
 
 const CadastroUsuarios = () => {
@@ -9,17 +8,19 @@ const CadastroUsuarios = () => {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
     senha: '',
+    senhaConfirmacao: '', 
     vinculoIFPB: '',
     telefone: ''
   });
 
   const handleVoltar = () => {
-    navigate('/usuarios');
+    // modificar futuramente para redirecionar para a página se tiver logad oou não
+    navigate('/login');
   };
 
   const handleChange = (e) => {
@@ -33,30 +34,43 @@ const CadastroUsuarios = () => {
     setErro(null);
     setSucesso(false);
 
+    // Validação extra para garantir que as senhas coincidem antes de enviar para o backend
+    if (formData.senha !== formData.senhaConfirmacao) {
+      setErro("As senhas não coincidem. Verifique e tente novamente.");
+      setCarregando(false);
+      return;
+    }
+
     try {
       await cadastrarUsuario(formData);
       setSucesso(true);
 
       setTimeout(() => {
-        navigate('/usuarios');
+        navigate('/login');
       }, 1500);
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
-      setErro(
-        error.response?.data?.message ||
-        "Erro ao cadastrar usuário. Verifique os dados e tente novamente."
-      );
+      // Extrai a mensagem de erro formatada do back
+      const backendError = error.response?.data;
+      let errorMsg = "Erro ao cadastrar usuário. Verifique os dados.";
+      
+      if (backendError && typeof backendError === 'object') {
+         // Pega a primeira mensagem de erro
+         errorMsg = Object.values(backendError)[0]; 
+      }
+
+      setErro(errorMsg);
     } finally {
       setCarregando(false);
     }
   };
 
   return (
-    <div className="home-container cadastro-usuario-page">
+    <div className="cadastro-usuario-page">
       <div className="cadastro-usuario-container">
-        <h1>Cadastro de Usuário</h1>
+        <h1>Criar Conta</h1>
         <p className="cadastro-usuario-descricao">
-          Preencha os campos abaixo para registrar um novo usuário no sistema.
+          Preencha os campos abaixo para se registrar no sistema.
         </p>
 
         {sucesso && (
@@ -73,7 +87,7 @@ const CadastroUsuarios = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="nome">Nome *</label>
+            <label htmlFor="nome">Nome Completo *</label>
             <input 
               type="text" 
               id="nome" 
@@ -86,14 +100,14 @@ const CadastroUsuarios = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email *</label>
+            <label htmlFor="email">Email Institucional *</label>
             <input 
               type="email" 
               id="email" 
               name="email" 
               value={formData.email} 
               onChange={handleChange}
-              placeholder="Ex: joao@example.com"
+              placeholder="Ex: joao@academico.ifpb.edu.br"
               required 
             />
           </div>
@@ -107,6 +121,20 @@ const CadastroUsuarios = () => {
               value={formData.senha} 
               onChange={handleChange}
               placeholder="Mínimo 6 caracteres"
+              required 
+              minLength="6"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="senhaConfirmacao">Confirmar Senha *</label>
+            <input 
+              type="password" 
+              id="senhaConfirmacao" 
+              name="senhaConfirmacao" 
+              value={formData.senhaConfirmacao} 
+              onChange={handleChange}
+              placeholder="Digite a senha novamente"
               required 
               minLength="6"
             />
@@ -154,7 +182,7 @@ const CadastroUsuarios = () => {
               onClick={handleVoltar}
               disabled={carregando}
             >
-              VOLTAR
+              VOLTAR PARA LOGIN
             </button>
           </div>
         </form>

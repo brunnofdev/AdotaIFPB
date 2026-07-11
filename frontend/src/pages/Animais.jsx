@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { listarAnimais } from '../services/animalService';
+import { listarAnimais, removerAnimal } from '../services/animalService';
 import '../styles/Home.css'; 
 import '../styles/Animais.css';
 
@@ -10,25 +10,23 @@ function Animais() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
 
-  // Busca os animais assim que a tela carrega
   useEffect(() => {
-    const carregarAnimais = async () => {
-      try {
-        setCarregando(true);
-        const dados = await listarAnimais();
-        setAnimais(dados);
-      } catch (error) {
-        console.error("Erro ao carregar animais:", error);
-        setErro("Falha ao carregar os animais. Verifique se a API está online.");
-      } finally {
-        setCarregando(false);
-      }
-    };
-
     carregarAnimais();
   }, []);
 
-  // Redireciona para uma futura tela de cadastro
+  const carregarAnimais = async () => {
+    try {
+      setCarregando(true);
+      const dados = await listarAnimais();
+      setAnimais(dados);
+    } catch (error) {
+      console.error("Erro ao carregar animais:", error);
+      setErro("Falha ao carregar os animais. Verifique se a API está online.");
+    } finally {
+      setCarregando(false);
+    }
+  };
+
   const handleNovoAnimal = () => {
     navigate('/cadastro-animais');
   };
@@ -42,50 +40,61 @@ function Animais() {
     navigate('/login');
   };
 
+  const handleRemover = async (id, nome) => {
+    const confirmar = window.confirm(`Deseja realmente remover o animal ${nome}?`);
+    if (!confirmar) return;
+
+    try {
+      await removerAnimal(id);
+      setAnimais((prevAnimais) => prevAnimais.filter((animal) => animal.id !== id));
+      alert("Animal removido com sucesso!");
+    } catch (error) {
+      console.error("Erro ao remover animal:", error);
+      alert("Erro ao remover o animal. Tente novamente.");
+    }
+  };
+
+  // Formatar o YearMonth (YYYY-MM) para MM/YYYY
+  const formatarNascimento = (dataString) => {
+    if (!dataString) return '-';
+    const [ano, mes] = dataString.split('-');
+    return `${mes}/${ano}`;
+  };
+
   return (
     <div className="home-container">
-      {/* Navbar mantendo a identidade visual */}
       <nav className="navbar">
         <h3 className="navbar-brand">AdotaIFPB</h3>
         <div className="navbar-links">
           <Link to="/home" className="nav-link">Início</Link>
           <Link to="/animais" className="nav-link nav-link-active">Animais</Link>
           <Link to="/usuarios" className="nav-link">Usuários</Link>
+          <Link to="/solicitacoes" className="nav-link">Adoções</Link>
         </div>
-        <button onClick={handleLogout} className="btn-logout">
-          Sair
-        </button>
+        <button onClick={handleLogout} className="btn-logout">Sair</button>
       </nav>
 
-      {/* Conteúdo Principal */}
-      <div className="content-wrapper animais-content">
-        <h1>Vitrine de Animais</h1>
-        <p className="main-description">
-          Acompanhe aqui os animais cadastrados no sistema do IFPB.
-        </p>
-        
-        <div className="botoes-container">
-          <button 
-            onClick={handleNovoAnimal}
-            className="btn-novo-animal"
-          >
-            NOVO ANIMAL
-          </button>
-          <button 
-            onClick={handleNovoAbrigo}
-            className="btn-novo-animal"
-          >
-            NOVO ABRIGO
-          </button>
+      <div className="content-wrapper">
+        <div className="animais-header-actions">
+          <h1 className="main-title">Gerenciar Animais</h1>
+          <div className="action-buttons">
+            <button className="btn-primary" onClick={handleNovoAnimal}>
+              + Novo Animal
+            </button>
+            <button className="btn-secondary" onClick={handleNovoAbrigo}>
+              + Novo Abrigo
+            </button>
+          </div>
         </div>
 
-        {/* Seção de Listagem (Tabela) */}
-        <div className="animais-listagem-section">
-          <h2>Lista de Animais</h2>
+        <div className="animais-content">
+          {carregando && <p className="loading-text">A carregar dados...</p>}
           
-          {carregando && <p>Procurando animais nos abrigos...</p>}
-          {erro && <p className="animais-erro">{erro}</p>}
-          {!carregando && !erro && animais.length === 0 && <p>Nenhum animal cadastrado no momento.</p>}
+          {erro && <p className="error-text">{erro}</p>}
+          
+          {!carregando && !erro && animais.length === 0 && (
+            <p className="empty-text">Nenhum animal cadastrado no sistema.</p>
+          )}
 
           {!carregando && !erro && animais.length > 0 && (
             <div className="animais-table-wrapper">
@@ -95,25 +104,42 @@ function Animais() {
                     <th>Nome</th>
                     <th>Espécie</th>
                     <th>Raça</th>
-                    <th>Idade</th>
+                    <th>Nasc. Estimado</th>
                     <th>Sexo</th>
                     <th>Abrigo</th>
                     <th>Status</th>
+                    <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {animais.map((animal) => (
                     <tr key={animal.id}>
                       <td className="animais-nome">{animal.nome}</td>
-                      <td>{animal.especie?.nome || '-'}</td>
-                      <td>{animal.raca || 'Sem raça definida'}</td>
-                      <td>{animal.idadeEstimada ? `${animal.idadeEstimada} anos` : '-'}</td>
-                      <td>{animal.sexo === 'M' ? 'Macho' : 'Fêmea'}</td>
+                      
+                      <td>{animal.especie === 'CACHORRO' ? 'Cachorro' : 'Gato'}</td>
+                      
+                      <td>{animal.raca || 'S.R.D.'}</td>
+                      
+                      <td>{formatarNascimento(animal.nascimentoEstimado)}</td>
+                      
+                      <td>{animal.sexoAnimal === 'MACHO' ? 'Macho' : 'Fêmea'}</td>
+                      
                       <td>{animal.abrigo?.nome || '-'}</td>
+                      
                       <td>
                         <span className={`status-badge ${animal.status === 'DISPONIVEL' ? 'disponivel' : 'adotado'}`}>
                           {animal.status}
                         </span>
+                      </td>
+                      
+                      <td>
+                        <button 
+                          className="btn-danger-sm" 
+                          onClick={() => handleRemover(animal.id, animal.nome)}
+                          title="Remover Animal"
+                        >
+                          Remover
+                        </button>
                       </td>
                     </tr>
                   ))}

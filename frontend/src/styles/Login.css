@@ -37,7 +37,8 @@ html, body, #root {
 .login-card-square {
   width: 100%;
   max-width: 400px;
-  height: 300px; /* Força um formato simétrico de quadrado */
+  height: auto;
+  min-height: 300px;
   padding: 40px;
   border-radius: 8px;
   background-color: #ffffff; /* Fundo branco simbolizando o quadrado */
@@ -100,4 +101,47 @@ html, body, #root {
 
 .btn-submit:hover {
   background-color:#1d5e26;
+}
+
+/* Adicione no final do seu Login.css */
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Espaçamento entre os botões */
+  margin-top: 24px;
+}
+
+/* Garanta que seu btn-submit atual tenha width: 100% */
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #004c00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #003300;
+}
+
+/* botão Criar Conta */
+.btn-secondary {
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  color: #004c00;
+  border: 2px solid #004c00;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #e6f0e6;
 }

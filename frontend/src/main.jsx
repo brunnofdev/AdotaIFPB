@@ -8,6 +8,7 @@ import CadastroAnimais from './pages/CadastroAnimais';
 import CadastroAbrigo from './pages/CadastroAbrigo';
 import Usuarios from './pages/Usuarios';
 import CadastroUsuarios from './pages/CadastroUsuarios';
+import Solicitacoes from './pages/solicitacoes';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -24,6 +25,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/cadastro-abrigo" element={<CadastroAbrigo />} />
         <Route path="/usuarios" element={<Usuarios />} />
         <Route path="/cadastro-usuarios" element={<CadastroUsuarios />} />
+        <Route path="/solicitacoes" element={<Solicitacoes />} />
         
         {/* Fallback para URLs inexistentes ou inválidas */}
         <Route path="*" element={<Navigate to="/login" replace />} />
