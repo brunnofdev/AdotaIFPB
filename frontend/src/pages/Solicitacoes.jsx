@@ -60,7 +60,7 @@ const Solicitacoes = () => {
       <div className="solicitacoes-container">
         <div className="solicitacoes-header">
           <h2>Gerenciar Solicitações de Adoção</h2>
-          <button className="btn-voltar-outline" onClick={handleVoltar}>Voltar</button>
+          <button className="btn secondary" onClick={handleVoltar}>Voltar</button>
         </div>
 
         {carregando ? (

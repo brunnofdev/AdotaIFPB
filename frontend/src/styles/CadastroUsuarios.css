@@ -4,7 +4,7 @@
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-div.cadastro-usuario-page {
+.cadastro-usuario-page {
   background-color: #004c00;
   display: flex;
   align-items: center;

@@ -20,7 +20,7 @@ const CadastroUsuarios = () => {
 
   const handleVoltar = () => {
     // modificar futuramente para redirecionar para a página se tiver logad oou não
-    navigate('/login');
+    navigate('/usuarios');
   };
 
   const handleChange = (e) => {
@@ -182,7 +182,7 @@ const CadastroUsuarios = () => {
               onClick={handleVoltar}
               disabled={carregando}
             >
-              VOLTAR PARA LOGIN
+              VOLTAR
             </button>
           </div>
         </form>

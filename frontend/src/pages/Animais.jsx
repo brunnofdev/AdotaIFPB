@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { listarAnimais, removerAnimal } from '../services/animalService';
 import '../styles/Home.css'; 
 import '../styles/Animais.css';
+import '../styles/Button.css'
 
 function Animais() {
   const navigate = useNavigate();
@@ -78,11 +79,11 @@ function Animais() {
         <div className="animais-header-actions">
           <h1 className="main-title">Gerenciar Animais</h1>
           <div className="action-buttons">
-            <button className="btn-primary" onClick={handleNovoAnimal}>
-              + Novo Animal
+            <button className="btn primary" onClick={handleNovoAnimal}>
+              Novo Animal
             </button>
-            <button className="btn-secondary" onClick={handleNovoAbrigo}>
-              + Novo Abrigo
+            <button className="btn secondary" onClick={handleNovoAbrigo}>
+              Novo Abrigo
             </button>
           </div>
         </div>

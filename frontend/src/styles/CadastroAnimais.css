@@ -4,76 +4,180 @@
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-div.form-container {
+.cadastro-animal-page {
   background-color: #004c00;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-div.cadastro-container {
-  padding: 20px;
+.cadastro-animal-container {
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
   background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   margin: auto;
+  box-sizing: border-box;
+}
+
+.cadastro-animal-container h1 {
+  text-align: center;
+  color: #004c00;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.cadastro-animal-descricao {
+  text-align: center;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 25px;
 }
 
 form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    max-width: 400px;
-    margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-textarea {
-    resize: none;
-    width: 250px;
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 label {
-    font-weight: bold;
-    padding-right: 5px;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
 }
 
-.button-section {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
+  background-color: #fff;
 }
 
-.button-section button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+input:focus, select:focus, textarea:focus {
+  border-color: #004c00;
+  outline: none;
 }
 
-.button-section button.btn-send {
-    background-color: #004c00;
-    color: #fff;
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
-.button-section button.btn-send:hover {
-    background-color: #003300;
+.checkbox-group {
+  margin-bottom: 15px;
 }
 
-.button-section button.btn-voltar {
-    background-color: #999;
-    color: #fff;
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  margin-bottom: 0;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-.button-section button.btn-voltar:hover {
-    background-color: #777;
+.checkbox-label input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+div.cadastro-animal-botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+button.btn-cadastrar {
+  width: 100%;
+  padding: 12px;
+  background-color: #004c00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-cadastrar:hover:not(:disabled) {
+  background-color: #003300;
+}
+
+button.btn-cadastrar:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+button.btn-voltar {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #004c00;
+  border: 2px solid #004c00;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button.btn-voltar:hover:not(:disabled) {
+  background-color: #e6f0e6;
+}
+
+button.btn-voltar:disabled {
+  border-color: #ccc;
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.cadastro-animal-sucesso {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid #c3e6cb;
+  font-weight: bold;
+}
+
+.cadastro-animal-erro {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid #f5c6cb;
+  font-weight: bold;
+}
+
+.cadastro-animal-carregando {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-top: 15px;
 }

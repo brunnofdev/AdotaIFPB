@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { listarUsuarios, removerUsuario } from '../services/userService';
 import '../styles/Home.css';
 import '../styles/Usuarios.css';
+import '../styles/Button.css'
+
 
 function Usuarios() {
   const navigate = useNavigate();
@@ -70,8 +72,8 @@ function Usuarios() {
         <div className="usuarios-header-actions">
           <h1 className="main-title">Gerenciar Usuários</h1>
           <div className="action-buttons">
-            <button className="btn-primary" onClick={handleGerarUsuario}>
-              + Novo Usuário
+            <button className="btn primary" onClick={handleGerarUsuario}>
+              Novo Usuário
             </button>
           </div>
         </div>
