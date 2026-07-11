@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { listarAnimais, removerAnimal } from '../services/animalService';
-import '../styles/Home.css'; 
 import '../styles/Animais.css';
 import '../styles/Button.css'
 
@@ -11,10 +10,11 @@ function Animais() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
 
+  
   useEffect(() => {
     carregarAnimais();
   }, []);
-
+  
   const carregarAnimais = async () => {
     try {
       setCarregando(true);
