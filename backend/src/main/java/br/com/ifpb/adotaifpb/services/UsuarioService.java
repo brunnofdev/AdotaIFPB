@@ -8,6 +8,9 @@ import br.com.ifpb.adotaifpb.entities.Usuario;
 import br.com.ifpb.adotaifpb.repository.CargoRepository;
 import br.com.ifpb.adotaifpb.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     private final UsuarioRepository usuarioRepository;
     private final CargoRepository cargoRepository;
@@ -28,28 +31,34 @@ public class UsuarioService {
     }
 
     @Transactional
-    public UsuarioResponseDTO cadastrarUsuario(UsuarioCreateRequestDTO usuarioDTO) {
-        Optional<Usuario> existente = usuarioRepository.findByEmail(usuarioDTO.email());
-        if (existente.isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário cadastrado com este e-mail.");
+    public UsuarioResponseDTO cadastrarUsuario(UsuarioCreateRequestDTO dto) {
+
+        // 1. Regra de Negócio: Impedir emails duplicados
+        if (usuarioRepository.findByEmail(dto.email()).isPresent()) {
+            throw new IllegalArgumentException("Este email já está em uso no sistema.");
         }
 
-        Usuario novoUsuario = new Usuario();
-        novoUsuario.setNome(usuarioDTO.nome());
-        novoUsuario.setEmail(usuarioDTO.email());
+        // 2. Transição Limpa: Criar a Entidade a partir do DTO
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.nome());
+        usuario.setEmail(dto.email());
+        usuario.setTelefone(dto.telefone());
+        usuario.setVinculoIFPB(dto.vinculoIFPB());
 
-        novoUsuario.setSenha(passwordEncoder.encode(usuarioDTO.senha()));
+        // 3. Regra de Negócio de Segurança: Encriptar a senha (AQUI É O LUGAR CORRETO!)
+        usuario.setSenha(passwordEncoder.encode(dto.senha()));
 
-        novoUsuario.setTelefone(usuarioDTO.telefone());
-        novoUsuario.setVinculoIFPB(usuarioDTO.vinculoIFPB());
+        // 4. Regra de Negócio: Associar um cargo padrão (Ex: ID 1 = CARGO_USER ou CARGO_ADOTANTE)
+        // Se o cargo vier do DTO, você pode trocar '1L' por 'dto.cargoId()'
+        Cargo cargo = cargoRepository.findByNome("CARGO_USUARIO")
+                .orElseThrow(() -> new IllegalArgumentException("Cargo padrão não encontrado na base de dados."));
+        usuario.setCargo(cargo);
 
-        Cargo cargoPadrao = cargoRepository.findById(1L)
-                .orElseThrow(() -> new IllegalArgumentException("Cargo padrão não encontrado no banco de dados."));
-        novoUsuario.setCargo(cargoPadrao);
+        // 5. Persistência
+        Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
-        usuarioRepository.save(novoUsuario);
-
-        return new UsuarioResponseDTO(novoUsuario);
+        // 6. Retornar o colete à prova de balas (DTO de Resposta sem a senha)
+        return new UsuarioResponseDTO(usuarioSalvo);
     }
 
     public List<UsuarioResponseDTO> buscarTodos() {
@@ -84,5 +93,12 @@ public class UsuarioService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado."));
 
         usuarioRepository.delete(usuario);
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return usuarioRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o email: " + username));
     }
 }
