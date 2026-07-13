@@ -50,7 +50,7 @@ public class UsuarioService implements UserDetailsService {
 
         // 4. Regra de Negócio: Associar um cargo padrão (Ex: ID 1 = CARGO_USER ou CARGO_ADOTANTE)
         // Se o cargo vier do DTO, você pode trocar '1L' por 'dto.cargoId()'
-        Cargo cargo = cargoRepository.findByNome("CARGO_USUARIO")
+        Cargo cargo = cargoRepository.findByNome("ROLE_USER")
                 .orElseThrow(() -> new IllegalArgumentException("Cargo padrão não encontrado na base de dados."));
         usuario.setCargo(cargo);
 

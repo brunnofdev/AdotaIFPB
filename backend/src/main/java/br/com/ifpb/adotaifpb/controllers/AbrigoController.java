@@ -6,6 +6,7 @@ import br.com.ifpb.adotaifpb.services.AbrigoService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class AbrigoController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AbrigoResponseDTO> criar(@Valid @RequestBody AbrigoRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(abrigoService.salvar(dto));
     }
@@ -36,11 +38,13 @@ public class AbrigoController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AbrigoResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody AbrigoRequestDTO dto) {
         return ResponseEntity.ok(abrigoService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> inativar(@PathVariable Long id) {
         abrigoService.inativar(id);
         return ResponseEntity.noContent().build();

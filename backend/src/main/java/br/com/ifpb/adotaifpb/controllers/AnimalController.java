@@ -6,6 +6,7 @@ import br.com.ifpb.adotaifpb.services.AnimalService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +21,9 @@ public class AnimalController {
         this.animalService = animalService;
     }
 
+
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AnimalResponseDTO> cadastrar(@Valid @RequestBody AnimalRequestDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(animalService.cadastrarAnimal(dto));
     }
@@ -36,11 +39,13 @@ public class AnimalController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<AnimalResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody AnimalRequestDTO dto) {
         return ResponseEntity.ok(animalService.atualizarAnimal(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> remover(@PathVariable Long id) {
         animalService.removerAnimal(id);
         return ResponseEntity.noContent().build();

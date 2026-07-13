@@ -32,12 +32,10 @@ public class UsuarioRestController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid UsuarioCreateRequestDTO dto) {
         try {
-            // O Controller não precisa saber de criptografia, nem de entidade. Ele só delega!
             UsuarioResponseDTO usuarioSalvo = userService.cadastrarUsuario(dto);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioSalvo);
         } catch (IllegalArgumentException e) {
-            // Captura o erro do email duplicado
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao registrar utilizador.");
