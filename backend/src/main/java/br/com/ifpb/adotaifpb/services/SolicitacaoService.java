@@ -13,9 +13,11 @@ import br.com.ifpb.adotaifpb.repository.UsuarioRepository;
 import br.com.ifpb.adotaifpb.utils.StatusAnimalEnum;
 import br.com.ifpb.adotaifpb.utils.StatusSolicitacaoEnum;
 import jakarta.transaction.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SolicitacaoService {
@@ -77,7 +79,7 @@ public class SolicitacaoService {
                 .findAllByAnimalIdAndStatus(animal.getId(), StatusSolicitacaoEnum.PENDENTE);
 
         for (Solicitacao s : outrasSolicitacoes) {
-            s.setStatus(StatusSolicitacaoEnum.REJEITADA);
+            s.setStatus(StatusSolicitacaoEnum.CANCELADA);
             solicitacaoRepository.save(s);
         }
         Adocao adocao = new Adocao();
@@ -87,5 +89,32 @@ public class SolicitacaoService {
     public List<SolicitacaoResponseDTO> listarTodas() {
         StatusSolicitacaoEnum status = StatusSolicitacaoEnum.PENDENTE;
         return solicitacaoRepository.findAllByStatus(status).stream().map(SolicitacaoResponseDTO::new).toList();
+    }
+
+    public List<SolicitacaoResponseDTO> buscarSolicitacoesPorUsuarioId(Long usuarioId) {
+        List<Solicitacao> solicitacoes = solicitacaoRepository.findByUsuarioId(usuarioId);
+
+        return solicitacoes.stream()
+                .map(SolicitacaoResponseDTO::new)
+                .toList();
+    }
+    public void cancelarSolicitacao(Long id, Usuario usuarioLogado) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
+
+        boolean isDono = solicitacao.getUsuario().getId().equals(usuarioLogado.getId());
+        boolean isAdmin = usuarioLogado.getAuthorities().stream()
+                .anyMatch(role -> Objects.equals(role.getAuthority(), "ROLE_ADMIN"));
+
+        if (!isDono && !isAdmin) {
+            throw new AccessDeniedException("Acesso negado: você não tem permissão para cancelar esta solicitação.");
+        }
+
+        if (solicitacao.getStatus() != StatusSolicitacaoEnum.PENDENTE) {
+            throw new RuntimeException("Apenas solicitações pendentes podem ser canceladas.");
+        }
+
+        solicitacao.setStatus(StatusSolicitacaoEnum.CANCELADA);
+        solicitacaoRepository.save(solicitacao);
     }
 }

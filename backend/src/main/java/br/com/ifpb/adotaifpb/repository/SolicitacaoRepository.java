@@ -9,5 +9,6 @@ import java.util.List;
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
     List<Solicitacao> findAllByAnimalIdAndStatus(Long animalId, StatusSolicitacaoEnum status);
     List<Solicitacao> findAllByStatus(StatusSolicitacaoEnum status);
+    List<Solicitacao> findByUsuarioId(Long usuarioId);
 }
 
