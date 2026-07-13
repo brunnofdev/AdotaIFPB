@@ -28,22 +28,16 @@ public class AutenticacaoController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody LoginRequestDTO loginRequest) {
 
-        // 1. O AuthenticationManager verifica se o email e a senha (criptografada) batem com o banco
+        // O AuthenticationManager verifica se o email e a senha (criptografada) batem com o banco
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.email(),
                         loginRequest.senha()
                 )
         );
-
-        // 2. Se a senha estiver errada, o Spring lança exceção (BadCredentialsException) automaticamente.
-        // Se chegou aqui, as credenciais estão corretas. Extraímos o UserDetails.
+        // Retorna Token
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        // 3. Geramos o Token JWT
         String jwtToken = jwtService.generateToken(authentication);
-
-        // 4. Devolvemos o Token para o frontend
         return ResponseEntity.ok(new LoginResponseDTO(jwtToken));
     }
 }

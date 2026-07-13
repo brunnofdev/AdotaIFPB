@@ -17,15 +17,15 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if (cargoRepository.findByNome("CARGO_USUARIO").isEmpty()) {
+        if (cargoRepository.findByNome("ROLE_USER").isEmpty()) {
             Cargo usuario = new Cargo();
-            usuario.setNome("CARGO_USUARIO");
+            usuario.setNome("ROLE_USER");
             cargoRepository.save(usuario);
         }
 
-        if (cargoRepository.findByNome("CARGO_ADMIN").isEmpty()) {
+        if (cargoRepository.findByNome("ROLE_ADMIN").isEmpty()) {
             Cargo admin = new Cargo();
-            admin.setNome("CARGO_ADMIN");
+            admin.setNome("ROLE_ADMIN");
             cargoRepository.save(admin);
         }
     }
