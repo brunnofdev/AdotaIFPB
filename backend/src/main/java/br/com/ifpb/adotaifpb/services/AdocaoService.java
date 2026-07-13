@@ -39,6 +39,15 @@ public class AdocaoService {
         return new AdocaoResponseDTO(adocao);
     }
 
+    public List<AdocaoResponseDTO> buscarAdocoesPorUsuarioId(Long usuarioId) {
+
+        List<Adocao> adocoes = adocaoRepository.findBySolicitacaoUsuarioId(usuarioId);
+
+        return adocoes.stream()
+                .map(AdocaoResponseDTO::new)
+                .toList();
+    }
+
     @Transactional
     public void cancelarAdocao(Long id) {
         Adocao adocao = adocaoRepository.findById(id)

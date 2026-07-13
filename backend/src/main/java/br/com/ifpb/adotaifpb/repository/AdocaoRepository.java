@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface AdocaoRepository extends JpaRepository<Adocao, Long> {
     List<Adocao> findAllByAtivoTrue();
+    List<Adocao> findBySolicitacaoUsuarioId(Long usuarioId);
 }
