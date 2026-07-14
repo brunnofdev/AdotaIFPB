@@ -79,15 +79,21 @@
   width: 65vw;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
-  padding: 20px;
+.animal-card{
+    display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Cria exatamente 3 colunas de larguras iguais */
+  justify-items: center; /* Centraliza cada card dentro de sua respectiva coluna */
 }
 
-.grid-item{
-    border: 1px solid black;
+.animal-card-content {
+  border: 1px solid #004c00;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 16.5rem;
 }
 
 .card-button{

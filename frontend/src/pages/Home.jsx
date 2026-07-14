@@ -40,10 +40,8 @@ function Home() {
             Gerencie animais, usuários e solicitações de adoção de forma eficiente.
           </p>
 
-          <div className="grid">
-            < Card title="Tom" description="Gato" onClick={handleCardClick}/>
-            < Card title="Ben" description="Cachorro" onClick={handleCardClick}/>
-            < Card title="Tom" description="Pássaro" onClick={handleCardClick}/>
+          <div className="card-section">
+            <Card onClick={handleCardClick}/>
 
           </div>
         </div>
