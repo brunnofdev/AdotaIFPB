@@ -1,21 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../services/api';
+// IMPORTANTE: Ajuste o caminho abaixo se o seu arquivo do hook se chamar useAuth.js ou useAuth.jsx
+import { useAuth } from '../contexts/useAuth'; 
 import '../styles/Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [erro, setErro] = useState(''); 
+  
   const navigate = useNavigate();
+  // 1. Puxamos a variável 'authenticated' do nosso contexto
+  const { login, authenticated } = useAuth(); 
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    // Lógica temporária
-    if (email.trim() !== '' && senha.length >= 6) {
-      localStorage.setItem('usuario_autenticado', 'true');
+  // 2. NOVO: O useEffect fica vigiando o 'authenticated'. 
+  // Se ele mudar para true, redirecionamos com segurança.
+  useEffect(() => {
+    if (authenticated) {
       navigate('/home');
-    } else {
-      alert('Por favor, insira um e-mail válido e uma senha com pelo menos 6 caracteres.');
+    }
+  }, [authenticated, navigate]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setErro('');
+
+    try {
+      const response = await api.post('/auth/login', {
+        email: email,
+        senha: senha
+      });
+
+      const jwtToken = response.data.token;
+      
+      // 3. Apenas chamamos o login. O useEffect acima fará o redirecionamento.
+      login(jwtToken);
+
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      setErro('Credenciais inválidas. Verifique o seu e-mail e senha.');
     }
   };
 
@@ -25,6 +49,8 @@ function Login() {
 
       <div className="login-card-square">        
         <form onSubmit={handleLogin}>
+          {erro && <div style={{ color: 'red', marginBottom: '10px', textAlign: 'center' }}>{erro}</div>}
+
           <div className="form-group">
             <label className="form-label">EMAIL</label>
             <input 

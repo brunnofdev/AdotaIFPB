@@ -9,27 +9,31 @@ import CadastroAbrigo from './pages/CadastroAbrigo';
 import Usuarios from './pages/Usuarios';
 import CadastroUsuarios from './pages/CadastroUsuarios';
 import Solicitacoes from './pages/solicitacoes';
+import {PrivateRoute} from './contexts/PrivateRoute';
+import { AuthProvider } from './contexts/AuthContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <AuthProvider>
     <BrowserRouter>
       <Routes>
-        {/* Rota inicial padrão do sistema redireciona para o login */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         
-        {/* Declaração das telas do sistema */}
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/cadastro-usuarios" element={<CadastroUsuarios />} />
+
+        <Route element={<PrivateRoute />}>
         <Route path="/animais" element={<Animais />} />
         <Route path="/cadastro-animais" element={<CadastroAnimais />} />
         <Route path="/cadastro-abrigo" element={<CadastroAbrigo />} />
         <Route path="/usuarios" element={<Usuarios />} />
-        <Route path="/cadastro-usuarios" element={<CadastroUsuarios />} />
         <Route path="/solicitacoes" element={<Solicitacoes />} />
+        </Route>
         
-        {/* Fallback para URLs inexistentes ou inválidas */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
+    </AuthProvider>
   </React.StrictMode>
 );

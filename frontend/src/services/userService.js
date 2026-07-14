@@ -3,7 +3,7 @@ import api from './api';
 // Função que envia a solicitação POST para o Spring Boot
 export const cadastrarUsuario = async (dadosUsuario) => {
   try {
-    const response = await api.post('/usuarios', dadosUsuario);
+    const response = await api.post('/usuarios/register', dadosUsuario);
     return response.data; // Retorna o UsuarioResponseDTO
   } catch (error) {
     console.error("Erro ao integrar com a API de usuários:", error);

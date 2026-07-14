@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useAuth } from '../contexts/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card } from '../components/Card';
 import '../styles/Home.css'; 
@@ -6,20 +6,15 @@ import '../styles/Home.css';
 function Home() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const estouLogado = localStorage.getItem('usuario_autenticado');
-    if (!estouLogado) {
-      navigate('/login');
-    }
-  }, [navigate]);
+  const { logout } = useAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem('usuario_autenticado');
+    logout();
     navigate('/login');
   };
 
   const handleCardClick = () => {
-    navigate('/login');
+    navigate('/solicitacoes'); 
   }
 
   return (
