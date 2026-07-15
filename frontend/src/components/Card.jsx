@@ -34,7 +34,7 @@ export function Card({ onClick }) {
                         <strong>Espécie:</strong> {animal.especie}<br />
                         <strong>Sexo:</strong> {animal.sexoAnimal}
                     </p>
-                    <button className="card-button" onClick={() => onClick(animal.id)}>Quero adotar</button>
+                    <button className="card-button" onClick={() => onClick && onClick(animal.id)}>Quero adotar</button>
                 </div>
             ))}
         </div>

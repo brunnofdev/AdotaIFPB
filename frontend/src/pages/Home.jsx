@@ -13,8 +13,8 @@ function Home() {
     navigate('/login');
   };
 
-  const handleCardClick = () => {
-    navigate('/cadastrar-solicitacao'); 
+  const handleCardClick = (animalId) => {
+    navigate('/cadastrar-solicitacao', { state: { animalId } }); 
   }
 
   return (

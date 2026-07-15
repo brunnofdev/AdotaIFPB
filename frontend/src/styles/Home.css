@@ -58,6 +58,10 @@
   color: #7bee7f;
 }
 
+.side-nav-link-active:hover {
+  color: #fff;
+}
+
 .side-nav-link-active {
   font-weight: bold;
 }

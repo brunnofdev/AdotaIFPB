@@ -16,7 +16,7 @@ div.cadastro-solicitacao-page {
 
 .cadastro-solicitacao-container {
   width: 100%;
-  max-width: 500px; /* Um pouco mais largo para acomodar os IDs lado a lado */
+  max-width: 700px;
   padding: 40px;
   background-color: #f9f9f9;
   border-radius: 12px;
@@ -154,4 +154,104 @@ button.btn-voltar:disabled {
   text-align: center;
   border: 1px solid #f5c6cb;
   font-weight: bold;
+}
+
+.carregando-animal {
+  background-color: #e7f3ff;
+  color: #004c99;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid #b3d9ff;
+  font-weight: 500;
+}
+
+.informacoes-animal {
+  background-color: #f0f8f0;
+  border: 2px solid #004c00;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.informacoes-animal h2 {
+  color: #004c00;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 18px;
+  border-bottom: 2px solid #004c00;
+  padding-bottom: 10px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.info-item {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.info-item label {
+  color: #004c00;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.info-item p {
+  color: #333;
+  margin: 0;
+  font-size: 14px;
+}
+
+.info-full-width {
+  background-color: #fff;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.info-full-width label {
+  color: #004c00;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.info-full-width p {
+  color: #333;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@media (max-width: 600px) {
+  .cadastro-solicitacao-container {
+    max-width: 100%;
+    padding: 25px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .half-width {
+    width: 100%;
+  }
+
+  .cadastro-solicitacao-container h1 {
+    font-size: 24px;
+  }
 }

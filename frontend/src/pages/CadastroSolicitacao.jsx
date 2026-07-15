@@ -1,18 +1,43 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { cadastrarSolicitacao } from '../services/solicitacaoService';
+import { buscarAnimalPorId } from '../services/animalService';
 import '../styles/CadastroSolicitacao.css';
 
 const CadastroSolicitacao = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState(null);
+  const [carregandoAnimal, setCarregandoAnimal] = useState(false);
+  const [dadosAnimal, setDadosAnimal] = useState(null);
   
   const [formData, setFormData] = useState({
-    animalId: '',
+    animalId: location.state?.animalId || '',
     usuarioId: '',
     observacao: ''
   });
+
+  useEffect(() => {
+    if (formData.animalId) {
+      carregarDadosAnimal(formData.animalId);
+    }
+  }, [formData.animalId]);
+
+  const carregarDadosAnimal = async (animalId) => {
+    setCarregandoAnimal(true);
+    setErro(null);
+    try {
+      const dados = await buscarAnimalPorId(animalId);
+      setDadosAnimal(dados);
+    } catch (error) {
+      console.error("Erro ao buscar animal:", error);
+      setErro("Erro ao carregar dados do animal. Verifique o ID informado.");
+      setDadosAnimal(null);
+    } finally {
+      setCarregandoAnimal(false);
+    }
+  };
 
   const handleVoltar = () => {
     navigate('/solicitacoes');
@@ -20,7 +45,11 @@ const CadastroSolicitacao = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'animalId' && value) {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    } else if (name !== 'animalId') {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -92,6 +121,56 @@ const CadastroSolicitacao = () => {
               />
             </div>
           </div>
+
+          {carregandoAnimal && (
+            <div className="carregando-animal">
+              Carregando informações do animal...
+            </div>
+          )}
+
+          {dadosAnimal && (
+            <div className="informacoes-animal">
+              <h2>Informações do Animal</h2>
+              <div className="info-grid">
+                <div className="info-item">
+                  <label>Nome:</label>
+                  <p>{dadosAnimal.nome}</p>
+                </div>
+                <div className="info-item">
+                  <label>Espécie:</label>
+                  <p>{dadosAnimal.especie}</p>
+                </div>
+                <div className="info-item">
+                  <label>Raça:</label>
+                  <p>{dadosAnimal.raca || 'N/A'}</p>
+                </div>
+                <div className="info-item">
+                  <label>Sexo:</label>
+                  <p>{dadosAnimal.sexoAnimal}</p>
+                </div>
+                <div className="info-item">
+                  <label>Peso:</label>
+                  <p>{dadosAnimal.peso ? `${dadosAnimal.peso} kg` : 'N/A'}</p>
+                </div>
+                <div className="info-item">
+                  <label>Castrado:</label>
+                  <p>{dadosAnimal.castrado ? 'Sim' : 'Não'}</p>
+                </div>
+                <div className="info-item">
+                  <label>Status:</label>
+                  <p>{dadosAnimal.status}</p>
+                </div>
+                <div className="info-item">
+                  <label>Nascimento Estimado:</label>
+                  <p>{dadosAnimal.nascimentoEstimado || 'N/A'}</p>
+                </div>
+              </div>
+              <div className="info-full-width">
+                <label>Descrição:</label>
+                <p>{dadosAnimal.descricao}</p>
+              </div>
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="observacao">Observações Adicionais</label>
