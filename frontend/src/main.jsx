@@ -8,6 +8,7 @@ import CadastroAnimais from './pages/CadastroAnimais';
 import CadastroAbrigo from './pages/CadastroAbrigo';
 import Usuarios from './pages/Usuarios';
 import CadastroUsuarios from './pages/CadastroUsuarios';
+import CadastroSolicitacao from './pages/CadastroSolicitacao';
 import Solicitacoes from './pages/solicitacoes';
 import {PrivateRoute} from './contexts/PrivateRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/cadastro-abrigo" element={<CadastroAbrigo />} />
         <Route path="/usuarios" element={<Usuarios />} />
         <Route path="/solicitacoes" element={<Solicitacoes />} />
+        <Route path="/cadastrar-solicitacao" element={<CadastroSolicitacao />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/login" replace />} />

@@ -14,7 +14,7 @@ function Home() {
   };
 
   const handleCardClick = () => {
-    navigate('/solicitacoes'); 
+    navigate('/cadastrar-solicitacao'); 
   }
 
   return (
