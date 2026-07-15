@@ -64,7 +64,7 @@ const CadastroSolicitacao = () => {
       return;
     }
 
-    const usuarioId = user.id || user.sub;
+    const usuarioId = user.userId || user.sub;
 
     if (!usuarioId) {
       setErro("Erro: Não foi possível identificar seu ID de usuário.");

@@ -1,19 +1,22 @@
 package br.com.ifpb.adotaifpb.config;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
-import jakarta.annotation.PostConstruct;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.function.Function;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.function.Function;
+import br.com.ifpb.adotaifpb.entities.Usuario;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
 
 @Service
 public class JwtService {
@@ -32,6 +35,8 @@ public class JwtService {
     } */
 
     public String generateToken(Authentication authentication) {
+        Usuario usuarioLogado = (Usuario) authentication.getPrincipal();
+
 
         var authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -39,6 +44,7 @@ public class JwtService {
 
         return Jwts.builder()
                 .subject(authentication.getName())
+                .claim("userId", usuarioLogado.getId())
                 .claim("roles", authorities)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() +
