@@ -39,7 +39,19 @@ div.cadastro-solicitacao-page {
   color: #666;
   font-size: 14px;
   line-height: 1.6;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
+}
+
+.usuario-info {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid #c3e6cb;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 form {

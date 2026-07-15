@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cadastrarSolicitacao } from '../services/solicitacaoService';
 import { buscarAnimalPorId } from '../services/animalService';
+import { useAuth } from '../contexts/UseAuth';
 import '../styles/CadastroSolicitacao.css';
 
 const CadastroSolicitacao = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState(null);
   const [carregandoAnimal, setCarregandoAnimal] = useState(false);
@@ -14,7 +16,6 @@ const CadastroSolicitacao = () => {
   
   const [formData, setFormData] = useState({
     animalId: location.state?.animalId || '',
-    usuarioId: '',
     observacao: ''
   });
 
@@ -57,11 +58,24 @@ const CadastroSolicitacao = () => {
     setCarregando(true);
     setErro(null);
 
-    // Monta o payload convertendo os IDs para números
+    if (!user) {
+      setErro("Erro: Usuário não identificado. Por favor, faça login novamente.");
+      setCarregando(false);
+      return;
+    }
+
+    const usuarioId = user.id || user.sub;
+
+    if (!usuarioId) {
+      setErro("Erro: Não foi possível identificar seu ID de usuário.");
+      setCarregando(false);
+      return;
+    }
+
     const payload = {
       animalId: Number(formData.animalId),
-      usuarioId: Number(formData.usuarioId),
-      observacao: formData.observacao
+      usuarioId: Number(usuarioId),
+      observacaoUsuario: formData.observacao
     };
 
     try {
@@ -70,7 +84,7 @@ const CadastroSolicitacao = () => {
       navigate('/solicitacoes');
     } catch (error) {
       console.error("Erro ao criar solicitação:", error);
-      setErro("Erro ao registrar a solicitação. Verifique se os IDs existem no sistema.");
+      setErro("Erro ao registrar a solicitação. Verifique se o animal existe e tente novamente.");
     } finally {
       setCarregando(false);
     }
@@ -80,9 +94,15 @@ const CadastroSolicitacao = () => {
     <div className="cadastro-solicitacao-page">
       <div className="cadastro-solicitacao-container">
         <h1>Nova Solicitação</h1>
-        <p className="cadastro-solicitacao-descricao">
+         <p className="cadastro-solicitacao-descricao">
           Preencha os dados abaixo para registrar o interesse em adotar um animal.
         </p>
+
+        {user && (
+          <div className="usuario-info">
+            ✓ Conectado como: <strong>{user.email || user.sub || 'Usuário'}</strong>
+          </div>
+        )}
 
         {erro && (
           <div className="cadastro-solicitacao-erro">
@@ -92,34 +112,18 @@ const CadastroSolicitacao = () => {
 
         <form onSubmit={handleSubmit}>
           
-          <div className="form-group-row">
-            <div className="form-group half-width">
-              <label htmlFor="animalId">ID do Animal *</label>
-              <input 
-                type="number" 
-                id="animalId" 
-                name="animalId" 
-                value={formData.animalId} 
-                onChange={handleChange}
-                placeholder="Ex: 1"
-                required 
-                min="1"
-              />
-            </div>
-
-            <div className="form-group half-width">
-              <label htmlFor="usuarioId">ID do Adotante *</label>
-              <input 
-                type="number" 
-                id="usuarioId" 
-                name="usuarioId" 
-                value={formData.usuarioId} 
-                onChange={handleChange}
-                placeholder="Ex: 2"
-                required 
-                min="1"
-              />
-            </div>
+          <div className="form-group">
+            <label htmlFor="animalId">ID do Animal *</label>
+            <input 
+              type="number" 
+              id="animalId" 
+              name="animalId" 
+              value={formData.animalId} 
+              onChange={handleChange}
+              placeholder="Ex: 1"
+              required 
+              min="1"
+            />
           </div>
 
           {carregandoAnimal && (
