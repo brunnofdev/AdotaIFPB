@@ -49,3 +49,13 @@ export const inativarVacina = async (id) => {
     throw error;
   }
 };
+
+export const registrarVacinacao = async (dadosVacinacao) => {
+  try {
+    const response = await api.post('/vacinacoes', dadosVacinacao);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao registrar vacinação:", error);
+    throw error;
+  }
+};

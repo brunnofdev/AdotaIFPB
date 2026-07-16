@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buscarAnimalPorId, atualizarAnimal, removerAnimal } from '../services/animalService';
 import { listarAbrigos } from '../services/abrigoService';
+import { listarVacinas, registrarVacinacao } from '../services/vacinaService';
 import '../styles/CadastroAnimais.css';
 
 const EditarAnimal = () => {
@@ -9,11 +10,15 @@ const EditarAnimal = () => {
   const { id } = useParams();
   const [carregando, setCarregando] = useState(true);
   const [carregandoAbrigos, setCarregandoAbrigos] = useState(true);
+  const [carregandoVacinas, setCarregandoVacinas] = useState(true);
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(false);
   const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [abrigos, setAbrigos] = useState([]);
+  const [vacinas, setVacinas] = useState([]);
+  const [erroVacinacao, setErroVacinacao] = useState(null);
+  const [sucessoVacinacao, setSucessoVacinacao] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -28,6 +33,13 @@ const EditarAnimal = () => {
   });
 
   const [arquivoFoto, setArquivoFoto] = useState(null);
+
+  const [formVacinacao, setFormVacinacao] = useState({
+    vacinaId: '',
+    dataAplicacao: '',
+    proximaDose: '',
+    observacoes: ''
+  });
 
   useEffect(() => {
     const carregarDados = async () => {
@@ -68,8 +80,22 @@ const EditarAnimal = () => {
       }
     };
 
+    const carregarVacinas = async () => {
+      try {
+        setCarregandoVacinas(true);
+        const dados = await listarVacinas();
+        setVacinas(dados);
+      } catch (error) {
+        console.error("Erro ao carregar vacinas:", error);
+        setErro("Erro ao carregar a lista de vacinas.");
+      } finally {
+        setCarregandoVacinas(false);
+      }
+    };
+
     carregarDados();
     carregarAbrigos();
+    carregarVacinas();
   }, [id]);
 
   const handleVoltar = () => {
@@ -157,6 +183,56 @@ const EditarAnimal = () => {
       setErro("Erro ao remover o animal. Tente novamente.");
     } finally {
       setEnviando(false);
+    }
+  };
+
+  const handleChangeVacinacao = (e) => {
+    const { name, value } = e.target;
+    setFormVacinacao((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleAdicionarVacinacao = async (e) => {
+    e.preventDefault();
+    setErroVacinacao(null);
+    setSucessoVacinacao(false);
+
+    if (!formVacinacao.vacinaId || !formVacinacao.dataAplicacao) {
+      setErroVacinacao('Vacina e data de aplicação são obrigatórios.');
+      return;
+    }
+
+    const vacinacaoPayload = {
+      animalId: Number(id),
+      vacinaId: Number(formVacinacao.vacinaId),
+      dataAplicacao: formVacinacao.dataAplicacao,
+      proximaDose: formVacinacao.proximaDose || null,
+      observacoes: formVacinacao.observacoes || null
+    };
+
+    try {
+      await registrarVacinacao(vacinacaoPayload);
+      setSucessoVacinacao(true);
+      setFormVacinacao({
+        vacinaId: '',
+        dataAplicacao: '',
+        proximaDose: '',
+        observacoes: ''
+      });
+
+      setTimeout(() => setSucessoVacinacao(false), 3000);
+    } catch (error) {
+      console.error("Erro ao registrar vacinação:", error);
+      const backendError = error.response?.data;
+      let errorMsg = "Erro ao registrar vacinação. Tente novamente.";
+
+      if (backendError && typeof backendError === 'object') {
+        errorMsg = Object.values(backendError)[0] || errorMsg;
+      }
+
+      setErroVacinacao(errorMsg);
     }
   };
 
@@ -314,6 +390,91 @@ const EditarAnimal = () => {
               />
               O animal é castrado?
             </label>
+          </div>
+
+          <div className="form-group">
+            <h3>Vacinação do Animal</h3>
+            
+            {sucessoVacinacao && (
+              <div className="cadastro-animal-sucesso">
+                ✓ Vacinação registrada com sucesso!
+              </div>
+            )}
+
+            {erroVacinacao && (
+              <div className="cadastro-animal-erro">
+                ✗ {erroVacinacao}
+              </div>
+            )}
+
+            <div className="form-group">
+              <label htmlFor="vacinaId">Escolher Vacina *</label>
+              {carregandoVacinas ? (
+                <select id="vacinaId" disabled>
+                  <option value="">Carregando vacinas...</option>
+                </select>
+              ) : (
+                <select
+                  id="vacinaId"
+                  name="vacinaId"
+                  value={formVacinacao.vacinaId}
+                  onChange={handleChangeVacinacao}
+                  disabled={enviando}
+                >
+                  <option value="">Selecione uma vacina...</option>
+                  {vacinas.map((vacina) => (
+                    <option key={vacina.id} value={vacina.id}>
+                      {vacina.nome}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="dataAplicacao">Data de Aplicação *</label>
+              <input
+                type="date"
+                id="dataAplicacao"
+                name="dataAplicacao"
+                value={formVacinacao.dataAplicacao}
+                onChange={handleChangeVacinacao}
+                disabled={enviando}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="proximaDose">Próxima Dose</label>
+              <input
+                type="date"
+                id="proximaDose"
+                name="proximaDose"
+                value={formVacinacao.proximaDose}
+                onChange={handleChangeVacinacao}
+                disabled={enviando}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="observacoes">Observações</label>
+              <textarea
+                id="observacoes"
+                name="observacoes"
+                value={formVacinacao.observacoes}
+                onChange={handleChangeVacinacao}
+                placeholder="Ex: Reação leve, animal apresentou febre..."
+                disabled={enviando}
+              />
+            </div>
+
+            <button
+              type="button"
+              className="btn-adicionar"
+              onClick={handleAdicionarVacinacao}
+              disabled={enviando}
+            >
+              {enviando ? 'Adicionando...' : 'ADICIONAR VACINAÇÃO'}
+            </button>
           </div>
 
           <div className="form-group">
