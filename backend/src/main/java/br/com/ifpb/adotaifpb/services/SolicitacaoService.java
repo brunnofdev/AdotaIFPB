@@ -1,5 +1,6 @@
 package br.com.ifpb.adotaifpb.services;
 
+import br.com.ifpb.adotaifpb.dtos.AdocaoResponseDTO;
 import br.com.ifpb.adotaifpb.dtos.SolicitacaoRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.SolicitacaoResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Adocao;
@@ -56,7 +57,7 @@ public class SolicitacaoService {
     }
 
     @Transactional
-    public void aprovarSolicitacao(Long solicitacaoId) {
+    public AdocaoResponseDTO aprovarSolicitacao(Long solicitacaoId) {
         Solicitacao solicitacaoAprovada = solicitacaoRepository.findById(solicitacaoId)
                 .orElseThrow(() -> new IllegalArgumentException("Solicitação não encontrada."));
 
@@ -82,10 +83,14 @@ public class SolicitacaoService {
             s.setStatus(StatusSolicitacaoEnum.CANCELADA);
             solicitacaoRepository.save(s);
         }
+
         Adocao adocao = new Adocao();
         adocao.setSolicitacao(solicitacaoAprovada);
-        adocaoRepository.save(adocao);
+        Adocao adocaoSalva = adocaoRepository.save(adocao);
+
+        return new AdocaoResponseDTO(adocaoSalva);
     }
+
     public List<SolicitacaoResponseDTO> listarTodas() {
         StatusSolicitacaoEnum status = StatusSolicitacaoEnum.PENDENTE;
         return solicitacaoRepository.findAllByStatus(status).stream().map(SolicitacaoResponseDTO::new).toList();
@@ -116,5 +121,11 @@ public class SolicitacaoService {
 
         solicitacao.setStatus(StatusSolicitacaoEnum.CANCELADA);
         solicitacaoRepository.save(solicitacao);
+    }
+
+    public SolicitacaoResponseDTO buscarPorId(Long id) {
+        Solicitacao solicitacao = solicitacaoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Solicitação não encontrada."));
+        return new SolicitacaoResponseDTO(solicitacao);
     }
 }

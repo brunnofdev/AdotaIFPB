@@ -1,5 +1,6 @@
 package br.com.ifpb.adotaifpb.controllers;
 
+import br.com.ifpb.adotaifpb.dtos.AdocaoResponseDTO;
 import br.com.ifpb.adotaifpb.dtos.SolicitacaoRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.SolicitacaoResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Usuario;
@@ -45,9 +46,9 @@ public class SolicitacaoController {
 
     @PostMapping("/{id}/aprovar")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> aprovar(@PathVariable Long id) {
-        solicitacaoService.aprovarSolicitacao(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<AdocaoResponseDTO> aprovar(@PathVariable Long id) {
+        AdocaoResponseDTO novaAdocao = solicitacaoService.aprovarSolicitacao(id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaAdocao);
     }
 
     @PatchMapping("/{id}/cancelar")
@@ -58,5 +59,11 @@ public class SolicitacaoController {
         solicitacaoService.cancelarSolicitacao(id, usuarioLogado);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SolicitacaoResponseDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(solicitacaoService.buscarPorId(id));
     }
 }

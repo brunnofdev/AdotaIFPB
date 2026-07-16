@@ -39,3 +39,23 @@ export const atualizarStatusSolicitacao = async (id, status) => {
     throw error;
   }
 };
+
+export const aprovarSolicitacao = async (id) => {
+  try {
+    const response = await api.post(`/solicitacoes/${id}/aprovar`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao aprovar solicitação:", error);
+    throw error;
+  }
+};
+
+export const cancelarSolicitacao = async (id) => {
+  try {
+    const response = await api.patch(`/solicitacoes/${id}/cancelar`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao cancelar solicitação:", error);
+    throw error;
+  }
+};

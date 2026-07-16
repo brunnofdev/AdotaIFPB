@@ -12,6 +12,7 @@ import Usuarios from './pages/Usuarios';
 import CadastroUsuarios from './pages/CadastroUsuarios';
 import EditarUsuario from './pages/EditarUsuario';
 import CadastroSolicitacao from './pages/CadastroSolicitacao';
+import EditarSolicitacao from './pages/EditarSolicitacao';
 import Solicitacoes from './pages/solicitacoes';
 import {PrivateRoute} from './contexts/PrivateRoute';
 import { AuthProvider } from './contexts/AuthContext';
@@ -37,6 +38,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/editar-usuario/:id" element={<EditarUsuario />} />
         <Route path="/solicitacoes" element={<Solicitacoes />} />
         <Route path="/cadastrar-solicitacao" element={<CadastroSolicitacao />} />
+        <Route path="/editar-solicitacao/:id" element={<EditarSolicitacao />} />
         </Route>
         
         <Route path="*" element={<Navigate to="/login" replace />} />

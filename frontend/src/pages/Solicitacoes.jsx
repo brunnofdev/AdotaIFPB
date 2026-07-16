@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { listarSolicitacoes, atualizarStatusSolicitacao } from '../services/solicitacaoService';
+import { listarSolicitacoes } from '../services/solicitacaoService';
 import '../styles/Solicitacoes.css';
 
 const Solicitacoes = () => {
@@ -32,23 +32,8 @@ const Solicitacoes = () => {
     }
   };
 
-  const handleConfirmarAdocao = async (idSolicitacao, nomeAnimal) => {
-    const confirmar = window.confirm(`Deseja aprovar rapidamente o status da solicitação do animal ${nomeAnimal}?`);
-    
-    if (!confirmar) return;
-
-    try {
-      await atualizarStatusSolicitacao(idSolicitacao, 'APROVADA');
-      alert('Status atualizado para APROVADA com sucesso!');
-      carregarSolicitacoes();
-    } catch (err) {
-      console.error("Erro ao confirmar adoção:", err);
-      alert('Erro ao confirmar a adoção. Tente novamente.');
-    }
-  };
-
-  const handleAceitar = (id) => {
-    navigate(`/confirmar-adocao/${id}`);
+  const handleVisualizar = (id) => {
+    navigate(`/editar-solicitacao/${id}`);
   };
 
   const handleVoltar = () => {
@@ -90,19 +75,11 @@ const Solicitacoes = () => {
                 {solicitacao.status !== 'APROVADA' && (
                   <div className="card-actions">
                     <button 
-                      className="btn-aprovar" 
-                      onClick={() => handleConfirmarAdocao(solicitacao.id, solicitacao.nomeAnimal)}
-                      title="Aprovar status rapidamente"
+                      className="btn-visualizar" 
+                      onClick={() => handleVisualizar(solicitacao.id)}
+                      title="Visualizar detalhes da solicitação"
                     >
-                      Aprovar
-                    </button>
-
-                    <button 
-                      className="btn-gerar-adocao" 
-                      onClick={() => handleAceitar(solicitacao.id)}
-                      title="Ir para o formulário de adoção"
-                    >
-                      Rejeitar
+                      Visualizar
                     </button>
                   </div>
                 )}
