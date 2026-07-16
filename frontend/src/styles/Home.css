@@ -191,3 +191,68 @@
   background-color: #004c00;
   color: #fff;
 }
+
+.card-section-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.search-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  padding: 0 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 25px; /* Deixa arredondado como os botões */
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.search-input:focus {
+  border-color: #004c00;
+  box-shadow: 0 0 8px rgba(0, 76, 0, 0.2);
+}
+
+/* Reutilizando classes de paginação parecidas com Animais.css */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+.pagination-info {
+  font-weight: bold;
+  color: #333;
+}
+
+/* Modificador do botão de card padrão para ser usado na paginação */
+.pagination-btn {
+  width: auto;
+  padding: 8px 20px;
+  margin: 0;
+}
+
+.pagination-btn:disabled {
+  border-color: #ccc;
+  color: #ccc;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+
+.empty-text {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: #666;
+}

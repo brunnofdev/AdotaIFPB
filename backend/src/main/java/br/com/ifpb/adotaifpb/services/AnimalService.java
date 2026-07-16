@@ -45,8 +45,14 @@ public class AnimalService {
         return new AnimalResponseDTO(animal);
     }
 
-    public List<AnimalResponseDTO> listarAnimaisDisponiveis() {
+    public List<AnimalResponseDTO> listarAnimaisAtivos() {
         return animalRepository.findByAtivoTrue().stream()
+                .map(AnimalResponseDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    public List<AnimalResponseDTO> listarApenasDisponiveis() {
+        return animalRepository.findByAtivoTrueAndStatus(StatusAnimalEnum.DISPONIVEL).stream()
                 .map(AnimalResponseDTO::new)
                 .collect(Collectors.toList());
     }

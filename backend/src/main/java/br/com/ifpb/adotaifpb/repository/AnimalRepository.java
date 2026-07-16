@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     List<Animal> findByAtivoTrue();
+
+    List<Animal> findByAtivoTrueAndStatus(StatusAnimalEnum status);
 }

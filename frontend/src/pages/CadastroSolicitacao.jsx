@@ -19,12 +19,6 @@ const CadastroSolicitacao = () => {
     observacao: ''
   });
 
-  useEffect(() => {
-    if (formData.animalId) {
-      carregarDadosAnimal(formData.animalId);
-    }
-  }, [formData.animalId]);
-
   const carregarDadosAnimal = async (animalId) => {
     setCarregandoAnimal(true);
     setErro(null);
@@ -39,6 +33,13 @@ const CadastroSolicitacao = () => {
       setCarregandoAnimal(false);
     }
   };
+
+  useEffect(() => {
+    if (formData.animalId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      carregarDadosAnimal(formData.animalId);
+    }
+  }, [formData.animalId]);
 
   const handleVoltar = () => {
     navigate('/home');
@@ -122,6 +123,7 @@ const CadastroSolicitacao = () => {
               onChange={handleChange}
               placeholder="Ex: 1"
               required 
+              disabled
               min="1"
             />
           </div>

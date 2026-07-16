@@ -32,7 +32,12 @@ public class AnimalController {
 
     @GetMapping
     public ResponseEntity<List<AnimalResponseDTO>> listarDisponiveis() {
-        return ResponseEntity.ok(animalService.listarAnimaisDisponiveis());
+        return ResponseEntity.ok(animalService.listarAnimaisAtivos());
+    }
+    
+    @GetMapping("/disponiveis")
+    public ResponseEntity<List<AnimalResponseDTO>> listarApenasDisponiveis() {
+        return ResponseEntity.ok(animalService.listarApenasDisponiveis());
     }
 
     @GetMapping("/{id}")

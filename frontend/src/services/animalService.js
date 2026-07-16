@@ -23,6 +23,16 @@ export const listarAnimais = async () => {
   }
 };
 
+export const listarAnimaisDisponiveis = async () => {
+  try {
+    const response = await api.get('/animais/disponiveis');
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar animais disponíveis:", error);
+    throw error;
+  }
+};
+
 export const buscarAnimalPorId = async (id) => {
   try {
     const response = await api.get(`/animais/${id}`);
