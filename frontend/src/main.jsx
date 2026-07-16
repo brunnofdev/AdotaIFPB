@@ -9,6 +9,7 @@ import EditarAnimal from './pages/EditarAnimal';
 import CadastroAbrigo from './pages/CadastroAbrigo';
 import Usuarios from './pages/Usuarios';
 import CadastroUsuarios from './pages/CadastroUsuarios';
+import EditarUsuario from './pages/EditarUsuario';
 import CadastroSolicitacao from './pages/CadastroSolicitacao';
 import Solicitacoes from './pages/solicitacoes';
 import {PrivateRoute} from './contexts/PrivateRoute';
@@ -31,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/editar-animal/:id" element={<EditarAnimal />} />
         <Route path="/cadastro-abrigo" element={<CadastroAbrigo />} />
         <Route path="/usuarios" element={<Usuarios />} />
+        <Route path="/editar-usuario/:id" element={<EditarUsuario />} />
         <Route path="/solicitacoes" element={<Solicitacoes />} />
         <Route path="/cadastrar-solicitacao" element={<CadastroSolicitacao />} />
         </Route>

@@ -27,7 +27,7 @@
 
 /* 3. Botão de Remover (Tabela) */
 .btn-danger-sm {
-  background-color: #dc3545;
+  background-color: #3F9CFF;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -38,9 +38,6 @@
   transition: background-color 0.2s;
 }
 
-.btn-danger-sm:hover {
-  background-color: #c82333;
-}
 
 /* 4. Container principal de conteúdo */
 .usuarios-content {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { listarUsuarios, removerUsuario } from '../services/userService';
+import { listarUsuarios } from '../services/userService';
 import '../styles/Home.css';
 import '../styles/Usuarios.css';
 import '../styles/Button.css'
@@ -38,20 +38,8 @@ function Usuarios() {
     navigate('/login');
   };
 
-  // Função para lidar com a exclusão (Soft Delete)
-  const handleRemover = async (id, nome) => {
-    const confirmar = window.confirm(`Deseja realmente inativar o usuário ${nome}?`);
-    if (!confirmar) return;
-
-    try {
-      await removerUsuario(id);
-      // Atualiza a lista localmente
-      setUsuarios((prevUsuarios) => prevUsuarios.filter((usuario) => usuario.id !== id));
-      alert("Usuário removido com sucesso!");
-    } catch (error) {
-      console.error("Erro ao remover usuário:", error);
-      alert("Erro ao remover o usuário. Tente novamente.");
-    }
+  const handleEditar = (id) => {
+    navigate(`/editar-usuario/${id}`);
   };
 
   return (
@@ -120,10 +108,10 @@ function Usuarios() {
                       <td>
                         <button 
                           className="btn-danger-sm" 
-                          onClick={() => handleRemover(usuario.id, usuario.nome)}
-                          title="Remover Usuário"
+                          onClick={() => handleEditar(usuario.id)}
+                          title="Editar/Remover Usuário"
                         >
-                          Remover
+                          Editar
                         </button>
                       </td>
                     </tr>
