@@ -112,6 +112,22 @@
   transition: background-color 0.3s;
 }
 
+.btn-visualizar{
+  flex: 1; /* Faz os botões dividirem o espaço igualmente */
+  padding: 10px;
+  background-color: #004c00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-visualizar:hover{
+  background-color: #012e01;
+}
+
 .btn-aprovar:hover {
   background-color: #003300;
 }

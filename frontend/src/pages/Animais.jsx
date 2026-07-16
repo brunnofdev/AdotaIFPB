@@ -12,7 +12,7 @@ function Animais() {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const ITENS_POR_PAGINA = 5;
 
-  
+
   useEffect(() => {
     carregarAnimais();
   }, []);
@@ -51,7 +51,6 @@ function Animais() {
     navigate(`/editar-animal/${id}`);
   };
 
-  // Formatar o YearMonth (YYYY-MM) para MM/YYYY
   const formatarNascimento = (dataString) => {
     if (!dataString) return '-';
     const [ano, mes] = dataString.split('-');

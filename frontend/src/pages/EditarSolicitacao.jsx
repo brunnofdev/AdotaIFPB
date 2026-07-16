@@ -120,6 +120,7 @@ const EditarSolicitacao = () => {
     <div className="editar-solicitacao-page">
       <div className="editar-solicitacao-container">
         <h1>Detalhes da Solicitação</h1>
+        <p>Segue abaixo os detalhes da solicitação</p>
 
         {sucesso && (
           <div className="editar-solicitacao-sucesso">
@@ -262,7 +263,7 @@ const EditarSolicitacao = () => {
               onClick={handleCancelar}
               disabled={enviando}
             >
-              {enviando ? 'Cancelando...' : 'CANCELAR'}
+              {enviando ? 'Cancelando...' : 'REPROVAR'}
             </button>
             <button
               className="btn-voltar"

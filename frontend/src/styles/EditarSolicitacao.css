@@ -1,10 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+
 .editar-solicitacao-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #004c00;
   padding: 40px 20px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  font-family: "Plus Jakarta Sans", sans-serif;
 }
 
 .editar-solicitacao-container {
@@ -71,7 +75,7 @@
 }
 
 .secao-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #004c00;
   color: white;
   padding: 15px 20px;
   cursor: pointer;
@@ -83,7 +87,7 @@
 }
 
 .secao-header:hover {
-  background: linear-gradient(135deg, #5568d3 0%, #6a3b8a 100%);
+  background-color: #012e01;
 }
 
 .secao-header h2 {
@@ -134,7 +138,7 @@
   margin: 0;
   padding: 8px 12px;
   background: white;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid #004c00;
   border-radius: 4px;
   font-size: 1em;
 }
@@ -170,6 +174,7 @@
 .informacoes-usuario,
 .informacoes-solicitacao {
   background: white;
+  border: none;
 }
 
 /* Form Group */
@@ -192,7 +197,6 @@
   padding: 12px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 1em;
   color: #666;
   background: #f9f9f9;
@@ -236,8 +240,7 @@
 }
 
 .btn-aprovar:hover:not(:disabled) {
-  background-color: #218838;
-  transform: translateY(-2px);
+  background-color: #012e01;
   box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
 }
 
@@ -247,8 +250,7 @@
 }
 
 .btn-cancelar:hover:not(:disabled) {
-  background-color: #c82333;
-  transform: translateY(-2px);
+  background-color: #611119;
   box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
 }
 
@@ -259,7 +261,6 @@
 
 .btn-voltar:hover:not(:disabled) {
   background-color: #5a6268;
-  transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
 }
 

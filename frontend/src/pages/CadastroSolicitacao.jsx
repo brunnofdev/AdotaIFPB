@@ -41,7 +41,7 @@ const CadastroSolicitacao = () => {
   };
 
   const handleVoltar = () => {
-    navigate('/solicitacoes');
+    navigate('/home');
   };
 
   const handleChange = (e) => {
@@ -81,7 +81,7 @@ const CadastroSolicitacao = () => {
     try {
       await cadastrarSolicitacao(payload);
       alert('Solicitação criada com sucesso!');
-      navigate('/solicitacoes');
+      navigate('/home');
     } catch (error) {
       console.error("Erro ao criar solicitação:", error);
       setErro("Erro ao registrar a solicitação. Verifique se o animal existe e tente novamente.");
