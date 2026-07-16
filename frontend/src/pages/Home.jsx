@@ -16,7 +16,7 @@ function Home() {
 
       <div className="content-wrapper">
         <div className="user-info">
-          <p> O Brasik Junior </p>
+          <p></p>
         </div>
         <div className="adota-dashboard">
           <h1 className="main-title">Bem-vindo ao AdotaIFPB!</h1>

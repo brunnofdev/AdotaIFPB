@@ -29,27 +29,30 @@ export function Card({ onClick }) {
         <div className="animal-card-container">
             {animais.map((animal) => (
                 <div key={animal.id} className="animal-card" onClick={() => onClick && onClick(animal.id)}>
-                    
                     {animal.urlFoto ? (
                         <img 
                             src={animal.urlFoto} 
                             alt={`Foto de ${animal.nome}`} 
                             className="card-image"
-                            style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '8px 8px 0 0' }}
                         />
                     ) : (
-                        <div style={{ width: '100%', height: '200px', backgroundColor: '#e0e0e0', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px 8px 0 0' }}>
+                        <div className="card-no-photo">
                             <span>Sem foto</span>
                         </div>
                     )}
-                    
-                    <div className="card-content" style={{ padding: '15px' }}>
-                        <h3 className="card-title">{animal.nome}</h3>
-                        <p className="card-description">
-                            <strong>Espécie:</strong> {animal.especie}<br />
-                            <strong>Sexo:</strong> {animal.sexoAnimal}
-                        </p>
-                        <button className="card-button">Quero adotar</button>
+
+                    <div className="card-content">
+                        <div>
+                            <h3 className="card-title">{animal.nome}</h3>
+                            <p className="card-description">
+                                <strong>Espécie:</strong> {animal.especie}<br />
+                                <strong>Sexo:</strong> {animal.sexoAnimal}
+                            </p>
+                        </div>
+
+                        <div className="card-actions">
+                            <button className="card-button">Quero adotar</button>
+                        </div>
                     </div>
                 </div>
             ))}

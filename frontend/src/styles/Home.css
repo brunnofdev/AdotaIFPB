@@ -6,7 +6,8 @@
   font-family: "Plus Jakarta Sans", sans-serif;
   min-height: 100vh;
   background-color: #ebe8e8;
-  overflow: hidden;
+  /* allow vertical scrolling when content overflows */
+  overflow-y: auto;
 }
 
 /* Estilização da Navbar */
@@ -97,29 +98,79 @@
   color: #000;
   padding-top: 50px;
   background-color: #fff;
-  height: calc(100vh - 60px); /* Ajuste para ocupar a altura restante da tela */
+  /* let the dashboard grow with content and still try to fill viewport */
+  min-height: calc(100vh - 60px);
   border-radius: 8px 8px 0 0;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 65vw;
 }
 
-.animal-card{
-    display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Cria exatamente 3 colunas de larguras iguais */
-  justify-items: center; /* Centraliza cada card dentro de sua respectiva coluna */
+.adota-dashboard h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg,rgba(0, 76, 0, 1) 0%, rgba(105, 242, 87, 1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.animal-card-content {
-  display:flex;
-  flex-direction: column;
-  border: 1px solid #004c00;
-  border-radius: 8px;
+.animal-card-container{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cards por linha */
+  gap: 20px;
   padding: 20px;
-  margin: 10px;
-  text-align: center;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 16.5rem;
+}
+
+.animal-card{ /* individual card */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.card-content {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Styles moved from Card.jsx */
+.animal-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+}
+
+.card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-no-photo {
+  width: 100%;
+  height: 180px;
+  background-color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-title {
+  margin: 0;
+}
+
+.card-description {
+  margin: 8px 0 0;
+}
+
+.card-actions {
+  margin-top: auto;
 }
 
 
@@ -128,7 +179,7 @@
   border: 1px solid #004c00;
   color: #004c00;
   background-color: transparent;
-  width: 80%;
+  width: 10rem;
   padding: 10px;
   margin: 10px auto;
   border-radius: 20px;
