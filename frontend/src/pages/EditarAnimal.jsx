@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buscarAnimalPorId, atualizarAnimal, removerAnimal } from '../services/animalService';
+import { listarAbrigos } from '../services/abrigoService';
 import '../styles/CadastroAnimais.css';
 
 const EditarAnimal = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [carregando, setCarregando] = useState(true);
+  const [carregandoAbrigos, setCarregandoAbrigos] = useState(true);
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(false);
   const [mensagemSucesso, setMensagemSucesso] = useState('');
+  const [abrigos, setAbrigos] = useState([]);
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -26,7 +29,7 @@ const EditarAnimal = () => {
   });
 
   useEffect(() => {
-    const carregarAnimal = async () => {
+    const carregarDados = async () => {
       try {
         setCarregando(true);
         setErro(null);
@@ -52,7 +55,21 @@ const EditarAnimal = () => {
       }
     };
 
-    carregarAnimal();
+    const carregarAbrigos = async () => {
+      try {
+        setCarregandoAbrigos(true);
+        const dados = await listarAbrigos();
+        setAbrigos(dados);
+      } catch (error) {
+        console.error("Erro ao carregar abrigos:", error);
+        setErro("Erro ao carregar a lista de abrigos.");
+      } finally {
+        setCarregandoAbrigos(false);
+      }
+    };
+
+    carregarDados();
+    carregarAbrigos();
   }, [id]);
 
   const handleVoltar = () => {
@@ -252,17 +269,28 @@ const EditarAnimal = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="abrigoId">ID do Abrigo *</label>
-            <input
-              type="number"
-              id="abrigoId"
-              name="abrigoId"
-              value={formData.abrigoId}
-              onChange={handleChange}
-              placeholder="Ex: 1"
-              required
-              disabled={enviando}
-            />
+            <label htmlFor="abrigoId">Abrigo *</label>
+            {carregandoAbrigos ? (
+              <select id="abrigoId" disabled>
+                <option value="">Carregando abrigos...</option>
+              </select>
+            ) : (
+              <select
+                id="abrigoId"
+                name="abrigoId"
+                value={formData.abrigoId}
+                onChange={handleChange}
+                required
+                disabled={enviando}
+              >
+                <option value="">Selecione um abrigo...</option>
+                {abrigos.map((abrigo) => (
+                  <option key={abrigo.id} value={abrigo.id}>
+                    {abrigo.nome}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="form-group checkbox-group">

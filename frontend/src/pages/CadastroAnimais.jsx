@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarAnimal } from '../services/animalService';
+import { listarAbrigos } from '../services/abrigoService';
 import '../styles/CadastroAnimais.css';
 
 const CadastroAnimais = () => {
   const navigate = useNavigate();
   const [carregando, setCarregando] = useState(false);
+  const [carregandoAbrigos, setCarregandoAbrigos] = useState(true);
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(false);
+  const [abrigos, setAbrigos] = useState([]);
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -21,6 +24,23 @@ const CadastroAnimais = () => {
     castrado: false,
     fotoUrl: ''
   });
+
+  useEffect(() => {
+    const carregarAbrigos = async () => {
+      try {
+        setCarregandoAbrigos(true);
+        const dados = await listarAbrigos();
+        setAbrigos(dados);
+      } catch (error) {
+        console.error("Erro ao carregar abrigos:", error);
+        setErro("Erro ao carregar a lista de abrigos.");
+      } finally {
+        setCarregandoAbrigos(false);
+      }
+    };
+
+    carregarAbrigos();
+  }, []);
 
   const handleVoltar = () => {
     navigate('/animais');
@@ -177,16 +197,27 @@ const CadastroAnimais = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="abrigoId">ID do Abrigo *</label>
-            <input
-              type="number"
-              id="abrigoId"
-              name="abrigoId"
-              value={formData.abrigoId}
-              onChange={handleChange}
-              placeholder="Ex: 1"
-              required
-            />
+            <label htmlFor="abrigoId">Abrigo *</label>
+            {carregandoAbrigos ? (
+              <select id="abrigoId" disabled>
+                <option value="">Carregando abrigos...</option>
+              </select>
+            ) : (
+              <select
+                id="abrigoId"
+                name="abrigoId"
+                value={formData.abrigoId}
+                onChange={handleChange}
+                required
+              >
+                <option value="">Selecione um abrigo...</option>
+                {abrigos.map((abrigo) => (
+                  <option key={abrigo.id} value={abrigo.id}>
+                    {abrigo.nome}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           <div className="form-group checkbox-group">
