@@ -54,7 +54,7 @@ public class Animal {
 
     private boolean castrado;
 
-    @Column(name = "url_foto") // foto principal
+    @Column(name = "url_foto")
     private String urlFoto;
 
     @OneToMany(mappedBy = "animal")

@@ -4,7 +4,6 @@ import br.com.ifpb.adotaifpb.dtos.AnimalRequestDTO;
 import br.com.ifpb.adotaifpb.dtos.AnimalResponseDTO;
 import br.com.ifpb.adotaifpb.entities.Abrigo;
 import br.com.ifpb.adotaifpb.entities.Animal;
-import br.com.ifpb.adotaifpb.entities.FotoAnimal;
 import br.com.ifpb.adotaifpb.repository.AbrigoRepository;
 import br.com.ifpb.adotaifpb.repository.AnimalRepository;
 import br.com.ifpb.adotaifpb.utils.StatusAnimalEnum;
@@ -68,8 +67,8 @@ public class AnimalService {
 
         converterAnimalDTO(dto, animal, abrigo);
 
-        // Atualiza a foto apenas se uma nova imagem for enviada no formulário
         if (arquivoFoto != null && !arquivoFoto.isEmpty()) {
+            apagarFoto(animal.getUrlFoto());
             salvarEAtribuirFoto(arquivoFoto, animal);
         }
 
@@ -115,6 +114,17 @@ public class AnimalService {
 
             } catch (IOException e) {
                 throw new RuntimeException("Erro ao salvar a imagem do animal", e);
+            }
+        }
+    }
+    private void apagarFoto(String urlFoto) {
+        if (urlFoto != null && urlFoto.contains("/uploads/")) {
+            try {
+                String nomeArquivo = urlFoto.substring(urlFoto.lastIndexOf("/") + 1);
+                Path caminhoArquivo = Paths.get("uploads").resolve(nomeArquivo);
+                Files.deleteIfExists(caminhoArquivo);
+            } catch (IOException e) {
+                System.err.println("Erro ao apagar a foto antiga: " + e.getMessage());
             }
         }
     }
