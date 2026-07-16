@@ -36,6 +36,10 @@ function Animais() {
     navigate('/cadastro-abrigo');
   };
 
+  const handleNovaVacina = () => {
+    navigate('/cadastro-vacina');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('usuario_autenticado');
     navigate('/login');
@@ -74,6 +78,9 @@ function Animais() {
             </button>
             <button className="btn secondary" onClick={handleNovoAbrigo}>
               Novo Abrigo
+            </button>
+            <button className="btn secondary" onClick={handleNovaVacina}>
+              Nova Vacina
             </button>
           </div>
         </div>

@@ -7,6 +7,7 @@ import Animais from './pages/Animais';
 import CadastroAnimais from './pages/CadastroAnimais';
 import EditarAnimal from './pages/EditarAnimal';
 import CadastroAbrigo from './pages/CadastroAbrigo';
+import CadastroVacina from './pages/CadastroVacina';
 import Usuarios from './pages/Usuarios';
 import CadastroUsuarios from './pages/CadastroUsuarios';
 import EditarUsuario from './pages/EditarUsuario';
@@ -31,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/cadastro-animais" element={<CadastroAnimais />} />
         <Route path="/editar-animal/:id" element={<EditarAnimal />} />
         <Route path="/cadastro-abrigo" element={<CadastroAbrigo />} />
+        <Route path="/cadastro-vacina" element={<CadastroVacina />} />
         <Route path="/usuarios" element={<Usuarios />} />
         <Route path="/editar-usuario/:id" element={<EditarUsuario />} />
         <Route path="/solicitacoes" element={<Solicitacoes />} />
