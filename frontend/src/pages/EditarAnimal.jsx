@@ -4,21 +4,18 @@ import { buscarAnimalPorId, atualizarAnimal, removerAnimal } from '../services/a
 import { listarAbrigos } from '../services/abrigoService';
 import { listarVacinas, registrarVacinacao } from '../services/vacinaService';
 import '../styles/CadastroAnimais.css';
+import toast from 'react-hot-toast';
 
 const EditarAnimal = () => {
+  const [vacinacoes, setVacinacoes] = useState([]);
   const navigate = useNavigate();
   const { id } = useParams();
   const [carregando, setCarregando] = useState(true);
   const [carregandoAbrigos, setCarregandoAbrigos] = useState(true);
   const [carregandoVacinas, setCarregandoVacinas] = useState(true);
   const [enviando, setEnviando] = useState(false);
-  const [erro, setErro] = useState(null);
-  const [sucesso, setSucesso] = useState(false);
-  const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [abrigos, setAbrigos] = useState([]);
   const [vacinas, setVacinas] = useState([]);
-  const [erroVacinacao, setErroVacinacao] = useState(null);
-  const [sucessoVacinacao, setSucessoVacinacao] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -45,7 +42,7 @@ const EditarAnimal = () => {
     const carregarDados = async () => {
       try {
         setCarregando(true);
-        setErro(null);
+        
         const animal = await buscarAnimalPorId(id);
 
         setFormData({
@@ -59,9 +56,10 @@ const EditarAnimal = () => {
           peso: animal.peso || '',
           castrado: animal.castrado || false
         });
+        setVacinacoes(animal.historicoVacinacoes || []); 
       } catch (error) {
         console.error("Erro ao carregar animal:", error);
-        setErro("Erro ao carregar os dados do animal. Tente novamente.");
+        toast.error("Erro ao carregar os dados do animal. Tente novamente.");
       } finally {
         setCarregando(false);
       }
@@ -74,7 +72,7 @@ const EditarAnimal = () => {
         setAbrigos(dados);
       } catch (error) {
         console.error("Erro ao carregar abrigos:", error);
-        setErro("Erro ao carregar a lista de abrigos.");
+        toast.error("Erro ao carregar a lista de abrigos.");
       } finally {
         setCarregandoAbrigos(false);
       }
@@ -87,7 +85,7 @@ const EditarAnimal = () => {
         setVacinas(dados);
       } catch (error) {
         console.error("Erro ao carregar vacinas:", error);
-        setErro("Erro ao carregar a lista de vacinas.");
+        toast.error("Erro ao carregar a lista de vacinas.");
       } finally {
         setCarregandoVacinas(false);
       }
@@ -113,8 +111,6 @@ const EditarAnimal = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setEnviando(true);
-    setErro(null);
-    setSucesso(false);
 
     const animalPayload = {
       nome: formData.nome,
@@ -140,8 +136,7 @@ const EditarAnimal = () => {
 
     try {
       await atualizarAnimal(id, formDataToSend);
-      setSucesso(true);
-      setMensagemSucesso('Animal atualizado com sucesso! Redirecionando...');
+      toast.success('Animal atualizado com sucesso! Redirecionando...');
 
       setTimeout(() => {
         navigate('/animais');
@@ -155,7 +150,7 @@ const EditarAnimal = () => {
         errorMsg = Object.values(backendError)[0];
       }
 
-      setErro(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setEnviando(false);
     }
@@ -168,19 +163,17 @@ const EditarAnimal = () => {
     if (!confirmar) return;
 
     setEnviando(true);
-    setErro(null);
 
     try {
       await removerAnimal(id);
-      setSucesso(true);
-      setMensagemSucesso('Animal removido com sucesso! Redirecionando...');
+      toast.success('Animal removido com sucesso! Redirecionando...');
 
       setTimeout(() => {
         navigate('/animais');
       }, 1500);
     } catch (error) {
       console.error("Erro ao remover animal:", error);
-      setErro("Erro ao remover o animal. Tente novamente.");
+      toast.error("Erro ao remover o animal. Tente novamente.");
     } finally {
       setEnviando(false);
     }
@@ -196,11 +189,9 @@ const EditarAnimal = () => {
 
   const handleAdicionarVacinacao = async (e) => {
     e.preventDefault();
-    setErroVacinacao(null);
-    setSucessoVacinacao(false);
 
     if (!formVacinacao.vacinaId || !formVacinacao.dataAplicacao) {
-      setErroVacinacao('Vacina e data de aplicação são obrigatórios.');
+      toast.error('Vacina e data de aplicação são obrigatórios.');
       return;
     }
 
@@ -214,15 +205,13 @@ const EditarAnimal = () => {
 
     try {
       await registrarVacinacao(vacinacaoPayload);
-      setSucessoVacinacao(true);
+      toast.success('Vacinação registrada com sucesso!');
       setFormVacinacao({
         vacinaId: '',
         dataAplicacao: '',
         proximaDose: '',
         observacoes: ''
       });
-
-      setTimeout(() => setSucessoVacinacao(false), 3000);
     } catch (error) {
       console.error("Erro ao registrar vacinação:", error);
       const backendError = error.response?.data;
@@ -232,7 +221,7 @@ const EditarAnimal = () => {
         errorMsg = Object.values(backendError)[0] || errorMsg;
       }
 
-      setErroVacinacao(errorMsg);
+      toast.error(errorMsg);
     }
   };
 
@@ -254,21 +243,10 @@ const EditarAnimal = () => {
           Atualize os dados do animal ou remova-o do sistema.
         </p>
 
-        {sucesso && (
-          <div className="cadastro-animal-sucesso">
-            ✓ {mensagemSucesso}
-          </div>
-        )}
-
-        {erro && (
-          <div className="cadastro-animal-erro">
-            ✗ {erro}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="nome">Nome do Animal *</label>
+            <label htmlFor="nome">Nome do Animal</label>
             <input
               type="text"
               id="nome"
@@ -276,19 +254,17 @@ const EditarAnimal = () => {
               value={formData.nome}
               onChange={handleChange}
               placeholder="Ex: Max"
-              required
               disabled={enviando}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="especie">Espécie *</label>
+            <label htmlFor="especie">Espécie</label>
             <select
               id="especie"
               name="especie"
               value={formData.especie}
               onChange={handleChange}
-              required
               disabled={enviando}
             >
               <option value="">Selecione...</option>
@@ -298,13 +274,12 @@ const EditarAnimal = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="sexoAnimal">Sexo *</label>
+            <label htmlFor="sexoAnimal">Sexo</label>
             <select
               id="sexoAnimal"
               name="sexoAnimal"
               value={formData.sexoAnimal}
               onChange={handleChange}
-              required
               disabled={enviando}
             >
               <option value="">Selecione...</option>
@@ -348,13 +323,12 @@ const EditarAnimal = () => {
               name="nascimentoEstimado"
               value={formData.nascimentoEstimado}
               onChange={handleChange}
-              required
               disabled={enviando}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="abrigoId">Abrigo *</label>
+            <label htmlFor="abrigoId">Abrigo</label>
             {carregandoAbrigos ? (
               <select id="abrigoId" disabled>
                 <option value="">Carregando abrigos...</option>
@@ -365,7 +339,6 @@ const EditarAnimal = () => {
                 name="abrigoId"
                 value={formData.abrigoId}
                 onChange={handleChange}
-                required
                 disabled={enviando}
               >
                 <option value="">Selecione um abrigo...</option>
@@ -395,20 +368,9 @@ const EditarAnimal = () => {
           <div className="form-group">
             <h3>Vacinação do Animal</h3>
             
-            {sucessoVacinacao && (
-              <div className="cadastro-animal-sucesso">
-                ✓ Vacinação registrada com sucesso!
-              </div>
-            )}
-
-            {erroVacinacao && (
-              <div className="cadastro-animal-erro">
-                ✗ {erroVacinacao}
-              </div>
-            )}
 
             <div className="form-group">
-              <label htmlFor="vacinaId">Escolher Vacina *</label>
+              <label htmlFor="vacinaId">Escolher Vacina</label>
               {carregandoVacinas ? (
                 <select id="vacinaId" disabled>
                   <option value="">Carregando vacinas...</option>
@@ -432,7 +394,7 @@ const EditarAnimal = () => {
             </div>
 
             <div className="form-group">
-              <label htmlFor="dataAplicacao">Data de Aplicação *</label>
+              <label htmlFor="dataAplicacao">Data de Aplicação</label>
               <input
                 type="date"
                 id="dataAplicacao"
@@ -469,12 +431,43 @@ const EditarAnimal = () => {
 
             <button
               type="button"
-              className="btn-adicionar"
+              className="btn-cadastrar"
               onClick={handleAdicionarVacinacao}
               disabled={enviando}
             >
               {enviando ? 'Adicionando...' : 'ADICIONAR VACINAÇÃO'}
             </button>
+            
+              {vacinacoes.length > 0 && (
+              <div className="vacinacoes-lista">
+                <h3>Histórico de Vacinações</h3>
+                <div className="vacinacoes-grid">
+                  {vacinacoes.map((vacinacao, index) => (
+                    <div key={vacinacao.id || index} className="vacinacao-card">
+                      <h4>{vacinacao.vacina?.nome || 'Vacina'}</h4>
+                      <p>
+                        <strong>Data de Aplicação:</strong> {
+                          vacinacao.dataAplicacao 
+                            ? new Date(vacinacao.dataAplicacao).toLocaleDateString('pt-BR')
+                            : 'N/A'
+                        }
+                      </p>
+                      {vacinacao.proximaDose && (
+                        <p>
+                          <strong>Próxima Dose:</strong> {new Date(vacinacao.proximaDose).toLocaleDateString('pt-BR')}
+                        </p>
+                      )}
+                      {vacinacao.observacoes && (
+                        <p>
+                          <strong>Observações:</strong> {vacinacao.observacoes}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
           </div>
 
           <div className="form-group">
@@ -490,14 +483,13 @@ const EditarAnimal = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="descricao">Descrição *</label>
+            <label htmlFor="descricao">Descrição</label>
             <textarea
               id="descricao"
               name="descricao"
               value={formData.descricao}
               onChange={handleChange}
               placeholder="Ex: Animal dócil e amigável..."
-              required
               disabled={enviando}
             />
           </div>

@@ -16,11 +16,14 @@ import EditarSolicitacao from './pages/EditarSolicitacao';
 import Solicitacoes from './pages/solicitacoes';
 import {PrivateRoute} from './contexts/PrivateRoute';
 import { AuthProvider } from './contexts/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
+    <Toaster/>
     <BrowserRouter>
+
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         

@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarAnimal } from '../services/animalService';
 import { listarAbrigos } from '../services/abrigoService';
+import toast from 'react-hot-toast';
 import '../styles/CadastroAnimais.css';
 
 const CadastroAnimais = () => {
   const navigate = useNavigate();
   const [carregando, setCarregando] = useState(false);
   const [carregandoAbrigos, setCarregandoAbrigos] = useState(true);
-  const [erro, setErro] = useState(null);
-  const [sucesso, setSucesso] = useState(false);
   const [abrigos, setAbrigos] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -34,7 +33,7 @@ const CadastroAnimais = () => {
         setAbrigos(dados);
       } catch (error) {
         console.error("Erro ao carregar abrigos:", error);
-        setErro("Erro ao carregar a lista de abrigos.");
+        toast.error("Erro ao carregar a lista de abrigos.");
       } finally {
         setCarregandoAbrigos(false);
       }
@@ -57,9 +56,20 @@ const CadastroAnimais = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!formData.nome.trim() || !formData.especie.trim() || !formData.sexoAnimal.trim() || 
+        !formData.abrigoId.trim() || !formData.descricao.trim() || !formData.nascimentoEstimado.trim()) {
+      toast.error('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    if (!arquivoFoto) {
+      toast.error('Por favor, selecione uma foto para o animal.');
+      return;
+    }
+
     setCarregando(true);
-    setErro(null);
-    setSucesso(false);
+    
 
     const animalPayload = {
       nome: formData.nome,
@@ -73,7 +83,6 @@ const CadastroAnimais = () => {
       castrado: formData.castrado
     };
 
-
     const formDataToSend = new FormData();
     
     formDataToSend.append('animal', new Blob([JSON.stringify(animalPayload)], {
@@ -86,7 +95,7 @@ const CadastroAnimais = () => {
 
     try {
       await cadastrarAnimal(formDataToSend);
-      setSucesso(true);
+      toast.success('Animal cadastrado com sucesso! Redirecionando...');
 
       setTimeout(() => {
         navigate('/animais');
@@ -100,7 +109,7 @@ const CadastroAnimais = () => {
         errorMsg = Object.values(backendError)[0];
       }
 
-      setErro(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setCarregando(false);
     }
@@ -114,18 +123,6 @@ const CadastroAnimais = () => {
           Preencha os campos abaixo para cadastrar um novo animal.
         </p>
 
-        {sucesso && (
-          <div className="cadastro-animal-sucesso">
-            ✓ Animal cadastrado com sucesso! Redirecionando...
-          </div>
-        )}
-
-        {erro && (
-          <div className="cadastro-animal-erro">
-            ✗ {erro}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="nome">Nome do Animal *</label>
@@ -136,7 +133,6 @@ const CadastroAnimais = () => {
               value={formData.nome}
               onChange={handleChange}
               placeholder="Ex: Max"
-              required
             />
           </div>
 
@@ -147,7 +143,6 @@ const CadastroAnimais = () => {
               name="especie"
               value={formData.especie}
               onChange={handleChange}
-              required
             >
               <option value="">Selecione...</option>
               <option value="CACHORRO">Cachorro</option>
@@ -162,7 +157,6 @@ const CadastroAnimais = () => {
               name="sexoAnimal"
               value={formData.sexoAnimal}
               onChange={handleChange}
-              required
             >
               <option value="">Selecione...</option>
               <option value="MACHO">Macho</option>
@@ -203,7 +197,6 @@ const CadastroAnimais = () => {
               name="nascimentoEstimado"
               value={formData.nascimentoEstimado}
               onChange={handleChange}
-              required
             />
           </div>
 
@@ -219,7 +212,6 @@ const CadastroAnimais = () => {
                 name="abrigoId"
                 value={formData.abrigoId}
                 onChange={handleChange}
-                required
               >
                 <option value="">Selecione um abrigo...</option>
                 {abrigos.map((abrigo) => (
@@ -244,29 +236,27 @@ const CadastroAnimais = () => {
             </label>
           </div>
 
-          <div className="form-group">
-          <label htmlFor="arquivoFoto">Foto do Animal</label>
+        <div className="form-group">
+          <label htmlFor="arquivoFoto">Foto do Animal *</label>
           <input
             type="file"
             id="arquivoFoto"
             name="arquivoFoto"
             accept="image/*"
             onChange={(e) => setArquivoFoto(e.target.files[0])}
-            required
           />
         </div>
 
-          <div className="form-group">
-            <label htmlFor="descricao">Descrição *</label>
-            <textarea
-              id="descricao"
-              name="descricao"
-              value={formData.descricao}
-              onChange={handleChange}
-              placeholder="Ex: Animal dócil e amigável..."
-              required
-            />
-          </div>
+        <div className="form-group">
+          <label htmlFor="descricao">Descrição *</label>
+          <textarea
+            id="descricao"
+            name="descricao"
+            value={formData.descricao}
+            onChange={handleChange}
+            placeholder="Ex: Animal dócil e amigável..."
+          />
+        </div>
 
           <div className="cadastro-animal-botoes">
             <button

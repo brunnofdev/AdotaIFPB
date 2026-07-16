@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarAbrigo } from '../services/abrigoService';
+import toast from 'react-hot-toast';
 import '../styles/Home.css';
 import '../styles/CadastroAbrigo.css';
 
 function CadastroAbrigo() {
   const navigate = useNavigate();
   const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState(null);
-  const [sucesso, setSucesso] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -25,9 +24,13 @@ function CadastroAbrigo() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.nome.trim() || !formData.localizacao.trim()) {
+      toast.error('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
     setCarregando(true);
-    setErro(null);
-    setSucesso(false);
 
     try {
       const dados = {
@@ -36,17 +39,16 @@ function CadastroAbrigo() {
       };
 
       await cadastrarAbrigo(dados);
-      setSucesso(true);
+      toast.success('Abrigo cadastrado com sucesso! Redirecionando...');
 
       setTimeout(() => {
         navigate('/animais');
       }, 1500);
     } catch (error) {
       console.error("Erro ao cadastrar abrigo:", error);
-      setErro(
-        error.response?.data?.message ||
-        "Erro ao cadastrar abrigo. Verifique os dados e tente novamente."
-      );
+      const errorMsg = error.response?.data?.message ||
+        "Erro ao cadastrar abrigo. Verifique os dados e tente novamente.";
+      toast.error(errorMsg);
     } finally {
       setCarregando(false);
     }
@@ -64,18 +66,6 @@ function CadastroAbrigo() {
           Preencha os campos abaixo para registrar um novo abrigo no sistema.
         </p>
 
-        {sucesso && (
-          <div className="cadastro-abrigo-sucesso">
-            ✓ Abrigo cadastrado com sucesso! Redirecionando...
-          </div>
-        )}
-
-        {erro && (
-          <div className="cadastro-abrigo-erro">
-            ✗ {erro}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="nome">Nome do Abrigo *</label>
@@ -86,7 +76,6 @@ function CadastroAbrigo() {
               value={formData.nome}
               onChange={handleInputChange}
               placeholder="Ex: Abrigo dos Animais IFPB"
-              required
             />
           </div>
 
@@ -99,7 +88,6 @@ function CadastroAbrigo() {
               value={formData.localizacao}
               onChange={handleInputChange}
               placeholder="Ex: Rua das Flores, 123, João Pessoa"
-              required
             />
           </div>
 

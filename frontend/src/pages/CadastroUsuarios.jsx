@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarUsuario } from '../services/userService';
+import toast from 'react-hot-toast';
 import '../styles/CadastroUsuarios.css';
 
 const CadastroUsuarios = () => {
   const navigate = useNavigate();
   const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState(null);
-  const [sucesso, setSucesso] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -30,36 +29,42 @@ const CadastroUsuarios = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setCarregando(true);
-    setErro(null);
-    setSucesso(false);
 
-    // Validação extra para garantir que as senhas coincidem antes de enviar para o backend
-    if (formData.senha !== formData.senhaConfirmacao) {
-      setErro("As senhas não coincidem. Verifique e tente novamente.");
-      setCarregando(false);
+    if (!formData.nome.trim() || !formData.email.trim() || !formData.senha.trim() || 
+        !formData.senhaConfirmacao.trim() || !formData.vinculoIFPB.trim()) {
+      toast.error('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
+    if (formData.senha.length < 6) {
+      toast.error('A senha deve ter no mínimo 6 caracteres.');
+      return;
+    }
+
+    if (formData.senha !== formData.senhaConfirmacao) {
+      toast.error('As senhas não coincidem. Verifique e tente novamente.');
+      return;
+    }
+
+    setCarregando(true);
+
     try {
       await cadastrarUsuario(formData);
-      setSucesso(true);
+      toast.success('Usuário cadastrado com sucesso! Redirecionando...');
 
       setTimeout(() => {
         navigate('/login');
       }, 1500);
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
-      // Extrai a mensagem de erro formatada do back
       const backendError = error.response?.data;
       let errorMsg = "Erro ao cadastrar usuário. Verifique os dados.";
       
       if (backendError && typeof backendError === 'object') {
-         // Pega a primeira mensagem de erro
          errorMsg = Object.values(backendError)[0]; 
       }
 
-      setErro(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setCarregando(false);
     }
@@ -73,17 +78,6 @@ const CadastroUsuarios = () => {
           Preencha os campos abaixo para se registrar no sistema.
         </p>
 
-        {sucesso && (
-          <div className="cadastro-usuario-sucesso">
-            ✓ Usuário cadastrado com sucesso! Redirecionando...
-          </div>
-        )}
-
-        {erro && (
-          <div className="cadastro-usuario-erro">
-            ✗ {erro}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -95,7 +89,6 @@ const CadastroUsuarios = () => {
               value={formData.nome} 
               onChange={handleChange}
               placeholder="Ex: João Silva"
-              required 
             />
           </div>
 
@@ -108,7 +101,6 @@ const CadastroUsuarios = () => {
               value={formData.email} 
               onChange={handleChange}
               placeholder="Ex: joao@academico.ifpb.edu.br"
-              required 
             />
           </div>
 
@@ -121,8 +113,6 @@ const CadastroUsuarios = () => {
               value={formData.senha} 
               onChange={handleChange}
               placeholder="Mínimo 6 caracteres"
-              required 
-              minLength="6"
             />
           </div>
 
@@ -135,8 +125,6 @@ const CadastroUsuarios = () => {
               value={formData.senhaConfirmacao} 
               onChange={handleChange}
               placeholder="Digite a senha novamente"
-              required 
-              minLength="6"
             />
           </div>
 
@@ -147,7 +135,6 @@ const CadastroUsuarios = () => {
               name="vinculoIFPB" 
               value={formData.vinculoIFPB} 
               onChange={handleChange}
-              required
             >
               <option value="">Selecione...</option>
               <option value="ALUNO">Aluno</option>

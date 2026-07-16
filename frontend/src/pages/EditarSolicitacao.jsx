@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buscarSolicitacaoPorId, aprovarSolicitacao, cancelarSolicitacao } from '../services/solicitacaoService';
 import '../styles/EditarSolicitacao.css';
+import toast from 'react-hot-toast';
 
 const EditarSolicitacao = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [carregando, setCarregando] = useState(true);
   const [enviando, setEnviando] = useState(false);
-  const [erro, setErro] = useState(null);
-  const [sucesso, setSucesso] = useState(false);
   const [solicitacao, setSolicitacao] = useState(null);
 
   const [expandido, setExpandido] = useState({
@@ -19,18 +18,18 @@ const EditarSolicitacao = () => {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/immutability
     carregarSolicitacao();
   }, [id]);
 
   const carregarSolicitacao = async () => {
     try {
       setCarregando(true);
-      setErro(null);
       const dados = await buscarSolicitacaoPorId(id);
       setSolicitacao(dados);
     } catch (error) {
       console.error("Erro ao carregar solicitação:", error);
-      setErro("Erro ao carregar os dados da solicitação. Tente novamente.");
+      toast.error("Erro ao carregar os dados da solicitação. Tente novamente.");
     } finally {
       setCarregando(false);
     }
@@ -44,24 +43,19 @@ const EditarSolicitacao = () => {
   };
 
   const handleAprovar = async () => {
-    const confirmar = window.confirm(
-      `Deseja aprovar a solicitação do animal "${solicitacao.nomeAnimal}"?`
-    );
-    if (!confirmar) return;
+    
 
     setEnviando(true);
-    setErro(null);
-    setSucesso(false);
 
     try {
       await aprovarSolicitacao(id);
-      setSucesso(true);
+      toast.success('Operação realizada com sucesso! Redirecionando...');
       setTimeout(() => {
         navigate('/solicitacoes');
       }, 1500);
     } catch (error) {
       console.error("Erro ao aprovar solicitação:", error);
-      setErro("Erro ao aprovar a solicitação. Tente novamente.");
+      toast.error("Erro ao aprovar a solicitação. Tente novamente.");
     } finally {
       setEnviando(false);
     }
@@ -74,18 +68,16 @@ const EditarSolicitacao = () => {
     if (!confirmar) return;
 
     setEnviando(true);
-    setErro(null);
-    setSucesso(false);
 
     try {
       await cancelarSolicitacao(id);
-      setSucesso(true);
+      toast.success('Operação realizada com sucesso! Redirecionando...');
       setTimeout(() => {
         navigate('/solicitacoes');
       }, 1500);
     } catch (error) {
       console.error("Erro ao cancelar solicitação:", error);
-      setErro("Erro ao cancelar a solicitação. Tente novamente.");
+      toast.error("Erro ao cancelar a solicitação. Tente novamente.");
     } finally {
       setEnviando(false);
     }
@@ -122,17 +114,6 @@ const EditarSolicitacao = () => {
         <h1>Detalhes da Solicitação</h1>
         <p>Segue abaixo os detalhes da solicitação</p>
 
-        {sucesso && (
-          <div className="editar-solicitacao-sucesso">
-            ✓ Operação realizada com sucesso! Redirecionando...
-          </div>
-        )}
-
-        {erro && (
-          <div className="editar-solicitacao-erro">
-            ✗ {erro}
-          </div>
-        )}
 
         <div className="secao-colapsavel">
           <div 

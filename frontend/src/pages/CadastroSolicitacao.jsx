@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { cadastrarSolicitacao } from '../services/solicitacaoService';
 import { buscarAnimalPorId } from '../services/animalService';
 import { useAuth } from '../contexts/UseAuth';
+import toast from 'react-hot-toast';
 import '../styles/CadastroSolicitacao.css';
 
 const CadastroSolicitacao = () => {
@@ -10,7 +11,6 @@ const CadastroSolicitacao = () => {
   const location = useLocation();
   const { user } = useAuth();
   const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState(null);
   const [carregandoAnimal, setCarregandoAnimal] = useState(false);
   const [dadosAnimal, setDadosAnimal] = useState(null);
   
@@ -21,13 +21,12 @@ const CadastroSolicitacao = () => {
 
   const carregarDadosAnimal = async (animalId) => {
     setCarregandoAnimal(true);
-    setErro(null);
     try {
       const dados = await buscarAnimalPorId(animalId);
       setDadosAnimal(dados);
     } catch (error) {
       console.error("Erro ao buscar animal:", error);
-      setErro("Erro ao carregar dados do animal. Verifique o ID informado.");
+      toast.error("Erro ao carregar dados do animal. Verifique o ID informado.");
       setDadosAnimal(null);
     } finally {
       setCarregandoAnimal(false);
@@ -56,11 +55,16 @@ const CadastroSolicitacao = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.animalId) {
+      toast.error('Por favor, selecione um animal.');
+      return;
+    }
+
     setCarregando(true);
-    setErro(null);
 
     if (!user) {
-      setErro("Erro: Usuário não identificado. Por favor, faça login novamente.");
+      toast.error("Erro: Usuário não identificado. Por favor, faça login novamente.");
       setCarregando(false);
       return;
     }
@@ -68,7 +72,7 @@ const CadastroSolicitacao = () => {
     const usuarioId = user.userId || user.sub;
 
     if (!usuarioId) {
-      setErro("Erro: Não foi possível identificar seu ID de usuário.");
+      toast.error("Erro: Não foi possível identificar seu ID de usuário.");
       setCarregando(false);
       return;
     }
@@ -81,11 +85,13 @@ const CadastroSolicitacao = () => {
 
     try {
       await cadastrarSolicitacao(payload);
-      alert('Solicitação criada com sucesso!');
-      navigate('/home');
+      toast.success('Solicitação criada com sucesso! Redirecionando...');
+      setTimeout(() => {
+        navigate('/home');
+      }, 1500);
     } catch (error) {
       console.error("Erro ao criar solicitação:", error);
-      setErro("Erro ao registrar a solicitação. Verifique se o animal existe e tente novamente.");
+      toast.error("Erro ao registrar a solicitação. Verifique se o animal existe e tente novamente.");
     } finally {
       setCarregando(false);
     }
@@ -105,29 +111,8 @@ const CadastroSolicitacao = () => {
           </div>
         )}
 
-        {erro && (
-          <div className="cadastro-solicitacao-erro">
-            ✗ {erro}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
-          
-          <div className="form-group">
-            <label htmlFor="animalId">ID do Animal *</label>
-            <input 
-              type="number" 
-              id="animalId" 
-              name="animalId" 
-              value={formData.animalId} 
-              onChange={handleChange}
-              placeholder="Ex: 1"
-              required 
-              disabled
-              min="1"
-            />
-          </div>
-
+        
           {carregandoAnimal && (
             <div className="carregando-animal">
               Carregando informações do animal...

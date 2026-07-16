@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cadastrarVacina } from '../services/vacinaService';
+import toast from 'react-hot-toast';
 import '../styles/Home.css';
 import '../styles/CadastroAbrigo.css';
 
 function CadastroVacina() {
   const navigate = useNavigate();
   const [carregando, setCarregando] = useState(false);
-  const [erro, setErro] = useState(null);
-  const [sucesso, setSucesso] = useState(false);
 
   const [formData, setFormData] = useState({
     nome: '',
@@ -26,9 +25,13 @@ function CadastroVacina() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.nome.trim()) {
+      toast.error('Por favor, preencha o nome da vacina.');
+      return;
+    }
+
     setCarregando(true);
-    setErro(null);
-    setSucesso(false);
 
     try {
       const dados = {
@@ -38,17 +41,16 @@ function CadastroVacina() {
       };
 
       await cadastrarVacina(dados);
-      setSucesso(true);
+      toast.success('Vacina cadastrada com sucesso! Redirecionando...');
 
       setTimeout(() => {
         navigate('/animais');
       }, 1500);
     } catch (error) {
       console.error("Erro ao cadastrar vacina:", error);
-      setErro(
-        error.response?.data?.message ||
-        "Erro ao cadastrar vacina. Verifique os dados e tente novamente."
-      );
+      const errorMsg = error.response?.data?.message ||
+        "Erro ao cadastrar vacina. Verifique os dados e tente novamente.";
+      toast.error(errorMsg);
     } finally {
       setCarregando(false);
     }
@@ -66,18 +68,6 @@ function CadastroVacina() {
           Preencha os campos abaixo para registrar uma nova vacina no sistema.
         </p>
 
-        {sucesso && (
-          <div className="cadastro-abrigo-sucesso">
-            ✓ Vacina cadastrada com sucesso! Redirecionando...
-          </div>
-        )}
-
-        {erro && (
-          <div className="cadastro-abrigo-erro">
-            ✗ {erro}
-          </div>
-        )}
-
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="nome">Nome da Vacina *</label>
@@ -88,7 +78,6 @@ function CadastroVacina() {
               value={formData.nome}
               onChange={handleInputChange}
               placeholder="Ex: Raiva, Tétano, Parvovírus"
-              required
             />
           </div>
 

@@ -4,13 +4,19 @@ import { useAuth, } from '../contexts/useAuth';
 export function HomeNav(){
 
 const navigate = useNavigate();
-const { logout } = useAuth();
-const { hasRole, user } = useAuth();
+const { logout, hasRole, user } = useAuth();
 const isAdmin = hasRole('ROLE_ADMIN');
+const userId = user?.userId || user?.sub;
 
 const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+const handleConta = () => {
+    if (userId) {
+      navigate(`/editar-usuario/${userId}`);
+    }
   };
 return (
 <nav className="side-navbar">
@@ -33,7 +39,13 @@ return (
       {!isAdmin && (
       <div className="nav-link">
         <img src="src/assets/user.png" alt="User Icon" className="side-nav-icon" />
-        <Link to="/usuarios" className="side-nav-link">Conta</Link>
+        <button 
+          onClick={handleConta}
+          className="side-nav-link"
+          style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}
+        >
+          Conta
+        </button>
       </div>
       )}
       <div className="nav-link">

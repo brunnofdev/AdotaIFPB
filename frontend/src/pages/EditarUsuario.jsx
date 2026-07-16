@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { buscarUsuarioPorId, atualizarUsuario, removerUsuario } from '../services/userService';
 import '../styles/CadastroUsuarios.css';
+import toast from 'react-hot-toast';
 
 const EditarUsuario = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [carregando, setCarregando] = useState(true);
   const [salvando, setSalvando] = useState(false);
-  const [erro, setErro] = useState(null);
-  const [sucesso, setSucesso] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -27,7 +26,6 @@ const EditarUsuario = () => {
   const carregarUsuario = async () => {
     try {
       setCarregando(true);
-      setErro(null);
       const usuario = await buscarUsuarioPorId(id);
       setFormData({
         nome: usuario.nome || '',
@@ -37,7 +35,7 @@ const EditarUsuario = () => {
       });
     } catch (error) {
       console.error("Erro ao carregar usuário:", error);
-      setErro("Falha ao carregar dados do usuário. Verifique a conexão.");
+      toast.error("Falha ao carregar dados do usuário. Verifique a conexão.");
     } finally {
       setCarregando(false);
     }
@@ -55,12 +53,10 @@ const EditarUsuario = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSalvando(true);
-    setErro(null);
-    setSucesso(false);
 
     try {
       await atualizarUsuario(id, formData);
-      setSucesso(true);
+      toast.success('Usuário atualizado com sucesso! Redirecionando...');
 
       setTimeout(() => {
         navigate('/usuarios');
@@ -74,7 +70,7 @@ const EditarUsuario = () => {
         errorMsg = Object.values(backendError)[0];
       }
 
-      setErro(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setSalvando(false);
     }
@@ -82,15 +78,14 @@ const EditarUsuario = () => {
 
   const handleRemoverConfirm = async () => {
     setSalvando(true);
-    setErro(null);
 
     try {
       await removerUsuario(id);
-      alert("Usuário removido com sucesso!");
+      toast.success('Usuário removido com sucesso!');
       navigate('/usuarios');
     } catch (error) {
       console.error("Erro ao remover usuário:", error);
-      setErro("Erro ao remover o usuário. Tente novamente.");
+      toast.error('Erro ao remover o usuário. Tente novamente.');
     } finally {
       setSalvando(false);
       setShowConfirmDelete(false);
@@ -115,34 +110,22 @@ const EditarUsuario = () => {
           Modifique os dados do usuário abaixo.
         </p>
 
-        {sucesso && (
-          <div className="cadastro-usuario-sucesso">
-            ✓ Usuário atualizado com sucesso! Redirecionando...
-          </div>
-        )}
-
-        {erro && (
-          <div className="cadastro-usuario-erro">
-            ✗ {erro}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="nome">Nome Completo *</label>
-            <input 
-              type="text" 
-              id="nome" 
-              name="nome" 
-              value={formData.nome} 
-              onChange={handleChange}
-              placeholder="Ex: João Silva"
-              required 
-            />
+            <label htmlFor="nome">Nome Completo</label>
+              <input 
+                type="text" 
+                id="nome" 
+                name="nome" 
+                value={formData.nome} 
+                onChange={handleChange}
+                placeholder="Ex: João Silva"
+              />
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email Institucional *</label>
+            <label htmlFor="email">Email Institucional</label>
             <input 
               type="email" 
               id="email" 
@@ -150,7 +133,6 @@ const EditarUsuario = () => {
               value={formData.email} 
               onChange={handleChange}
               placeholder="Ex: joao@academico.ifpb.edu.br"
-              required 
               disabled
             />
             <small style={{ color: '#666', marginTop: '4px' }}>
@@ -159,13 +141,12 @@ const EditarUsuario = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="vinculoIFPB">Vínculo com IFPB *</label>
+            <label htmlFor="vinculoIFPB">Vínculo com IFPB</label>
             <select 
               id="vinculoIFPB" 
               name="vinculoIFPB" 
               value={formData.vinculoIFPB} 
               onChange={handleChange}
-              required
             >
               <option value="">Selecione...</option>
               <option value="ALUNO">Aluno</option>
