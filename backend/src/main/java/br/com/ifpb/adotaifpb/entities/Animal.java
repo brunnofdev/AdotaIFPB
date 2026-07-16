@@ -57,11 +57,6 @@ public class Animal {
     @Column(name = "url_foto") // foto principal
     private String urlFoto;
 
-    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<FotoAnimal> fotos = new ArrayList<>();
-
     @OneToMany(mappedBy = "animal")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
@@ -82,14 +77,5 @@ public class Animal {
     @Column(nullable = false)
     private boolean ativo = true;
 
-    public void adicionarFoto(FotoAnimal foto) {
-        this.fotos.add(foto);
-        foto.setAnimal(this);
-    }
-
-    public void removerFoto(FotoAnimal foto) {
-        this.fotos.remove(foto);
-        foto.setAnimal(null);
-    }
 
 }

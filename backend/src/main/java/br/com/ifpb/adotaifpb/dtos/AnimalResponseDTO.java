@@ -19,9 +19,8 @@ public record AnimalResponseDTO(
         String descricao,
         Double peso,
         Boolean castrado,
-        List<FotoAnimalResponseDTO> fotos,
+        String urlFoto,
         List<VacinacaoResponseDTO> historicoVacinacoes,
-        // Caso possua StatusAnimalEnum na entidade, mantenha. Senão, pode remover.
         StatusAnimalEnum status,
         LocalDateTime criadoEm,
         Boolean ativo
@@ -38,7 +37,7 @@ public record AnimalResponseDTO(
                 animal.getDescricao(),
                 animal.getPeso(),
                 animal.isCastrado(),
-                animal.getFotos() != null ? animal.getFotos().stream().map(FotoAnimalResponseDTO::new).toList() : null,
+                animal.getUrlFoto(),
                 animal.getHistoricoVacinacoes() != null ? animal.getHistoricoVacinacoes().stream().map(VacinacaoResponseDTO::new).toList() : null,
                 animal.getStatus(),
                 animal.getCriadoEm(),

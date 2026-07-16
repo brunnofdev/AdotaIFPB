@@ -31,7 +31,5 @@ public record AnimalRequestDTO(
 
         Double peso,
 
-        Boolean castrado,
-
-        List<String> fotosUrls
+        Boolean castrado
 ) {}

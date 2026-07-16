@@ -22,10 +22,12 @@ public class AnimalController {
     }
 
 
-    @PostMapping
+    @PostMapping(consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AnimalResponseDTO> cadastrar(@Valid @RequestBody AnimalRequestDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(animalService.cadastrarAnimal(dto));
+    public ResponseEntity<AnimalResponseDTO> cadastrar(
+            @RequestPart("animal") @Valid AnimalRequestDTO dto,
+            @RequestPart(value = "foto", required = false) org.springframework.web.multipart.MultipartFile foto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(animalService.cadastrarAnimal(dto, foto));
     }
 
     @GetMapping
@@ -38,10 +40,13 @@ public class AnimalController {
         return ResponseEntity.ok(animalService.buscarPorId(id));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AnimalResponseDTO> atualizar(@PathVariable Long id, @Valid @RequestBody AnimalRequestDTO dto) {
-        return ResponseEntity.ok(animalService.atualizarAnimal(id, dto));
+    public ResponseEntity<AnimalResponseDTO> atualizar(
+            @PathVariable Long id,
+            @RequestPart("animal") @Valid AnimalRequestDTO dto,
+            @RequestPart(value = "foto", required = false) org.springframework.web.multipart.MultipartFile foto) {
+        return ResponseEntity.ok(animalService.atualizarAnimal(id, dto, foto));
     }
 
     @DeleteMapping("/{id}")

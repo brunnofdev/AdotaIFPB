@@ -10,7 +10,13 @@ import br.com.ifpb.adotaifpb.repository.AnimalRepository;
 import br.com.ifpb.adotaifpb.utils.StatusAnimalEnum;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +32,7 @@ public class AnimalService {
     }
 
     @Transactional
-    public AnimalResponseDTO cadastrarAnimal(AnimalRequestDTO dto) {
+    public AnimalResponseDTO cadastrarAnimal(AnimalRequestDTO dto, MultipartFile arquivoFoto) {
         Abrigo abrigo = abrigoRepository.findById(dto.abrigoId())
                 .orElseThrow(() -> new IllegalArgumentException("Abrigo não encontrado."));
 
@@ -34,26 +40,10 @@ public class AnimalService {
         converterAnimalDTO(dto, animal, abrigo);
         animal.setStatus(StatusAnimalEnum.DISPONIVEL);
 
-
-        if (dto.fotosUrls() != null && !dto.fotosUrls().isEmpty()) {
-            animal.setUrlFoto(dto.fotosUrls().get(0));
-
-            coverterFotoDTO(dto, animal);
-        }
+        salvarEAtribuirFoto(arquivoFoto, animal);
 
         animal = animalRepository.save(animal);
         return new AnimalResponseDTO(animal);
-    }
-
-    private void coverterFotoDTO(AnimalRequestDTO dto, Animal animal) {
-        boolean isPrincipal = true;
-        for (String url : dto.fotosUrls()) {
-            FotoAnimal foto = new FotoAnimal();
-            foto.setUrl(url);
-            foto.setPrincipal(isPrincipal);
-            animal.adicionarFoto(foto);
-            isPrincipal = false;
-        }
     }
 
     public List<AnimalResponseDTO> listarAnimaisDisponiveis() {
@@ -69,7 +59,7 @@ public class AnimalService {
     }
 
     @Transactional
-    public AnimalResponseDTO atualizarAnimal(Long id, AnimalRequestDTO dto) {
+    public AnimalResponseDTO atualizarAnimal(Long id, AnimalRequestDTO dto, MultipartFile arquivoFoto) {
         Animal animal = animalRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Animal não encontrado."));
 
@@ -78,12 +68,9 @@ public class AnimalService {
 
         converterAnimalDTO(dto, animal, abrigo);
 
-
-        if (dto.fotosUrls() != null) {
-            animal.getFotos().clear();
-            animal.setUrlFoto(dto.fotosUrls().isEmpty() ? null : dto.fotosUrls().get(0));
-
-            coverterFotoDTO(dto, animal);
+        // Atualiza a foto apenas se uma nova imagem for enviada no formulário
+        if (arquivoFoto != null && !arquivoFoto.isEmpty()) {
+            salvarEAtribuirFoto(arquivoFoto, animal);
         }
 
         animal = animalRepository.save(animal);
@@ -108,5 +95,27 @@ public class AnimalService {
                 .orElseThrow(() -> new IllegalArgumentException("Animal não encontrado."));
 
         animalRepository.delete(animal);
+    }
+
+    private void salvarEAtribuirFoto(MultipartFile foto, Animal animal) {
+        if (foto != null && !foto.isEmpty()) {
+            try {
+                Path diretorio = Paths.get("uploads");
+                if (!Files.exists(diretorio)) {
+                    Files.createDirectories(diretorio);
+                }
+
+                String nomeArquivo = System.currentTimeMillis() + "_" + foto.getOriginalFilename().replaceAll("\\s+", "_");
+                Path caminhoArquivo = diretorio.resolve(nomeArquivo);
+                Files.copy(foto.getInputStream(), caminhoArquivo, StandardCopyOption.REPLACE_EXISTING);
+
+                String urlGerada = "http://localhost:8080/uploads/" + nomeArquivo;
+
+                animal.setUrlFoto(urlGerada);
+
+            } catch (IOException e) {
+                throw new RuntimeException("Erro ao salvar a imagem do animal", e);
+            }
+        }
     }
 }
