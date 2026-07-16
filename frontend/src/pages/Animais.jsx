@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { listarAnimais, removerAnimal } from '../services/animalService';
+import { listarAnimais } from '../services/animalService';
 import '../styles/Animais.css';
 import '../styles/Button.css'
 
@@ -41,18 +41,8 @@ function Animais() {
     navigate('/login');
   };
 
-  const handleRemover = async (id, nome) => {
-    const confirmar = window.confirm(`Deseja realmente remover o animal ${nome}?`);
-    if (!confirmar) return;
-
-    try {
-      await removerAnimal(id);
-      setAnimais((prevAnimais) => prevAnimais.filter((animal) => animal.id !== id));
-      alert("Animal removido com sucesso!");
-    } catch (error) {
-      console.error("Erro ao remover animal:", error);
-      alert("Erro ao remover o animal. Tente novamente.");
-    }
+  const handleEditar = (id) => {
+    navigate(`/editar-animal/${id}`);
   };
 
   // Formatar o YearMonth (YYYY-MM) para MM/YYYY
@@ -136,10 +126,10 @@ function Animais() {
                       <td>
                         <button 
                           className="btn-danger-sm" 
-                          onClick={() => handleRemover(animal.id, animal.nome)}
-                          title="Remover Animal"
+                          onClick={() => handleEditar(animal.id)}
+                          title="Editar Animal"
                         >
-                          Remover
+                          Editar
                         </button>
                       </td>
                     </tr>
