@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { listarAnimais } from '../services/animalService';
+import { useAuth } from '../contexts/useAuth';
 import '../styles/Animais.css';
 import '../styles/Button.css'
 
 function Animais() {
+  const { hasRole } = useAuth();
+  const isAdmin = hasRole('ROLE_ADMIN');
   const navigate = useNavigate();
   const [animais, setAnimais] = useState([]);
   const [carregando, setCarregando] = useState(true);
@@ -125,7 +128,7 @@ function Animais() {
                     <th>Sexo</th>
                     <th>Abrigo</th>
                     <th>Status</th>
-                    <th>Ações</th>
+                    {isAdmin && <th>Ações</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -149,15 +152,16 @@ function Animais() {
                         </span>
                       </td>
                        
-                      <td>
-                        <button 
-                          className="btn-danger-sm" 
-                          onClick={() => handleEditar(animal.id)}
-                          title="Editar Animal"
-                        >
+                      {isAdmin && (
+                        <td>
+                          <button 
+                            className="btn-danger-sm" 
+                            onClick={() => handleEditar(animal.id)}
+                            title="Editar Animal"
+                          >
                           Editar
                         </button>
-                      </td>
+                      </td>)}
                     </tr>
                   ))}
                 </tbody>

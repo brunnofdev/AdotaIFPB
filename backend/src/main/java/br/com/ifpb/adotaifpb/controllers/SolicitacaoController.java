@@ -62,7 +62,7 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     public ResponseEntity<SolicitacaoResponseDTO> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(solicitacaoService.buscarPorId(id));
     }

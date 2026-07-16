@@ -24,10 +24,10 @@ public class Animal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(nullable = false, length = 100)
-    String nome;
+    private String nome;
 
     @Column(name = "especie", nullable = false)
     private EspecieEnum especie;

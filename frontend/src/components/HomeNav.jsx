@@ -1,10 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/useAuth';
+import { useAuth, } from '../contexts/useAuth';
 
 export function HomeNav(){
 
 const navigate = useNavigate();
 const { logout } = useAuth();
+const { hasRole, user } = useAuth();
+const isAdmin = hasRole('ROLE_ADMIN');
 
 const handleLogout = () => {
     logout();
@@ -22,10 +24,18 @@ return (
         <img src="src/assets/animal.png" alt="Animal Icon" className="side-nav-icon" />
         <Link to="/animais" className="side-nav-link">Animais</Link>
       </div>
+      {isAdmin && (
       <div className="nav-link">
         <img src="src/assets/user.png" alt="User Icon" className="side-nav-icon" />
         <Link to="/usuarios" className="side-nav-link">Usuários</Link>
       </div>
+      )}
+      {!isAdmin && (
+      <div className="nav-link">
+        <img src="src/assets/user.png" alt="User Icon" className="side-nav-icon" />
+        <Link to="/usuarios" className="side-nav-link">Conta</Link>
+      </div>
+      )}
       <div className="nav-link">
         <img src="src/assets/hearth.png" alt="Adoption Icon" className="side-nav-icon" />
         <Link to="/solicitacoes" className="side-nav-link">Adoções</Link>

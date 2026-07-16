@@ -20,19 +20,19 @@ public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(nullable = false)
-    String nome;
+    private String nome;
 
     @Column(nullable = false, unique = true)
-    String email;
+    private String email;
 
     @Column(nullable = false)
     private String senha;
 
     @Column(length = 20)
-    String telefone;
+    private String telefone;
 
     @Column(nullable = false)
     private boolean ativo = true;

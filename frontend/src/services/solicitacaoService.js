@@ -59,3 +59,33 @@ export const cancelarSolicitacao = async (id) => {
     throw error;
   }
 };
+
+export const buscarSolicitacoesUsersPorId = async (id) => {
+  try {
+    const response = await api.get(`/solicitacoes/user/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar solicitações:", error);
+    throw error;
+  }
+};
+
+export const listarAdocoes = async () => {
+  try {
+    const response = await api.get('/adocoes');
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar adoções:", error);
+    throw error;
+  }
+};
+
+export const buscarAdocaoUsersPorId = async (id) => {
+  try {
+    const response = await api.get(`/adocoes/user/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao buscar adoção:", error);
+    throw error;
+  }
+};

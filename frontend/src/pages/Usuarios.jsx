@@ -79,11 +79,6 @@ function Usuarios() {
         
         <div className="usuarios-header-actions">
           <h1 className="main-title">Gerenciar Usuários</h1>
-          <div className="action-buttons">
-            <button className="btn primary" onClick={handleGerarUsuario}>
-              Novo Usuário
-            </button>
-          </div>
         </div>
 
         <div className="usuarios-content">
