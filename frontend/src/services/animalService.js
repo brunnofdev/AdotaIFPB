@@ -1,8 +1,11 @@
 import api from './api';
 
-export const cadastrarAnimal = async (dadosAnimal) => {
+export const cadastrarAnimal = async (formData) => {
   try {
-    const response = await api.post('/animais', dadosAnimal);
+    
+    const response = await api.post('/animais', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
   } catch (error) {
     console.error("Erro ao cadastrar animal:", error);
@@ -30,12 +33,14 @@ export const buscarAnimalPorId = async (id) => {
   }
 };
 
-export const atualizarAnimal = async (id, dadosAnimal) => {
+export const atualizarAnimal = async (id, formData) => {
   try {
-    const response = await api.put(`/animais/${id}`, dadosAnimal);
+    const response = await api.put(`/animais/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+    });
     return response.data;
   } catch (error) {
-    console.error(`Erro ao atualizar o animal com ID ${id}:`, error);
+    console.error("Erro ao atualizar o animal:", error);
     throw error;
   }
 };

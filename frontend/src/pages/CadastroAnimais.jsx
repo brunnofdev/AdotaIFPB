@@ -21,9 +21,10 @@ const CadastroAnimais = () => {
     sexoAnimal: '',
     descricao: '',
     peso: '',
-    castrado: false,
-    fotoUrl: ''
+    castrado: false
   });
+
+  const [arquivoFoto, setArquivoFoto] = useState(null);
 
   useEffect(() => {
     const carregarAbrigos = async () => {
@@ -60,7 +61,7 @@ const CadastroAnimais = () => {
     setErro(null);
     setSucesso(false);
 
-    const payload = {
+    const animalPayload = {
       nome: formData.nome,
       especie: formData.especie,
       abrigoId: Number(formData.abrigoId),
@@ -69,18 +70,28 @@ const CadastroAnimais = () => {
       sexoAnimal: formData.sexoAnimal,
       descricao: formData.descricao,
       peso: formData.peso ? parseFloat(formData.peso) : null,
-      castrado: formData.castrado,
-      fotosUrls: formData.fotoUrl ? [formData.fotoUrl] : []
+      castrado: formData.castrado
     };
 
+
+    const formDataToSend = new FormData();
+    
+    formDataToSend.append('animal', new Blob([JSON.stringify(animalPayload)], {
+        type: "application/json"
+    }));
+
+    if (arquivoFoto) {
+        formDataToSend.append('foto', arquivoFoto);
+    }
+
     try {
-      await cadastrarAnimal(payload);
+      await cadastrarAnimal(formDataToSend);
       setSucesso(true);
 
       setTimeout(() => {
         navigate('/animais');
       }, 1500);
-    } catch (error) {
+    }  catch (error) {
       console.error("Erro ao cadastrar animal:", error);
       const backendError = error.response?.data;
       let errorMsg = "Erro ao cadastrar animal. Verifique os dados.";
@@ -234,16 +245,16 @@ const CadastroAnimais = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="fotoUrl">URL da Foto Principal</label>
-            <input
-              type="url"
-              id="fotoUrl"
-              name="fotoUrl"
-              value={formData.fotoUrl}
-              onChange={handleChange}
-              placeholder="https://exemplo.com/foto.jpg"
-            />
-          </div>
+          <label htmlFor="arquivoFoto">Foto do Animal</label>
+          <input
+            type="file"
+            id="arquivoFoto"
+            name="arquivoFoto"
+            accept="image/*"
+            onChange={(e) => setArquivoFoto(e.target.files[0])}
+            required
+          />
+        </div>
 
           <div className="form-group">
             <label htmlFor="descricao">Descrição *</label>

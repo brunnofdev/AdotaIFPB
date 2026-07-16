@@ -24,9 +24,10 @@ const EditarAnimal = () => {
     sexoAnimal: '',
     descricao: '',
     peso: '',
-    castrado: false,
-    fotoUrl: ''
+    castrado: false
   });
+
+  const [arquivoFoto, setArquivoFoto] = useState(null);
 
   useEffect(() => {
     const carregarDados = async () => {
@@ -44,8 +45,7 @@ const EditarAnimal = () => {
           sexoAnimal: animal.sexoAnimal || '',
           descricao: animal.descricao || '',
           peso: animal.peso || '',
-          castrado: animal.castrado || false,
-          fotoUrl: animal.fotosUrls?.[0] || ''
+          castrado: animal.castrado || false
         });
       } catch (error) {
         console.error("Erro ao carregar animal:", error);
@@ -90,7 +90,7 @@ const EditarAnimal = () => {
     setErro(null);
     setSucesso(false);
 
-    const payload = {
+    const animalPayload = {
       nome: formData.nome,
       especie: formData.especie,
       abrigoId: Number(formData.abrigoId),
@@ -99,12 +99,21 @@ const EditarAnimal = () => {
       sexoAnimal: formData.sexoAnimal,
       descricao: formData.descricao,
       peso: formData.peso ? parseFloat(formData.peso) : null,
-      castrado: formData.castrado,
-      fotosUrls: formData.fotoUrl ? [formData.fotoUrl] : []
+      castrado: formData.castrado
     };
 
+    const formDataToSend = new FormData();
+    
+    formDataToSend.append('animal', new Blob([JSON.stringify(animalPayload)], {
+        type: "application/json"
+    }));
+
+    if (arquivoFoto) {
+        formDataToSend.append('foto', arquivoFoto);
+    }
+
     try {
-      await atualizarAnimal(id, payload);
+      await atualizarAnimal(id, formDataToSend);
       setSucesso(true);
       setMensagemSucesso('Animal atualizado com sucesso! Redirecionando...');
 
@@ -308,14 +317,13 @@ const EditarAnimal = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="fotoUrl">URL da Foto Principal</label>
+            <label htmlFor="arquivoFoto">Foto do Animal</label>
             <input
-              type="url"
-              id="fotoUrl"
-              name="fotoUrl"
-              value={formData.fotoUrl}
-              onChange={handleChange}
-              placeholder="https://exemplo.com/foto.jpg"
+              type="file"
+              id="arquivoFoto"
+              name="arquivoFoto"
+              accept="image/*"
+              onChange={(e) => setArquivoFoto(e.target.files[0])}
               disabled={enviando}
             />
           </div>
