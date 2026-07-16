@@ -11,6 +11,8 @@ function Usuarios() {
   const [usuarios, setUsuarios] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const ITENS_POR_PAGINA = 5;
 
   useEffect(() => {
     carregarUsuarios();
@@ -40,6 +42,24 @@ function Usuarios() {
 
   const handleEditar = (id) => {
     navigate(`/editar-usuario/${id}`);
+  };
+
+  // Cálculos de paginação
+  const totalPaginas = Math.ceil(usuarios.length / ITENS_POR_PAGINA);
+  const indiceInicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
+  const indiceFim = indiceInicio + ITENS_POR_PAGINA;
+  const usuariosPaginados = usuarios.slice(indiceInicio, indiceFim);
+
+  const irProximaPagina = () => {
+    if (paginaAtual < totalPaginas) {
+      setPaginaAtual(paginaAtual + 1);
+    }
+  };
+
+  const irPaginaAnterior = () => {
+    if (paginaAtual > 1) {
+      setPaginaAtual(paginaAtual - 1);
+    }
   };
 
   return (
@@ -90,7 +110,7 @@ function Usuarios() {
                   </tr>
                 </thead>
                 <tbody>
-                  {usuarios.map((usuario) => (
+                  {usuariosPaginados.map((usuario) => (
                     <tr key={usuario.id}>
                       <td>{usuario.id}</td>
                       <td className="usuarios-nome">{usuario.nome}</td>
@@ -118,6 +138,26 @@ function Usuarios() {
                   ))}
                 </tbody>
               </table>
+
+              <div className="pagination-controls">
+                <button 
+                  className="btn pagination-btn"
+                  onClick={irPaginaAnterior}
+                  disabled={paginaAtual === 1}
+                >
+                  ← Anterior
+                </button>
+                <span className="pagination-info">
+                  Página {paginaAtual} de {totalPaginas}
+                </span>
+                <button 
+                  className="btn pagination-btn"
+                  onClick={irProximaPagina}
+                  disabled={paginaAtual === totalPaginas}
+                >
+                  Próxima →
+                </button>
+              </div>
             </div>
           )}
         </div>

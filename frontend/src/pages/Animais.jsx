@@ -9,6 +9,8 @@ function Animais() {
   const [animais, setAnimais] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(null);
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const ITENS_POR_PAGINA = 5;
 
   
   useEffect(() => {
@@ -54,6 +56,24 @@ function Animais() {
     if (!dataString) return '-';
     const [ano, mes] = dataString.split('-');
     return `${mes}/${ano}`;
+  };
+
+  // Cálculos de paginação
+  const totalPaginas = Math.ceil(animais.length / ITENS_POR_PAGINA);
+  const indiceInicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
+  const indiceFim = indiceInicio + ITENS_POR_PAGINA;
+  const animaisPaginados = animais.slice(indiceInicio, indiceFim);
+
+  const irProximaPagina = () => {
+    if (paginaAtual < totalPaginas) {
+      setPaginaAtual(paginaAtual + 1);
+    }
+  };
+
+  const irPaginaAnterior = () => {
+    if (paginaAtual > 1) {
+      setPaginaAtual(paginaAtual - 1);
+    }
   };
 
   return (
@@ -110,26 +130,26 @@ function Animais() {
                   </tr>
                 </thead>
                 <tbody>
-                  {animais.map((animal) => (
+                  {animaisPaginados.map((animal) => (
                     <tr key={animal.id}>
                       <td className="animais-nome">{animal.nome}</td>
-                      
+                       
                       <td>{animal.especie === 'CACHORRO' ? 'Cachorro' : 'Gato'}</td>
-                      
+                       
                       <td>{animal.raca || 'S.R.D.'}</td>
-                      
+                       
                       <td>{formatarNascimento(animal.nascimentoEstimado)}</td>
-                      
+                       
                       <td>{animal.sexoAnimal === 'MACHO' ? 'Macho' : 'Fêmea'}</td>
-                      
+                       
                       <td>{animal.abrigo?.nome || '-'}</td>
-                      
+                       
                       <td>
                         <span className={`status-badge ${animal.status === 'DISPONIVEL' ? 'disponivel' : 'adotado'}`}>
                           {animal.status}
                         </span>
                       </td>
-                      
+                       
                       <td>
                         <button 
                           className="btn-danger-sm" 
@@ -143,6 +163,26 @@ function Animais() {
                   ))}
                 </tbody>
               </table>
+               
+              <div className="pagination-controls">
+                <button 
+                  className="btn pagination-btn"
+                  onClick={irPaginaAnterior}
+                  disabled={paginaAtual === 1}
+                >
+                  ← Anterior
+                </button>
+                <span className="pagination-info">
+                  Página {paginaAtual} de {totalPaginas}
+                </span>
+                <button 
+                  className="btn pagination-btn"
+                  onClick={irProximaPagina}
+                  disabled={paginaAtual === totalPaginas}
+                >
+                  Próxima →
+                </button>
+              </div>
             </div>
           )}
         </div>
